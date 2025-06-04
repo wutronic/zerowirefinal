@@ -5,6 +5,7 @@ const path = require('path');
 const chokidar = require('chokidar');
 const { exec } = require('child_process');
 const { promisify } = require('util');
+const minimist = require('minimist');
 
 const execAsync = promisify(exec);
 
@@ -20,6 +21,17 @@ const CONFIG = {
 // Ensure output folder exists
 if (!fs.existsSync(CONFIG.outputFolder)) {
     fs.mkdirSync(CONFIG.outputFolder, { recursive: true });
+}
+
+/**
+ * Generate debug text for a clip
+ */
+function generateDebugText(clipType, clipIndex, fullDuration, usedDuration, transitionType = 'dummy') {
+    const fullDur = fullDuration.toFixed(2);
+    const usedDur = usedDuration.toFixed(2);
+    const clipName = clipType === 'loop' ? `${clipType.toUpperCase()}${clipIndex}` : clipType.toUpperCase();
+    
+    return `${clipName} | Full: ${fullDur}s | Used: ${usedDur}s | Trans: ${transitionType}`;
 }
 
 /**
@@ -185,7 +197,7 @@ async function calculateVideoStructure(audioDuration) {
 /**
  * Generate editly configuration for the video
  */
-async function generateEditlyConfig(audioFile, videoStructure, outputPath) {
+async function generateEditlyConfig(audioFile, videoStructure, outputPath, debugOverlay = false) {
     const { intro, loops, end } = videoStructure;
     
     // Get dimensions from intro video (all should match)
@@ -197,40 +209,92 @@ async function generateEditlyConfig(audioFile, videoStructure, outputPath) {
     const clips = [];
     
     // Add intro clip (may be cropped for short audio)
+    const introLayers = [{
+        type: 'video',
+        path: intro.file,
+        // If intro video is cropped, specify the cutFrom
+        ...(intro.fullDuration ? {} : { cutFrom: 0, cutTo: intro.duration })
+    }];
+    
+    // Add debug overlay for intro if enabled
+    if (debugOverlay) {
+        const debugText = generateDebugText('intro', 1, await getMediaDuration(intro.file), intro.duration, 'none');
+        introLayers.push({
+            type: 'title',
+            text: debugText,
+            fontsize: 16,
+            textColor: '#ffffff',
+            position: { x: 0.02, y: 0.02, originX: 'left', originY: 'top' },
+            box: 1,
+            boxcolor: '#000000@0.7',
+            boxborderw: 2
+        });
+    }
+    
     clips.push({
         duration: intro.duration,
-        layers: [{
-            type: 'video',
-            path: intro.file,
-            // If intro video is cropped, specify the cutFrom
-            ...(intro.fullDuration ? {} : { cutFrom: 0, cutTo: intro.duration })
-        }]
+        layers: introLayers
         // NO transitions - completely removed
     });
     
     // Add loop clips (all full duration, NO TRANSITIONS for seamless looping)
     for (let i = 0; i < loops.length; i++) {
         const loop = loops[i];
+        
+        const loopLayers = [{
+            type: 'video', 
+            path: loop.file
+        }];
+        
+        // Add debug overlay for loop if enabled
+        if (debugOverlay) {
+            const debugText = generateDebugText('loop', i + 1, await getMediaDuration(loop.file), loop.duration, 'none');
+            loopLayers.push({
+                type: 'title',
+                text: debugText,
+                fontsize: 16,
+                textColor: '#ffffff',
+                position: { x: 0.02, y: 0.02, originX: 'left', originY: 'top' },
+                box: 1,
+                boxcolor: '#000000@0.7',
+                boxborderw: 2
+            });
+        }
+        
         clips.push({
             duration: loop.duration,
-            layers: [{
-                type: 'video', 
-                path: loop.file
-            }]
+            layers: loopLayers
             // NO transition property = seamless cuts between loops
         });
     }
     
     // Add end clip only if it exists (may be cropped to fit audio)
     if (end) {
+        const endLayers = [{
+            type: 'video',
+            path: end.file,
+            // If end video is cropped, specify the cutFrom
+            ...(end.fullDuration ? {} : { cutFrom: 0, cutTo: end.duration })
+        }];
+        
+        // Add debug overlay for end if enabled
+        if (debugOverlay) {
+            const debugText = generateDebugText('end', 1, await getMediaDuration(end.file), end.duration, 'none');
+            endLayers.push({
+                type: 'title',
+                text: debugText,
+                fontsize: 16,
+                textColor: '#ffffff',
+                position: { x: 0.02, y: 0.02, originX: 'left', originY: 'top' },
+                box: 1,
+                boxcolor: '#000000@0.7',
+                boxborderw: 2
+            });
+        }
+        
         clips.push({
             duration: end.duration,
-            layers: [{
-                type: 'video',
-                path: end.file,
-                // If end video is cropped, specify the cutFrom
-                ...(end.fullDuration ? {} : { cutFrom: 0, cutTo: end.duration })
-            }]
+            layers: endLayers
             // NO transitions - completely removed
         });
     }
@@ -257,7 +321,7 @@ async function generateEditlyConfig(audioFile, videoStructure, outputPath) {
 /**
  * Process new audio file
  */
-async function processAudioFile(audioFilePath) {
+async function processAudioFile(audioFilePath, debugOverlay = false) {
     try {
         console.log(`\n🎵 Processing new audio file: ${path.basename(audioFilePath)}`);
         
@@ -293,7 +357,7 @@ async function processAudioFile(audioFilePath) {
         
         // Generate editly config
         console.log('⚙️ Generating video configuration...');
-        const editlyConfig = await generateEditlyConfig(audioFilePath, videoStructure, outputPath);
+        const editlyConfig = await generateEditlyConfig(audioFilePath, videoStructure, outputPath, debugOverlay);
         
         // Save config file for debugging
         const configPath = path.join(CONFIG.outputFolder, `${audioBasename}_config.json5`);
@@ -356,7 +420,7 @@ async function processAudioFile(audioFilePath) {
 /**
  * Initialize file watcher
  */
-function initializeWatcher() {
+function initializeWatcher(debugOverlay = false) {
     const watchPath = path.resolve(CONFIG.audioWatchFolder);
     
     if (!fs.existsSync(watchPath)) {
@@ -370,6 +434,10 @@ function initializeWatcher() {
     console.log(`📁 Video templates: ${path.resolve(CONFIG.videoTemplatesBase)}`);
     console.log(`📤 Output folder: ${path.resolve(CONFIG.outputFolder)}`);
     console.log('🎯 Supported audio formats:', CONFIG.supportedAudioFormats.join(', '));
+    
+    if (debugOverlay) {
+        console.log('🔍 DEBUG MODE: Text overlays will show clip information');
+    }
     
     const watcher = chokidar.watch(watchPath, {
         ignored: [
@@ -386,7 +454,7 @@ function initializeWatcher() {
             
             // Wait a moment for file to be fully written
             setTimeout(() => {
-                processAudioFile(filePath);
+                processAudioFile(filePath, debugOverlay);
             }, 1000);
         }
     });
@@ -401,9 +469,49 @@ function initializeWatcher() {
     console.log('🛑 Press Ctrl+C to stop\n');
 }
 
+// Parse command line arguments
+const argv = minimist(process.argv.slice(2));
+const debugOverlay = argv['debug-overlay'] || false;
+const showHelp = argv.help || argv.h;
+
+// Show help if requested
+if (showHelp) {
+    console.log(`
+🎬 Auto Video Generator - Automated video creation from audio files
+
+USAGE:
+  node auto-video-generator.js [OPTIONS]
+
+OPTIONS:
+  --debug-overlay      Enable debug text overlay showing clip information
+  --help, -h          Show this help message
+
+EXAMPLES:
+  node auto-video-generator.js
+    Start watching for audio files (normal mode)
+    
+  node auto-video-generator.js --debug-overlay
+    Start with debug overlays enabled - shows clip name, durations, and transitions
+    
+DESCRIPTION:
+  Watches ../zero-wire/Spark-TTS/audiooutput/done/ for new audio files and 
+  automatically generates videos using templates from ../VideoTemplates/style 1/
+  
+  Debug overlay format: "CLIP_NAME | Full: Xs | Used: Ys | Trans: none"
+  - CLIP_NAME: INTRO, LOOP1, LOOP2, etc., or END
+  - Full: Original video file duration
+  - Used: Actual duration used in timeline (may be trimmed for end clip)
+  - Trans: Transition type applied (always "none" for seamless cuts)
+`);
+    process.exit(0);
+}
+
 // Start the watcher
 if (require.main === module) {
-    initializeWatcher();
+    if (debugOverlay) {
+        console.log('🔍 Starting with debug overlay enabled');
+    }
+    initializeWatcher(debugOverlay);
 }
 
 module.exports = {
@@ -412,4 +520,4 @@ module.exports = {
     getVideoDimensions,
     calculateVideoStructure,
     generateEditlyConfig
-}; 
+};
