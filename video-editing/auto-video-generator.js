@@ -79,34 +79,106 @@ async function calculateVideoStructure(audioDuration) {
     const loopFolder = path.join(CONFIG.videoTemplatesBase, 'Loop');
     const endFolder = path.join(CONFIG.videoTemplatesBase, 'End');
     
-    // Get random files
+    // Get random intro and end files
     const introFile = getRandomVideoFile(introFolder);
-    const loopFile = getRandomVideoFile(loopFolder);
     const endFile = getRandomVideoFile(endFolder);
     
-    if (!introFile || !loopFile || !endFile) {
-        throw new Error('Could not find required video template files');
+    if (!introFile || !endFile) {
+        throw new Error('Could not find required intro or end video template files');
+    }
+    
+    // Get all available loop files
+    const loopFiles = [];
+    if (fs.existsSync(loopFolder)) {
+        const files = fs.readdirSync(loopFolder);
+        for (const file of files) {
+            const filePath = path.join(loopFolder, file);
+            const ext = path.extname(file).toLowerCase();
+            if (CONFIG.supportedVideoFormats.includes(ext) && fs.statSync(filePath).isFile()) {
+                loopFiles.push(filePath);
+            }
+        }
+    }
+    
+    if (loopFiles.length === 0) {
+        throw new Error('Could not find any loop video template files');
     }
     
     // Get durations
     const introDuration = await getMediaDuration(introFile);
-    const loopDuration = await getMediaDuration(loopFile);
     const endDuration = await getMediaDuration(endFile);
     
-    console.log(`📊 Video durations: Intro=${introDuration}s, Loop=${loopDuration}s, End=${endDuration}s`);
+    // Get durations for all loop files
+    const loopDurations = [];
+    for (const loopFile of loopFiles) {
+        const duration = await getMediaDuration(loopFile);
+        loopDurations.push({ file: loopFile, duration });
+    }
     
-    // Calculate how many loop videos we need
-    const fixedDuration = introDuration + endDuration;
-    const remainingDuration = Math.max(0, audioDuration - fixedDuration);
-    const loopCount = Math.max(1, Math.ceil(remainingDuration / loopDuration));
+    console.log(`📊 Video durations: Intro=${introDuration}s, End=${endDuration}s`);
+    console.log(`🔄 Available loop files: ${loopFiles.length} files with durations: ${loopDurations.map(l => l.duration + 's').join(', ')}`);
     
-    console.log(`🎬 Structure: 1 intro + ${loopCount} loops + 1 end = ${introDuration + (loopCount * loopDuration) + endDuration}s (audio: ${audioDuration}s)`);
+    // CASE 1: Audio is shorter than or equal to intro video
+    if (audioDuration <= introDuration) {
+        console.log(`🎬 Short audio detected: Using only intro video cropped to ${audioDuration}s`);
+        return {
+            intro: { file: introFile, duration: audioDuration, fullDuration: false },
+            loops: [],
+            end: null,
+            totalVideoDuration: audioDuration
+        };
+    }
+    
+    // CASE 2: Audio is longer than intro, check if we need end video
+    const timeAfterIntro = audioDuration - introDuration;
+    
+    // If remaining time is very short (less than 2 seconds), just extend the intro slightly
+    if (timeAfterIntro < 2) {
+        console.log(`🎬 Using intro only, extended to match audio duration: ${audioDuration}s`);
+        return {
+            intro: { file: introFile, duration: audioDuration, fullDuration: false },
+            loops: [],
+            end: null,
+            totalVideoDuration: audioDuration
+        };
+    }
+    
+    // CASE 3: Normal case - intro + loops + end
+    const loops = [];
+    let currentTime = 0;
+    let loopIndex = 0;
+    
+    // Fill with full loop videos until we need to add the end video
+    while (currentTime < timeAfterIntro - endDuration) {
+        const currentLoop = loopDurations[loopIndex % loopDurations.length];
+        
+        // Only add if the full loop fits before we need to place the end video
+        if (currentTime + currentLoop.duration <= timeAfterIntro - endDuration) {
+            loops.push({
+                file: currentLoop.file,
+                duration: currentLoop.duration,
+                fullDuration: true
+            });
+            currentTime += currentLoop.duration;
+            loopIndex++;
+        } else {
+            break;
+        }
+    }
+    
+    // Calculate how much time remains for the end video
+    const remainingTimeForEnd = audioDuration - introDuration - currentTime;
+    const endVideoDuration = Math.min(endDuration, remainingTimeForEnd);
+    
+    const totalCalculatedDuration = introDuration + currentTime + endVideoDuration;
+    
+    console.log(`🎬 Structure: 1 intro (${introDuration}s) + ${loops.length} loops (${currentTime}s total) + 1 end (${endVideoDuration}s${endVideoDuration < endDuration ? ' cropped' : ''}) = ${totalCalculatedDuration}s (audio: ${audioDuration}s)`);
     
     return {
-        intro: { file: introFile, duration: introDuration },
-        loop: { file: loopFile, duration: loopDuration, count: loopCount },
-        end: { file: endFile, duration: endDuration },
-        totalVideoDuration: introDuration + (loopCount * loopDuration) + endDuration
+        intro: { file: introFile, duration: introDuration, fullDuration: true },
+        loops: loops,
+        end: { file: endFile, duration: endVideoDuration, fullDuration: endVideoDuration >= endDuration },
+        totalVideoDuration: totalCalculatedDuration
     };
 }
 
@@ -114,24 +186,26 @@ async function calculateVideoStructure(audioDuration) {
  * Generate editly configuration for the video
  */
 async function generateEditlyConfig(audioFile, videoStructure, outputPath) {
-    const { intro, loop, end } = videoStructure;
+    const { intro, loops, end } = videoStructure;
     
     // Get dimensions from intro video (all should match)
     const dimensions = await getVideoDimensions(intro.file);
     
     const clips = [];
     
-    // Add intro clip
+    // Add intro clip (may be cropped for short audio)
     clips.push({
         duration: intro.duration,
         layers: [{
             type: 'video',
-            path: intro.file
+            path: intro.file,
+            // If intro video is cropped, specify the cutFrom
+            ...(intro.fullDuration ? {} : { cutFrom: 0, cutTo: intro.duration })
         }]
     });
     
-    // Add loop clips
-    for (let i = 0; i < loop.count; i++) {
+    // Add loop clips (all full duration)
+    for (const loop of loops) {
         clips.push({
             duration: loop.duration,
             layers: [{
@@ -141,14 +215,18 @@ async function generateEditlyConfig(audioFile, videoStructure, outputPath) {
         });
     }
     
-    // Add end clip
-    clips.push({
-        duration: end.duration,
-        layers: [{
-            type: 'video',
-            path: end.file
-        }]
-    });
+    // Add end clip only if it exists (may be cropped to fit audio)
+    if (end) {
+        clips.push({
+            duration: end.duration,
+            layers: [{
+                type: 'video',
+                path: end.file,
+                // If end video is cropped, specify the cutFrom
+                ...(end.fullDuration ? {} : { cutFrom: 0, cutTo: end.duration })
+            }]
+        });
+    }
     
     const config = {
         outPath: outputPath,
