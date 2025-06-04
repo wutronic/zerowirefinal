@@ -254,6 +254,12 @@ async function processAudioFile(audioFilePath) {
     try {
         console.log(`\n🎵 Processing new audio file: ${path.basename(audioFilePath)}`);
         
+        // Check if file still exists (may have been processed by another instance)
+        if (!fs.existsSync(audioFilePath)) {
+            console.warn(`⚠️ Audio file no longer exists, skipping: ${path.basename(audioFilePath)}`);
+            return;
+        }
+        
         // Get audio duration
         const audioDuration = await getMediaDuration(audioFilePath);
         console.log(`⏱️ Audio duration: ${audioDuration.toFixed(2)} seconds`);
@@ -272,6 +278,12 @@ async function processAudioFile(audioFilePath) {
         const timestamp = new Date().toISOString().replace(/[:.]/g, '-').split('T')[0];
         const outputPath = path.join(CONFIG.outputFolder, `${audioBasename}_${timestamp}.mp4`);
         
+        // Check if video already exists
+        if (fs.existsSync(outputPath)) {
+            console.warn(`⚠️ Video already exists, skipping: ${path.basename(outputPath)}`);
+            return;
+        }
+        
         // Generate editly config
         console.log('⚙️ Generating video configuration...');
         const editlyConfig = await generateEditlyConfig(audioFilePath, videoStructure, outputPath);
@@ -280,6 +292,16 @@ async function processAudioFile(audioFilePath) {
         const configPath = path.join(CONFIG.outputFolder, `${audioBasename}_config.json5`);
         fs.writeFileSync(configPath, JSON.stringify(editlyConfig, null, 2));
         console.log(`💾 Config saved: ${configPath}`);
+        
+        // Double-check audio file still exists before video generation
+        if (!fs.existsSync(audioFilePath)) {
+            console.warn(`⚠️ Audio file disappeared during processing: ${path.basename(audioFilePath)}`);
+            // Clean up config file
+            if (fs.existsSync(configPath)) {
+                fs.unlinkSync(configPath);
+            }
+            return;
+        }
         
         // Generate video using editly
         console.log('🎥 Generating video...');
@@ -297,7 +319,9 @@ async function processAudioFile(audioFilePath) {
         console.log(`📊 Final video: ${videoStructure.totalVideoDuration.toFixed(2)}s`);
         
         // Clean up config file
-        fs.unlinkSync(configPath);
+        if (fs.existsSync(configPath)) {
+            fs.unlinkSync(configPath);
+        }
         
         console.log('✨ Audio processing pipeline complete!');
         console.log(`📦 Audio file remains in done folder: ${path.basename(audioFilePath)}`);
@@ -307,6 +331,18 @@ async function processAudioFile(audioFilePath) {
     } catch (error) {
         console.error('❌ Error processing audio file:', error.message);
         console.error(error.stack);
+        
+        // Clean up any partial config files on error
+        try {
+            const audioBasename = path.basename(audioFilePath, path.extname(audioFilePath));
+            const configPath = path.join(CONFIG.outputFolder, `${audioBasename}_config.json5`);
+            if (fs.existsSync(configPath)) {
+                fs.unlinkSync(configPath);
+                console.log('🗑️ Cleaned up config file after error');
+            }
+        } catch (cleanupError) {
+            console.error('❌ Error during cleanup:', cleanupError.message);
+        }
     }
 }
 
