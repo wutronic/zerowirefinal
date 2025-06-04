@@ -1,0 +1,57 @@
+{
+  "outPath": "test-output.mp4",
+  "width": 640,
+  "height": 360,
+  "fps": 30,
+  "defaults": {
+    "duration": 3,
+    "transition": {
+      "name": "fade",
+      "duration": 0.5
+    }
+  },
+  "clips": [
+    {
+      "layers": [
+        {
+          "type": "fill-color", 
+          "color": "#FF6B6B"
+        },
+        {
+          "type": "title",
+          "text": "Editly Test",
+          "textColor": "#FFFFFF",
+          "position": "center"
+        }
+      ]
+    },
+    {
+      "layers": [
+        {
+          "type": "fill-color",
+          "color": "#4ECDC4"
+        },
+        {
+          "type": "title", 
+          "text": "Video Editing",
+          "textColor": "#FFFFFF",
+          "position": "center"
+        }
+      ]
+    },
+    {
+      "layers": [
+        {
+          "type": "fill-color",
+          "color": "#45B7D1"
+        },
+        {
+          "type": "title",
+          "text": "Working!",
+          "textColor": "#FFFFFF", 
+          "position": "center"
+        }
+      ]
+    }
+  ]
+} 

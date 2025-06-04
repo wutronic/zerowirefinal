@@ -1,0 +1,294 @@
+#!/usr/bin/env node
+
+const fs = require('fs');
+const path = require('path');
+const chokidar = require('chokidar');
+const { exec } = require('child_process');
+const { promisify } = require('util');
+
+const execAsync = promisify(exec);
+
+// Configuration
+const CONFIG = {
+    audioWatchFolder: '../zero-wire/Spark-TTS/audiooutput/done',
+    videoTemplatesBase: '../VideoTemplates/style 1',
+    outputFolder: './generated-videos',
+    supportedAudioFormats: ['.wav', '.mp3', '.m4a', '.aac'],
+    supportedVideoFormats: ['.mp4', '.mov', '.avi']
+};
+
+// Ensure output folder exists
+if (!fs.existsSync(CONFIG.outputFolder)) {
+    fs.mkdirSync(CONFIG.outputFolder, { recursive: true });
+}
+
+/**
+ * Get duration of media file using ffprobe
+ */
+async function getMediaDuration(filePath) {
+    try {
+        const { stdout } = await execAsync(`ffprobe -v quiet -show_entries format=duration -of csv=p=0 "${filePath}"`);
+        return parseFloat(stdout.trim());
+    } catch (error) {
+        console.error(`Error getting duration for ${filePath}:`, error.message);
+        return 0;
+    }
+}
+
+/**
+ * Get video dimensions using ffprobe
+ */
+async function getVideoDimensions(filePath) {
+    try {
+        const { stdout } = await execAsync(`ffprobe -v quiet -select_streams v:0 -show_entries stream=width,height -of csv=p=0 "${filePath}"`);
+        const [width, height] = stdout.trim().split(',').map(Number);
+        return { width, height };
+    } catch (error) {
+        console.error(`Error getting dimensions for ${filePath}:`, error.message);
+        return { width: 1920, height: 1080 }; // fallback
+    }
+}
+
+/**
+ * Get random file from directory with supported extensions
+ */
+function getRandomVideoFile(directory, extensions = CONFIG.supportedVideoFormats) {
+    if (!fs.existsSync(directory)) {
+        console.error(`Directory not found: ${directory}`);
+        return null;
+    }
+    
+    const files = fs.readdirSync(directory)
+        .filter(file => extensions.some(ext => file.toLowerCase().endsWith(ext)))
+        .filter(file => !file.startsWith('.'));
+    
+    if (files.length === 0) {
+        console.error(`No video files found in: ${directory}`);
+        return null;
+    }
+    
+    const randomFile = files[Math.floor(Math.random() * files.length)];
+    return path.join(directory, randomFile);
+}
+
+/**
+ * Calculate required loop videos to fill the audio duration
+ */
+async function calculateVideoStructure(audioDuration) {
+    const introFolder = path.join(CONFIG.videoTemplatesBase, 'Intro');
+    const loopFolder = path.join(CONFIG.videoTemplatesBase, 'Loop');
+    const endFolder = path.join(CONFIG.videoTemplatesBase, 'End');
+    
+    // Get random files
+    const introFile = getRandomVideoFile(introFolder);
+    const loopFile = getRandomVideoFile(loopFolder);
+    const endFile = getRandomVideoFile(endFolder);
+    
+    if (!introFile || !loopFile || !endFile) {
+        throw new Error('Could not find required video template files');
+    }
+    
+    // Get durations
+    const introDuration = await getMediaDuration(introFile);
+    const loopDuration = await getMediaDuration(loopFile);
+    const endDuration = await getMediaDuration(endFile);
+    
+    console.log(`📊 Video durations: Intro=${introDuration}s, Loop=${loopDuration}s, End=${endDuration}s`);
+    
+    // Calculate how many loop videos we need
+    const fixedDuration = introDuration + endDuration;
+    const remainingDuration = Math.max(0, audioDuration - fixedDuration);
+    const loopCount = Math.max(1, Math.ceil(remainingDuration / loopDuration));
+    
+    console.log(`🎬 Structure: 1 intro + ${loopCount} loops + 1 end = ${introDuration + (loopCount * loopDuration) + endDuration}s (audio: ${audioDuration}s)`);
+    
+    return {
+        intro: { file: introFile, duration: introDuration },
+        loop: { file: loopFile, duration: loopDuration, count: loopCount },
+        end: { file: endFile, duration: endDuration },
+        totalVideoDuration: introDuration + (loopCount * loopDuration) + endDuration
+    };
+}
+
+/**
+ * Generate editly configuration for the video
+ */
+async function generateEditlyConfig(audioFile, videoStructure, outputPath) {
+    const { intro, loop, end } = videoStructure;
+    
+    // Get dimensions from intro video (all should match)
+    const dimensions = await getVideoDimensions(intro.file);
+    
+    const clips = [];
+    
+    // Add intro clip
+    clips.push({
+        duration: intro.duration,
+        layers: [{
+            type: 'video',
+            path: intro.file
+        }]
+    });
+    
+    // Add loop clips
+    for (let i = 0; i < loop.count; i++) {
+        clips.push({
+            duration: loop.duration,
+            layers: [{
+                type: 'video', 
+                path: loop.file
+            }]
+        });
+    }
+    
+    // Add end clip
+    clips.push({
+        duration: end.duration,
+        layers: [{
+            type: 'video',
+            path: end.file
+        }]
+    });
+    
+    const config = {
+        outPath: outputPath,
+        width: dimensions.width,
+        height: dimensions.height,
+        fps: 30,
+        audioFilePath: audioFile,
+        keepSourceAudio: false, // Replace video audio with our audio
+        defaults: {
+            transition: {
+                name: 'fade',
+                duration: 0.2
+            }
+        },
+        clips
+    };
+    
+    return config;
+}
+
+/**
+ * Process new audio file
+ */
+async function processAudioFile(audioFilePath) {
+    try {
+        console.log(`\n🎵 Processing new audio file: ${path.basename(audioFilePath)}`);
+        
+        // Get audio duration
+        const audioDuration = await getMediaDuration(audioFilePath);
+        console.log(`⏱️ Audio duration: ${audioDuration.toFixed(2)} seconds`);
+        
+        if (audioDuration <= 0) {
+            console.error('❌ Invalid audio duration');
+            return;
+        }
+        
+        // Calculate video structure
+        console.log('🎬 Calculating video structure...');
+        const videoStructure = await calculateVideoStructure(audioDuration);
+        
+        // Generate output filename
+        const audioBasename = path.basename(audioFilePath, path.extname(audioFilePath));
+        const timestamp = new Date().toISOString().replace(/[:.]/g, '-').split('T')[0];
+        const outputPath = path.join(CONFIG.outputFolder, `${audioBasename}_${timestamp}.mp4`);
+        
+        // Generate editly config
+        console.log('⚙️ Generating video configuration...');
+        const editlyConfig = await generateEditlyConfig(audioFilePath, videoStructure, outputPath);
+        
+        // Save config file for debugging
+        const configPath = path.join(CONFIG.outputFolder, `${audioBasename}_config.json5`);
+        fs.writeFileSync(configPath, JSON.stringify(editlyConfig, null, 2));
+        console.log(`💾 Config saved: ${configPath}`);
+        
+        // Generate video using editly
+        console.log('🎥 Generating video...');
+        const editlyCommand = `npx editly "${configPath}"`;
+        
+        console.log(`🔄 Running: ${editlyCommand}`);
+        const { stdout, stderr } = await execAsync(editlyCommand);
+        
+        if (stderr && !stderr.includes('ffmpeg version')) {
+            console.warn('⚠️ Editly warnings:', stderr);
+        }
+        
+        console.log('✅ Video generation complete!');
+        console.log(`📁 Output: ${outputPath}`);
+        console.log(`📊 Final video: ${videoStructure.totalVideoDuration.toFixed(2)}s`);
+        
+        // Clean up config file
+        fs.unlinkSync(configPath);
+        
+        console.log('✨ Audio processing pipeline complete!');
+        console.log(`📦 Audio file remains in done folder: ${path.basename(audioFilePath)}`);
+        
+        return outputPath;
+        
+    } catch (error) {
+        console.error('❌ Error processing audio file:', error.message);
+        console.error(error.stack);
+    }
+}
+
+/**
+ * Initialize file watcher
+ */
+function initializeWatcher() {
+    const watchPath = path.resolve(CONFIG.audioWatchFolder);
+    
+    if (!fs.existsSync(watchPath)) {
+        console.error(`❌ Audio watch folder not found: ${watchPath}`);
+        console.log('💡 Please ensure the Spark-TTS audiooutput/done folder exists');
+        console.log('💡 The done folder is created automatically when audio files are generated');
+        process.exit(1);
+    }
+    
+    console.log(`👀 Watching for new audio files in: ${watchPath}`);
+    console.log(`📁 Video templates: ${path.resolve(CONFIG.videoTemplatesBase)}`);
+    console.log(`📤 Output folder: ${path.resolve(CONFIG.outputFolder)}`);
+    console.log('🎯 Supported audio formats:', CONFIG.supportedAudioFormats.join(', '));
+    
+    const watcher = chokidar.watch(watchPath, {
+        ignored: [
+            /(^|[\/\\])\../ // ignore dotfiles
+        ],
+        persistent: true,
+        ignoreInitial: true
+    });
+    
+    watcher.on('add', (filePath) => {
+        const ext = path.extname(filePath).toLowerCase();
+        if (CONFIG.supportedAudioFormats.includes(ext)) {
+            console.log(`\n🆕 New audio file detected: ${path.basename(filePath)}`);
+            
+            // Wait a moment for file to be fully written
+            setTimeout(() => {
+                processAudioFile(filePath);
+            }, 1000);
+        }
+    });
+    
+    watcher.on('error', (error) => {
+        console.error('❌ Watcher error:', error);
+    });
+    
+    console.log('\n✅ Auto Video Generator is running!');
+    console.log('💡 Watching audiooutput/done folder for processed audio files');
+    console.log('💡 Generate audio with chunk_clone.py to trigger video creation');
+    console.log('🛑 Press Ctrl+C to stop\n');
+}
+
+// Start the watcher
+if (require.main === module) {
+    initializeWatcher();
+}
+
+module.exports = {
+    processAudioFile,
+    getMediaDuration,
+    getVideoDimensions,
+    calculateVideoStructure,
+    generateEditlyConfig
+}; 
