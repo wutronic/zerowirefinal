@@ -204,14 +204,8 @@ async function generateEditlyConfig(audioFile, videoStructure, outputPath) {
             path: intro.file,
             // If intro video is cropped, specify the cutFrom
             ...(intro.fullDuration ? {} : { cutFrom: 0, cutTo: intro.duration })
-        }],
-        // Only add transition if there are loops after intro
-        ...(loops.length > 0 ? {
-            transition: {
-                name: 'fade',
-                duration: 0.1
-            }
-        } : {})
+        }]
+        // NO transitions - completely removed
     });
     
     // Add loop clips (all full duration, NO TRANSITIONS for seamless looping)
@@ -236,12 +230,8 @@ async function generateEditlyConfig(audioFile, videoStructure, outputPath) {
                 path: end.file,
                 // If end video is cropped, specify the cutFrom
                 ...(end.fullDuration ? {} : { cutFrom: 0, cutTo: end.duration })
-            }],
-            // Add subtle transition from last loop to end
-            transition: {
-                name: 'fade',
-                duration: 0.1
-            }
+            }]
+            // NO transitions - completely removed
         });
     }
     
@@ -254,7 +244,10 @@ async function generateEditlyConfig(audioFile, videoStructure, outputPath) {
         outDuration: audioDuration,
         audioFilePath: audioFile,
         keepSourceAudio: false, // Replace video audio with our audio
-        // NO default transitions - we control them per clip
+        // Use dummy transition with zero duration for seamless hard cuts
+        defaults: {
+            transition: { name: 'dummy', duration: 0 }
+        },
         clips
     };
     
