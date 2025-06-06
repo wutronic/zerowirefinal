@@ -1,0 +1,89 @@
+{
+  "outPath": "./generated-videos/debug_output.mp4",
+  "width": 720,
+  "height": 1280,
+  "fps": 30,
+  "outDuration": 35,
+  "audioFilePath": "../zero-wire/Spark-TTS/audiooutput/done/test_debug_overlay.wav",
+  "keepSourceAudio": false,
+  "defaults": {
+    "transition": {
+      "name": "dummy",
+      "duration": 0
+    }
+  },
+  "clips": [
+    {
+      "duration": 9.041667,
+      "layers": [
+        {
+          "type": "video",
+          "path": "../VideoTemplates/style 1/Intro/intro.mp4"
+        },
+        {
+          "type": "title",
+          "text": "INTRO | Full: 9.04s | Used: 9.04s | Trans: none",
+          "fontsize": 16,
+          "textColor": "#ffffff",
+          "position": {
+            "x": 0.02,
+            "y": 0.02,
+            "originX": "left",
+            "originY": "top"
+          },
+          "box": 1,
+          "boxcolor": "#000000@0.7",
+          "boxborderw": 2
+        }
+      ]
+    },
+    {
+      "duration": 9.041667,
+      "layers": [
+        {
+          "type": "video",
+          "path": "../VideoTemplates/style 1/Loop/loop2.mp4"
+        },
+        {
+          "type": "title",
+          "text": "LOOP1 | Full: 9.04s | Used: 9.04s | Trans: none",
+          "fontsize": 16,
+          "textColor": "#ffffff",
+          "position": {
+            "x": 0.02,
+            "y": 0.02,
+            "originX": "left",
+            "originY": "top"
+          },
+          "box": 1,
+          "boxcolor": "#000000@0.7",
+          "boxborderw": 2
+        }
+      ]
+    },
+    {
+      "duration": 9.041667,
+      "layers": [
+        {
+          "type": "video",
+          "path": "../VideoTemplates/style 1/End/ending3.mp4"
+        },
+        {
+          "type": "title",
+          "text": "END | Full: 9.04s | Used: 9.04s | Trans: none",
+          "fontsize": 16,
+          "textColor": "#ffffff",
+          "position": {
+            "x": 0.02,
+            "y": 0.02,
+            "originX": "left",
+            "originY": "top"
+          },
+          "box": 1,
+          "boxcolor": "#000000@0.7",
+          "boxborderw": 2
+        }
+      ]
+    }
+  ]
+}

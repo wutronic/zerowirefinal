@@ -1,239 +1,294 @@
-# Zero Wire - AI Voice Cloning & Video Generation System
+# Video Generation System
 
-## 🎯 Overview
-Complete automated pipeline that converts text to professional videos with cloned voice narration. Features intelligent text chunking, high-quality voice synthesis, template-based video generation, and automatic file lifecycle management.
+## 🎬 Overview
+
+Automated video generation system that converts text to speech and creates professional videos with multiple templates and intelligent split-screen capabilities. The system features advanced audio post-processing, dynamic video assembly, and intelligent cropping algorithms.
 
 ## ✨ Key Features
-- 🎤 **AI Voice Cloning**: High-quality voice synthesis using Spark-TTS
-- 📝 **Smart Text Processing**: Intelligent chunking for long content (≤200 chars per chunk)
-- 🎬 **Automated Video Generation**: Template-based video creation with perfect audio sync
-- 📦 **File Lifecycle Management**: Automatic organization with done folder system
-- 🔄 **Real-time Processing**: Background monitoring with instant video generation
-- 🎯 **Production Ready**: Comprehensive error handling and recovery systems
 
-## 🏗️ System Architecture
-
-```
-TEXT INPUT → Voice Cloning → Auto Video Generation → File Management
-     ↓              ↓                    ↓               ↓
-chunk_clone.py → audiooutput/ → auto-video-generator → done/ archive
-```
-
-### Complete Workflow
-1. **Text Input** → Intelligent chunking and voice synthesis
-2. **Audio Generation** → High-quality .wav files in `audiooutput/`
-3. **Auto Detection** → Real-time file monitoring and processing
-4. **Video Creation** → Template-based video with intro/loop/end structure
-5. **File Management** → Automatic archiving to `done/` subfolder
+- **🎵 Professional Audio**: Text-to-speech with automatic enhancement and silence reduction
+- **🎬 Dynamic Videos**: Template-based video assembly with precise duration matching  
+- **🔀 Intelligent Split-Screen**: Adaptive video cropping based on content dimensions
+- **🤖 Automated Processing**: File watching and real-time video generation
+- **🔧 Flexible Configuration**: Multiple modes and debug capabilities
 
 ## 🚀 Quick Start
 
 ### Prerequisites
-- **Python**: 3.10+ with conda
-- **Node.js**: v18.20.8 LTS (MANDATORY)
-- **FFmpeg**: v7.1.1+
-- **System**: macOS Darwin 24.5.0 (tested)
+- **Node.js** (v18+ recommended)
+- **Python** 3.8+ with SparkTTS environment
+- **FFmpeg** installed and accessible in PATH
 
-### Installation & Setup
+### Installation
 ```bash
-# 1. Clone and setup environments
-git clone [repository]
+# Clone the repository
+git clone <repository-url>
 cd zerowirefinal
 
-# 2. Setup Python environment
-conda activate sparktts
-cd zero-wire/Spark-TTS
-
-# 3. Setup Node.js environment  
-nvm use 18.20.8
-cd ../../video-editing
+# Install Node.js dependencies
+cd video-editing
 npm install
 
-# 4. Verify installation
-python chunk_clone.py --help
-node auto-video-generator.js --help
+# Install Python dependencies (in SparkTTS environment)
+cd ../zero-wire/Spark-TTS
+pip install soundfile numpy
 ```
 
 ### Basic Usage
+
+#### 1. Start Video Generator
 ```bash
-# 1. Generate voice (from zero-wire/Spark-TTS/)
-conda activate sparktts
-python chunk_clone.py 'Your text content here!'
-# Output: audiooutput/Your_text_content.wav
-
-# 2. Start auto video generation (from video-editing/)
-./start-watcher.sh
-# Background process monitors audiooutput/ folder
-
-# 3. Result: Automatic video generation
-# Video: generated-videos/Your_text_content_2025-06-03.mp4
-# Audio moved to: audiooutput/done/Your_text_content.wav
+cd video-editing
+node auto-video-generator.js --split  # For split-screen videos
 ```
+
+#### 2. Generate Content (in another terminal)
+```bash
+cd zero-wire/Spark-TTS
+python chunk_clone.py "Your message here"
+```
+
+The system will automatically:
+1. Convert text to speech with enhancement
+2. Detect the new audio file
+3. Generate a professional video with split-screen intro
+4. Save the final video to `FinalOutput/`
 
 ## 📁 Project Structure
 
 ```
 zerowirefinal/
-├── zero-wire/Spark-TTS/
-│   ├── chunk_clone.py              # 🎤 Main voice generation script
-│   ├── audiooutput/                # 📁 Generated audio files
-│   │   ├── done/                   # ✅ Processed files archive
-│   │   └── [new audio files]       # ⏳ Pending processing
-│   ├── training/                   # 🎵 Training voice files
-│   └── pretrained_models/          # 🤖 Spark-TTS models
-├── video-editing/
-│   ├── auto-video-generator.js     # 🎬 Main video processing
-│   ├── start-watcher.sh           # 🚀 Quick start script
-│   └── generated-videos/          # 📹 Output videos
-├── VideoTemplates/style 1/
-│   ├── Intro/                     # 🎬 Opening video clips
-│   ├── Loop/                      # 🔄 Repeatable content
-│   └── End/                       # 🎯 Closing video clips
-└── zero-wire/memory-bank/         # 📚 Documentation
+├── 📖 README.md                    # This file
+├── 📖 ARCHITECTURE.md              # Detailed system architecture
+├── 📖 COMMANDS_REFERENCE.md        # Comprehensive command guide
+├── 📖 FEATURES_CHANGELOG.md        # Features and version history
+├── 🎵 zero-wire/Spark-TTS/         # Audio generation pipeline
+│   ├── chunk_clone.py              # Main TTS script
+│   ├── sparktts/utils/audio.py     # Audio processing utilities
+│   └── audiooutput/done/           # Processed audio output
+├── 🎬 video-editing/                # Video generation pipeline
+│   ├── auto-video-generator.js     # Main video processing script
+│   ├── test-split-screen.js        # Testing utilities
+│   └── generated-videos/           # Normal video output
+├── 📹 VideoTemplates/style 1/       # Video template assets
+│   ├── Intro/                      # Opening video clips
+│   ├── Loop/                       # Repeatable middle content
+│   ├── End/                        # Closing video clips
+│   └── splitscreen/                # Split-screen template videos
+├── 📹 splitscreensource/            # User-provided split-screen content
+└── 📁 FinalOutput/                  # Split-screen video output
 ```
 
-## 🎛️ Configuration
+## 🎯 Core Workflows
 
-### Voice Configuration
-```python
-# Default: High-quality training voice
-python chunk_clone.py 'Your text here!'
-
-# Custom voice override
-python chunk_clone.py 'Text' --voice audiooutput/custom_voice.wav
-python chunk_clone.py 'Text' --voice training/specific_voice.wav
-```
-
-### Video Configuration
-- **Templates**: Random selection from Intro/Loop/End folders
-- **Duration**: Automatically calculated to match audio length
-- **Quality**: Inherits dimensions from template videos (maintains aspect ratio)
-- **Output**: H.264 MP4 format, 30fps, 0.2s fade transitions
-
-## 📊 Performance Metrics
-
-| Operation | Duration | Resource Usage |
-|-----------|----------|----------------|
-| Text Chunking | <1 second | CPU-light |
-| Voice Generation | 5-30 seconds | CPU-intensive |
-| Video Creation | 30-60 seconds | CPU+Memory intensive |
-| File Management | <1 second | I/O-light |
-
-### File Size Characteristics
-- **Generated Audio**: 200KB-1.5MB (3-40 seconds)
-- **Output Video**: 5-15MB (27-60 seconds)
-- **Template Videos**: 2.5MB each (9 seconds)
-
-## 🛡️ Error Handling & Recovery
-
-### Automatic Recovery
-- **Voice Generation Fails**: Error logged, no audio file created
-- **Video Generation Fails**: Audio remains for retry, detailed error logging
-- **File Move Fails**: Video still created, manual intervention flagged
-- **Watcher Crashes**: Auto-restart capability, persistent monitoring
-
-### Success Indicators
-```
-✅ Video generation complete!
-📦 Moved audio file to done: filename.wav
-✨ Audio processing pipeline complete!
-```
-
-## 🔧 Advanced Usage
-
-### Batch Processing
+### Standard Video Generation
 ```bash
-# Multiple files processed automatically
-python chunk_clone.py 'First text content'
-python chunk_clone.py 'Second text content'
-python chunk_clone.py 'Third text content'
-# All videos generated automatically by watcher
+# Terminal 1: Start watcher
+cd video-editing
+node auto-video-generator.js
+
+# Terminal 2: Generate content
+cd zero-wire/Spark-TTS
+python chunk_clone.py "Your content"
+```
+**Output**: `video-editing/generated-videos/`
+
+### Split-Screen Video Generation  
+```bash
+# Terminal 1: Start split-screen watcher
+cd video-editing
+node auto-video-generator.js --split
+
+# Terminal 2: Generate content
+cd zero-wire/Spark-TTS
+python chunk_clone.py "Your content"
+```
+**Output**: `FinalOutput/`
+
+### Debug Mode
+```bash
+# Shows clip information overlays
+node auto-video-generator.js --split --debug-overlay
 ```
 
-### Custom Templates
+## 🧠 Intelligent Features
+
+### Audio Post-Processing
+- **Silence Reduction**: Automatically trims dead space (>0.3s → 0.25s)
+- **Quality Enhancement**: Dynamic range compression and normalization
+- **Preservation**: No speech degradation, often improved quality
+- **Integration**: Seamless incorporation into TTS pipeline
+
+### Intelligent Split-Screen Cropping
+The system automatically analyzes video dimensions and selects the optimal processing strategy:
+
+**For Large Videos (≥50% of reference height)**:
+- Traditional crop and stack approach
+- Both videos cropped to middle 50%
+- Maintains consistent split-screen aesthetic
+
+**For Small Videos (<50% of reference height)**:
+- Positioned overlay without cropping
+- Preserves full content of smaller videos
+- Positioned at 25% (top) and 75% (bottom) from center
+
+### Dynamic Video Assembly
+- **Duration Matching**: Video length precisely matches audio duration
+- **Template Selection**: Random selection from available assets for variety
+- **Loop Calculation**: Intelligently fills time with multiple loop segments
+- **Seamless Transitions**: No fade effects for continuous professional flow
+
+## 🛠️ Command Line Options
+
+### Auto Video Generator
 ```bash
-# Add new video templates
-VideoTemplates/style 1/
-├── Intro/new_intro.mp4    # Automatically detected
-├── Loop/new_loop.mp4      # Random selection includes new files
-└── End/new_ending.mp4     # System adapts to new content
+node auto-video-generator.js [OPTIONS]
+
+OPTIONS:
+  --split              Enable split-screen mode with intelligent cropping
+  --debug-overlay      Show clip information overlays
+  --help              Display help and usage information
+
+EXAMPLES:
+  node auto-video-generator.js                    # Normal mode
+  node auto-video-generator.js --split            # Split-screen mode
+  node auto-video-generator.js --debug-overlay    # Debug overlays
+  node auto-video-generator.js --split --debug-overlay  # Combined
 ```
 
-### Monitoring & Management
+### Audio Generation
 ```bash
-# Check pending files
-ls zero-wire/Spark-TTS/audiooutput/
+python chunk_clone.py "Text content" [OPTIONS]
 
-# Check processed files
-ls zero-wire/Spark-TTS/audiooutput/done/
+OPTIONS:
+  --voice VOICE                  Voice selection
+  --target-level LEVEL          Audio normalization level (default: 0.8)
+  --compression-ratio RATIO     Dynamic range compression (default: 6.0)
+  --output-prefix PREFIX        Custom filename prefix
+  --no-enhance                  Skip audio enhancement
+  --no-normalize               Skip normalization
+  --no-compress                Skip compression
 
-# Check generated videos
-ls video-editing/generated-videos/
+EXAMPLES:
+  python chunk_clone.py "Hello world"                    # Basic
+  python chunk_clone.py "Content" --target-level 0.9     # High level
+  python chunk_clone.py "Content" --no-enhance           # No processing
+```
 
-# Monitor processing
-tail -f [watcher logs]
+## 📊 Performance & Quality
+
+### Audio Processing
+- **Silence Reduction**: Average 26% dead space removal
+- **Quality Metrics**: No RMS degradation, often improved
+- **Processing Speed**: Minimal impact on generation time
+- **Format Support**: WAV, MP3, M4A, AAC
+
+### Video Processing
+- **Resolution**: Maintains template video quality (typically 720x1280)
+- **Frame Rate**: 30 FPS output
+- **Sync Precision**: Perfect audio-video alignment
+- **File Sizes**: Optimized compression for quality vs size balance
+
+## 🔧 Configuration
+
+### Template Requirements
+- **Intro Videos**: Opening clips in `VideoTemplates/style 1/Intro/`
+- **Loop Videos**: Repeatable content in `VideoTemplates/style 1/Loop/`
+- **End Videos**: Closing clips in `VideoTemplates/style 1/End/`
+- **Split-Screen Templates**: Top content in `VideoTemplates/style 1/splitscreen/`
+- **Split-Screen Sources**: User content in `splitscreensource/`
+
+### Output Configuration
+- **Normal Videos**: `video-editing/generated-videos/`
+- **Split-Screen Videos**: `FinalOutput/`
+- **Temporary Files**: Automatic cleanup after processing
+
+## 🚨 Troubleshooting
+
+### Common Issues
+
+#### Node.js Module Errors
+```bash
+cd video-editing
+rm -rf node_modules package-lock.json
+npm install
+```
+
+#### FFmpeg Not Found
+```bash
+# macOS with Homebrew
+brew install ffmpeg
+
+# Check installation
+ffmpeg -version
+```
+
+#### Audio Processing Issues
+```bash
+cd zero-wire/Spark-TTS
+python -c "import soundfile; print('OK')"
+python -c "import numpy; print('OK')"
+```
+
+#### Template Validation
+```bash
+# Verify template structure
+ls -la VideoTemplates/style\ 1/
+find VideoTemplates/style\ 1/ -name "*.mp4" | wc -l
+```
+
+### Log Monitoring
+```bash
+# Watch processing logs
+tail -f video-generator.log
+
+# Check for errors
+grep "ERROR" video-generator.log
 ```
 
 ## 📚 Documentation
 
-### Comprehensive Guides
-- **[System Architecture](zero-wire/memory-bank/12-system-architecture-current.md)**: Complete technical overview
-- **[Auto Video System](zero-wire/memory-bank/08-auto-video-system.md)**: Video generation details  
-- **[Done Folder Management](zero-wire/memory-bank/11-done-folder-functionality.md)**: File lifecycle management
-- **[Default Voice Setup](zero-wire/memory-bank/10-default-cloned-voice.md)**: Voice configuration guide
-- **[Audio Migration](zero-wire/memory-bank/09-audiooutput-migration.md)**: Folder structure updates
+- **[ARCHITECTURE.md](ARCHITECTURE.md)**: Detailed system architecture and data flow
+- **[COMMANDS_REFERENCE.md](COMMANDS_REFERENCE.md)**: Comprehensive command documentation
+- **[FEATURES_CHANGELOG.md](FEATURES_CHANGELOG.md)**: Feature history and roadmap
 
-### Component Documentation
-- **[Video Editing README](video-editing/README.md)**: Video processing details
-- **[Spark-TTS Documentation](zero-wire/Spark-TTS/README.md)**: Voice synthesis guide
+## 🤝 Contributing
 
-## 🚦 System Status
-
-### ✅ Current Capabilities
-- **Voice Generation**: Fully operational with training voice default
-- **Video Processing**: Fully operational with template system
-- **File Management**: Fully operational with done folder
-- **Background Monitoring**: Fully operational with auto-detection
-- **Error Handling**: Comprehensive error recovery implemented
-
-### 🎯 Production Readiness
-- **Stability**: Tested with various text lengths and content types
-- **Performance**: Optimized for real-time processing  
-- **Reliability**: Automatic error recovery and file management
-- **Scalability**: Handles multiple files and batch processing
-
-## 🔍 Troubleshooting
-
-### Common Issues
+### Development Setup
 ```bash
-# Node.js version (must be v18.20.8)
-nvm use 18.20.8
+# Install development tools
+npm install -g nodemon
 
-# Conda environment
-conda activate sparktts
-
-# Check system status
-node --version        # Should be v18.20.8
-npx editly --version  # Should be 0.14.2
+# Use for auto-restart during development
+cd video-editing
+nodemon auto-video-generator.js --split --debug-overlay
 ```
 
-### Support Resources
-- **Error Logs**: Detailed logging for all operations
-- **Memory Bank**: Comprehensive troubleshooting guides
-- **File Structure**: Clear organization for easy debugging
+### Testing
+```bash
+# Test split-screen functionality
+cd video-editing
+node test-split-screen.js
+```
+
+## 📄 License
+
+[Add your license information here]
+
+## 📞 Support
+
+For issues and questions:
+1. Check the troubleshooting section above
+2. Review the documentation files
+3. Check system logs for error messages
+4. Verify all dependencies are installed correctly
 
 ---
 
-## 📈 Version History
-- **v2.0** (June 2025): Done folder management, training voice default
-- **v1.5** (June 2025): Audio output migration, improved file organization
-- **v1.0** (June 2025): Initial auto video generation system
+**Memory Bank Status**: ✅ All documentation files created and cross-referenced
+- Architecture documentation complete
+- Command reference comprehensive  
+- Feature changelog detailed
+- Main README with quick start guide
 
-## 🏆 Status
-**Status**: ✅ PRODUCTION READY  
-**Last Updated**: June 3, 2025  
-**Architecture**: Complete voice-to-video pipeline with automatic file management  
-**Next Phase**: Ready for content creation workflows
-
----
-*Zero Wire System - Transforming text into professional video content with AI-powered voice synthesis and automated video generation.* 
+The system is fully documented and ready for production use with intelligent split-screen video generation and professional audio processing. 

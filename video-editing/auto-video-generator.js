@@ -14,6 +14,9 @@ const CONFIG = {
     audioWatchFolder: '../zero-wire/Spark-TTS/audiooutput/done',
     videoTemplatesBase: '../VideoTemplates/style 1',
     outputFolder: './generated-videos',
+    finalOutputFolder: '../FinalOutput',  // New: Final output for split-screen videos
+    splitscreenFolder: '../VideoTemplates/style 1/splitscreen',
+    splitscreenSourceFolder: '../splitscreensource',
     supportedAudioFormats: ['.wav', '.mp3', '.m4a', '.aac'],
     supportedVideoFormats: ['.mp4', '.mov', '.avi']
 };
@@ -321,9 +324,13 @@ async function generateEditlyConfig(audioFile, videoStructure, outputPath, debug
 /**
  * Process new audio file
  */
-async function processAudioFile(audioFilePath, debugOverlay = false) {
+async function processAudioFile(audioFilePath, debugOverlay = false, splitScreenMode = false) {
     try {
         console.log(`\n🎵 Processing new audio file: ${path.basename(audioFilePath)}`);
+        
+        if (splitScreenMode) {
+            console.log('🔀 Split-screen mode enabled');
+        }
         
         // Check if file still exists (may have been processed by another instance)
         if (!fs.existsSync(audioFilePath)) {
@@ -340,64 +347,185 @@ async function processAudioFile(audioFilePath, debugOverlay = false) {
             return;
         }
         
-        // Calculate video structure
-        console.log('🎬 Calculating video structure...');
-        const videoStructure = await calculateVideoStructure(audioDuration);
-        
-        // Generate output filename
+        // Generate base filename components
         const audioBasename = path.basename(audioFilePath, path.extname(audioFilePath));
         const timestamp = new Date().toISOString().replace(/[:.]/g, '-').split('T')[0];
-        const outputPath = path.join(CONFIG.outputFolder, `${audioBasename}_${timestamp}.mp4`);
         
-        // Check if video already exists
-        if (fs.existsSync(outputPath)) {
-            console.warn(`⚠️ Video already exists, skipping: ${path.basename(outputPath)}`);
-            return;
-        }
-        
-        // Generate editly config
-        console.log('⚙️ Generating video configuration...');
-        const editlyConfig = await generateEditlyConfig(audioFilePath, videoStructure, outputPath, debugOverlay);
-        
-        // Save config file for debugging
-        const configPath = path.join(CONFIG.outputFolder, `${audioBasename}_config.json5`);
-        fs.writeFileSync(configPath, JSON.stringify(editlyConfig, null, 2));
-        console.log(`💾 Config saved: ${configPath}`);
-        
-        // Double-check audio file still exists before video generation
-        if (!fs.existsSync(audioFilePath)) {
-            console.warn(`⚠️ Audio file disappeared during processing: ${path.basename(audioFilePath)}`);
+        if (splitScreenMode) {
+            // SPLIT-SCREEN MODE: Generate normal video first, then combine with split-screen
+            console.log('🎬 Generating normal video structure for combination...');
+            
+            // Step 1: Generate normal video
+            const videoStructure = await calculateVideoStructure(audioDuration);
+            const tempOutputPath = path.join(CONFIG.outputFolder, `temp_normal_${audioBasename}_${timestamp}.mp4`);
+            
+            console.log('⚙️ Generating normal video configuration...');
+            const normalEditlyConfig = await generateEditlyConfig(audioFilePath, videoStructure, tempOutputPath, debugOverlay);
+            
+            const normalConfigPath = path.join(CONFIG.outputFolder, `temp_normal_${audioBasename}_config.json5`);
+            fs.writeFileSync(normalConfigPath, JSON.stringify(normalEditlyConfig, null, 2));
+            
+            console.log('🎥 Generating normal video...');
+            const editlyCommand = `./node_modules/.bin/editly "${normalConfigPath}"`;
+            
+            console.log(`🎬 Generating normal video with command: ${editlyCommand}`);
+            await execAsync(editlyCommand);
+            
+            // Clean up normal config
+            if (fs.existsSync(normalConfigPath)) {
+                fs.unlinkSync(normalConfigPath);
+            }
+            
+            console.log('✅ Normal video generated');
+            
+            // Step 2: Generate split-screen clip
+            console.log('🔀 Preparing split-screen generation...');
+            
+            // Get random videos from split-screen folders
+            const splitscreenTopFile = getRandomVideoFile(CONFIG.splitscreenFolder);
+            let splitscreenBottomFile = getRandomVideoFile(CONFIG.splitscreenSourceFolder);
+            
+            if (!splitscreenTopFile) {
+                throw new Error(`No videos found in splitscreen folder: ${CONFIG.splitscreenFolder}`);
+            }
+            
+            if (!splitscreenBottomFile) {
+                console.warn('⚠️ No videos found in splitscreensource folder, using splitscreen video for both top and bottom');
+                // Use the same video for both if splitscreensource is empty
+                splitscreenBottomFile = splitscreenTopFile;
+            }
+            
+            // Define split-screen duration (3-5 seconds)
+            const splitscreenDuration = 4.0; // Fixed 4 seconds for split-screen intro
+            
+            const splitscreenOutputPath = path.join(CONFIG.outputFolder, `temp_splitscreen_${audioBasename}_${timestamp}.mp4`);
+            
+            // Generate split-screen video
+            await generateSplitScreenClip(splitscreenTopFile, splitscreenBottomFile, splitscreenOutputPath, splitscreenDuration);
+            
+            // Step 3: Create combined audio track manually using FFmpeg
+            console.log('🔗 Creating combined audio track...');
+            
+            // Extract 4 seconds of audio from splitscreensource video
+            const splitscreenAudioPath = path.join(CONFIG.outputFolder, `temp_splitscreen_audio_${audioBasename}_${timestamp}.wav`);
+            const extractSplitscreenAudioCommand = `ffmpeg -y -i "${splitscreenBottomFile}" -t 4.0 -vn -acodec pcm_s16le "${splitscreenAudioPath}"`;
+            
+            console.log('🎵 Extracting splitscreensource audio for first 4 seconds...');
+            await execAsync(extractSplitscreenAudioCommand);
+            
+            // Create combined audio: splitscreensource audio (4s) + silence gap + Spark TTS audio
+            const combinedAudioPath = path.join(CONFIG.outputFolder, `temp_combined_audio_${audioBasename}_${timestamp}.wav`);
+            
+            // Check if we should add Spark TTS audio based on video length
+            const normalVideoDuration = await getMediaDuration(tempOutputPath);
+            
+            let combineAudioCommand;
+            if (normalVideoDuration >= audioDuration) {
+                // Normal video is long enough - add Spark TTS audio after split-screen
+                console.log('🎵 Combining: splitscreensource audio (4s) + Spark TTS audio...');
+                combineAudioCommand = `ffmpeg -y -i "${splitscreenAudioPath}" -i "${audioFilePath}" -filter_complex "[0:a][1:a]concat=n=2:v=0:a=1[outa]" -map "[outa]" "${combinedAudioPath}"`;
+            } else {
+                // Normal video is too short - only use splitscreensource audio
+                console.log('🎵 Using only splitscreensource audio (normal video too short for Spark TTS audio)...');
+                combineAudioCommand = `ffmpeg -y -i "${splitscreenAudioPath}" "${combinedAudioPath}"`;
+            }
+            
+            await execAsync(combineAudioCommand);
+            
+            // Step 4: Combine split-screen + normal video using Editly (with combined audio)
+            console.log('🔗 Combining split-screen and normal video with synchronized audio...');
+            
+            const finalOutputPath = path.join(CONFIG.finalOutputFolder, `${audioBasename}_splitscreen_${timestamp}.mp4`);
+            
+            // Ensure final output directory exists
+            if (!fs.existsSync(CONFIG.finalOutputFolder)) {
+                fs.mkdirSync(CONFIG.finalOutputFolder, { recursive: true });
+            }
+            
+            // Generate split-screen + normal video configuration (without per-clip audio)
+            console.log('⚙️ Generating split-screen + normal video configuration...');
+            const splitscreenConfig = await generateSplitScreenEditlyConfig(combinedAudioPath, splitscreenDuration, splitscreenOutputPath, tempOutputPath, finalOutputPath, debugOverlay);
+            
+            const splitscreenConfigPath = path.join(CONFIG.outputFolder, `temp_splitscreen_${audioBasename}_config.json5`);
+            fs.writeFileSync(splitscreenConfigPath, JSON.stringify(splitscreenConfig, null, 2));
+            
+            console.log('🎥 Generating final split-screen video with synchronized audio...');
+            const finalEditlyCommand = `./node_modules/.bin/editly "${splitscreenConfigPath}"`;
+            
+            console.log(`🎬 Generating final video with command: ${finalEditlyCommand}`);
+            await execAsync(finalEditlyCommand);
+            
+            // Clean up temporary files
+            [tempOutputPath, splitscreenOutputPath, splitscreenAudioPath, combinedAudioPath, splitscreenConfigPath].forEach(file => {
+                if (fs.existsSync(file)) {
+                    fs.unlinkSync(file);
+                    console.log(`🗑️ Cleaned up: ${path.basename(file)}`);
+                }
+            });
+            
+            console.log('✅ Split-screen video generation complete!');
+            console.log(`📁 Final output: ${finalOutputPath}`);
+            console.log(`📦 Split-screen intro (${splitscreenDuration}s) + Normal video (${videoStructure.totalVideoDuration.toFixed(2)}s)`);
+            
+            return finalOutputPath;
+            
+        } else {
+            // NORMAL MODE: Standard video generation
+            console.log('🎬 Calculating video structure...');
+            const videoStructure = await calculateVideoStructure(audioDuration);
+            
+            const outputPath = path.join(CONFIG.outputFolder, `${audioBasename}_${timestamp}.mp4`);
+            
+            // Check if video already exists
+            if (fs.existsSync(outputPath)) {
+                console.warn(`⚠️ Video already exists, skipping: ${path.basename(outputPath)}`);
+                return;
+            }
+            
+            // Generate editly config
+            console.log('⚙️ Generating video configuration...');
+            const editlyConfig = await generateEditlyConfig(audioFilePath, videoStructure, outputPath, debugOverlay);
+            
+            // Save config file for debugging
+            const configPath = path.join(CONFIG.outputFolder, `${audioBasename}_config.json5`);
+            fs.writeFileSync(configPath, JSON.stringify(editlyConfig, null, 2));
+            console.log(`💾 Config saved: ${configPath}`);
+            
+            // Double-check audio file still exists before video generation
+            if (!fs.existsSync(audioFilePath)) {
+                console.warn(`⚠️ Audio file disappeared during processing: ${path.basename(audioFilePath)}`);
+                // Clean up config file
+                if (fs.existsSync(configPath)) {
+                    fs.unlinkSync(configPath);
+                }
+                return;
+            }
+            
+            // Generate video using editly
+            console.log('🎥 Generating video...');
+            const editlyCommand = `./node_modules/.bin/editly "${configPath}"`;
+            
+            console.log(`🎬 Generating video with command: ${editlyCommand}`);
+            const { stdout, stderr } = await execAsync(editlyCommand);
+            
+            if (stderr && !stderr.includes('ffmpeg version')) {
+                console.warn('⚠️ Editly warnings:', stderr);
+            }
+            
+            console.log('✅ Video generation complete!');
+            console.log(`📁 Output: ${outputPath}`);
+            console.log(`📊 Final video: ${videoStructure.totalVideoDuration.toFixed(2)}s`);
+            
             // Clean up config file
             if (fs.existsSync(configPath)) {
                 fs.unlinkSync(configPath);
             }
-            return;
+            
+            console.log('✨ Audio processing pipeline complete!');
+            console.log(`📦 Audio file remains in done folder: ${path.basename(audioFilePath)}`);
+            
+            return outputPath;
         }
-        
-        // Generate video using editly
-        console.log('🎥 Generating video...');
-        const editlyCommand = `npx editly "${configPath}"`;
-        
-        console.log(`🔄 Running: ${editlyCommand}`);
-        const { stdout, stderr } = await execAsync(editlyCommand);
-        
-        if (stderr && !stderr.includes('ffmpeg version')) {
-            console.warn('⚠️ Editly warnings:', stderr);
-        }
-        
-        console.log('✅ Video generation complete!');
-        console.log(`📁 Output: ${outputPath}`);
-        console.log(`📊 Final video: ${videoStructure.totalVideoDuration.toFixed(2)}s`);
-        
-        // Clean up config file
-        if (fs.existsSync(configPath)) {
-            fs.unlinkSync(configPath);
-        }
-        
-        console.log('✨ Audio processing pipeline complete!');
-        console.log(`📦 Audio file remains in done folder: ${path.basename(audioFilePath)}`);
-        
-        return outputPath;
         
     } catch (error) {
         console.error('❌ Error processing audio file:', error.message);
@@ -420,7 +548,7 @@ async function processAudioFile(audioFilePath, debugOverlay = false) {
 /**
  * Initialize file watcher
  */
-function initializeWatcher(debugOverlay = false) {
+function initializeWatcher(debugOverlay = false, splitScreenMode = false) {
     const watchPath = path.resolve(CONFIG.audioWatchFolder);
     
     if (!fs.existsSync(watchPath)) {
@@ -432,11 +560,22 @@ function initializeWatcher(debugOverlay = false) {
     
     console.log(`👀 Watching for new audio files in: ${watchPath}`);
     console.log(`📁 Video templates: ${path.resolve(CONFIG.videoTemplatesBase)}`);
-    console.log(`📤 Output folder: ${path.resolve(CONFIG.outputFolder)}`);
+    
+    if (splitScreenMode) {
+        console.log(`📤 Final output folder: ${path.resolve(CONFIG.finalOutputFolder)}`);
+        console.log(`🔀 Split-screen folders: ${path.resolve(CONFIG.splitscreenFolder)} + ${path.resolve(CONFIG.splitscreenSourceFolder)}`);
+    } else {
+        console.log(`📤 Output folder: ${path.resolve(CONFIG.outputFolder)}`);
+    }
+    
     console.log('🎯 Supported audio formats:', CONFIG.supportedAudioFormats.join(', '));
     
     if (debugOverlay) {
         console.log('🔍 DEBUG MODE: Text overlays will show clip information');
+    }
+    
+    if (splitScreenMode) {
+        console.log('🔀 SPLIT-SCREEN MODE: Videos will include 4s split-screen intro');
     }
     
     const watcher = chokidar.watch(watchPath, {
@@ -454,7 +593,7 @@ function initializeWatcher(debugOverlay = false) {
             
             // Wait a moment for file to be fully written
             setTimeout(() => {
-                processAudioFile(filePath, debugOverlay);
+                processAudioFile(filePath, debugOverlay, splitScreenMode);
             }, 1000);
         }
     });
@@ -466,12 +605,19 @@ function initializeWatcher(debugOverlay = false) {
     console.log('\n✅ Auto Video Generator is running!');
     console.log('💡 Watching audiooutput/done folder for processed audio files');
     console.log('💡 Generate audio with chunk_clone.py to trigger video creation');
+    
+    if (splitScreenMode) {
+        console.log('🔀 Split-screen videos will be saved to FinalOutput folder');
+    }
+    
     console.log('🛑 Press Ctrl+C to stop\n');
 }
 
 // Parse command line arguments
 const argv = minimist(process.argv.slice(2));
 const debugOverlay = argv['debug-overlay'] || false;
+const splitScreenMode = argv['split'] || false;
+const processFile = argv['process-file'] || argv['file'];
 const showHelp = argv.help || argv.h;
 
 // Show help if requested
@@ -483,8 +629,10 @@ USAGE:
   node auto-video-generator.js [OPTIONS]
 
 OPTIONS:
-  --debug-overlay      Enable debug text overlay showing clip information
-  --help, -h          Show this help message
+  --debug-overlay           Enable debug text overlay showing clip information
+  --split                   Enable split-screen mode with intelligent cropping
+  --process-file <path>     Process a specific audio file manually (can use --file as shorthand)
+  --help, -h               Show this help message
 
 EXAMPLES:
   node auto-video-generator.js
@@ -493,25 +641,318 @@ EXAMPLES:
   node auto-video-generator.js --debug-overlay
     Start with debug overlays enabled - shows clip name, durations, and transitions
     
+  node auto-video-generator.js --split
+    Start with split-screen mode - adds 4s split-screen intro before normal video
+    
+  node auto-video-generator.js --split --debug-overlay
+    Start with both split-screen mode and debug overlays enabled
+    
+  node auto-video-generator.js --process-file "../zero-wire/Spark-TTS/audiooutput/done/audio_20241206.wav" --split
+    Manually process a specific audio file with split-screen mode (no folder watching)
+    
+  node auto-video-generator.js --file "audio.wav" --split --debug-overlay
+    Process specific file with split-screen and debug overlays (shorthand version)
+    
 DESCRIPTION:
   Watches ../zero-wire/Spark-TTS/audiooutput/done/ for new audio files and 
   automatically generates videos using templates from ../VideoTemplates/style 1/
   
+  Normal mode: Creates videos with Intro → Loop(s) → End structure
+  Split-screen mode: Creates videos with Split-screen (4s) → Intro → Loop(s) → End structure
+  
+  Split-screen videos use:
+  - Random video from ../VideoTemplates/style 1/splitscreen/ (top half)
+  - Random video from ../splitscreensource/ (bottom half) 
+  
+  INTELLIGENT CROPPING:
+  - If splitscreensource video height ≥ 50% of loop template height: CROP both videos
+    * Both videos cropped to middle 50% (remove 25% from top and bottom)
+    * Stacked vertically to create split-screen effect
+  - If splitscreensource video height < 50% of loop template height: POSITION without cropping
+    * Top half: splitscreen template scaled to fit
+    * Bottom half: splitscreensource positioned at 25% from top (for top) and 75% from top (for bottom)
+    * Measured from center of splitscreensource video
+  
+  Final videos saved to ../FinalOutput/ folder
+  
   Debug overlay format: "CLIP_NAME | Full: Xs | Used: Ys | Trans: none"
-  - CLIP_NAME: INTRO, LOOP1, LOOP2, etc., or END
+  - CLIP_NAME: SPLITSCREEN, INTRO, LOOP1, LOOP2, etc., or END
   - Full: Original video file duration
   - Used: Actual duration used in timeline (may be trimmed for end clip)
   - Trans: Transition type applied (always "none" for seamless cuts)
+    
+  MANUAL PROCESSING:
+  - Use --process-file to manually process a specific audio file
+  - Audio will be synchronized only with main video content (not split-screen intro)
+  - If main video is shorter than audio, audio will be ignored
+  - Ideal for processing files that weren't picked up by folder watching
 `);
     process.exit(0);
 }
 
-// Start the watcher
+// Start the watcher or process specific file
 if (require.main === module) {
-    if (debugOverlay) {
-        console.log('🔍 Starting with debug overlay enabled');
+    if (processFile) {
+        // Manual file processing mode
+        console.log('📁 Manual file processing mode');
+        
+        // Resolve the file path
+        const filePath = path.resolve(processFile);
+        
+        if (!fs.existsSync(filePath)) {
+            console.error(`❌ Audio file not found: ${filePath}`);
+            process.exit(1);
+        }
+        
+        // Check if it's a supported audio format
+        const ext = path.extname(filePath).toLowerCase();
+        if (!CONFIG.supportedAudioFormats.includes(ext)) {
+            console.error(`❌ Unsupported audio format: ${ext}`);
+            console.error(`🎯 Supported formats: ${CONFIG.supportedAudioFormats.join(', ')}`);
+            process.exit(1);
+        }
+        
+        console.log(`🎵 Processing file: ${filePath}`);
+        
+        if (debugOverlay) {
+            console.log('🔍 Debug overlay enabled');
+        }
+        if (splitScreenMode) {
+            console.log('🔀 Split-screen mode enabled');
+        }
+        
+        // Process the file directly
+        processAudioFile(filePath, debugOverlay, splitScreenMode)
+            .then((outputPath) => {
+                if (outputPath) {
+                    console.log(`\n✅ Processing complete!`);
+                    console.log(`📁 Output: ${outputPath}`);
+                } else {
+                    console.log(`\n⚠️ Processing completed but no output generated`);
+                }
+                process.exit(0);
+            })
+            .catch((error) => {
+                console.error(`\n❌ Processing failed:`, error.message);
+                process.exit(1);
+            });
+            
+    } else {
+        // Normal file watching mode
+        if (debugOverlay) {
+            console.log('🔍 Starting with debug overlay enabled');
+        }
+        if (splitScreenMode) {
+            console.log('🔀 Starting with split-screen mode enabled');
+        }
+        initializeWatcher(debugOverlay, splitScreenMode);
     }
-    initializeWatcher(debugOverlay);
+}
+
+/**
+ * Generate split-screen video clip with intelligent cropping based on source video height
+ */
+async function generateSplitScreenClip(splitscreenTopFile, splitscreenBottomFile, outputPath, duration) {
+    try {
+        console.log('🔀 Generating split-screen video...');
+        console.log(`   📹 Top video: ${path.basename(splitscreenTopFile)}`);
+        console.log(`   📹 Bottom video: ${path.basename(splitscreenBottomFile)}`);
+        
+        // Get dimensions from both videos
+        const topDimensions = await getVideoDimensions(splitscreenTopFile);
+        const bottomDimensions = await getVideoDimensions(splitscreenBottomFile);
+        
+        // Get reference dimensions from loop video templates to determine if cropping is needed
+        const loopFolder = path.join(CONFIG.videoTemplatesBase, 'Loop');
+        let referenceHeight = topDimensions.height; // fallback to top video height
+        
+        if (fs.existsSync(loopFolder)) {
+            const loopFiles = fs.readdirSync(loopFolder)
+                .filter(file => CONFIG.supportedVideoFormats.some(ext => file.toLowerCase().endsWith(ext)));
+            
+            if (loopFiles.length > 0) {
+                const firstLoopFile = path.join(loopFolder, loopFiles[0]);
+                const loopDimensions = await getVideoDimensions(firstLoopFile);
+                referenceHeight = loopDimensions.height;
+                console.log(`   📐 Reference dimensions from loop template: ${loopDimensions.width}x${loopDimensions.height}`);
+            }
+        }
+        
+        const { width: topWidth, height: topHeight } = topDimensions;
+        const { width: bottomWidth, height: bottomHeight } = bottomDimensions;
+        
+        console.log(`   📐 Top video: ${topWidth}x${topHeight}, Bottom video: ${bottomWidth}x${bottomHeight}`);
+        console.log(`   📏 Reference height: ${referenceHeight}`);
+        
+        // Check if bottom video (splitscreensource) is less than 50% of reference height
+        const bottomHeightRatio = bottomHeight / referenceHeight;
+        const shouldCrop = bottomHeightRatio >= 0.5;
+        
+        console.log(`   🔍 Bottom video height ratio: ${(bottomHeightRatio * 100).toFixed(1)}%`);
+        console.log(`   ✂️ Cropping strategy: ${shouldCrop ? 'CROP both videos' : 'POSITION without cropping'}`);
+        
+        let ffmpegCommand;
+        
+        if (shouldCrop) {
+            // Original logic: Crop both videos to middle 50%
+            const cropHeight = Math.floor(topHeight * 0.5);
+            const cropY = Math.floor(topHeight * 0.25);
+            
+            console.log(`   📏 Crop dimensions: ${topWidth}x${cropHeight} from y=${cropY}`);
+            
+            ffmpegCommand = `ffmpeg -y ` +
+                `-stream_loop -1 -i "${splitscreenTopFile}" ` +
+                `-stream_loop -1 -i "${splitscreenBottomFile}" ` +
+                `-filter_complex "` +
+                    `[0:v]crop=${topWidth}:${cropHeight}:0:${cropY},scale=${topWidth}:${Math.floor(referenceHeight/2)}[top]; ` +
+                    `[1:v]crop=${bottomWidth}:${cropHeight}:0:${cropY},scale=${topWidth}:${Math.floor(referenceHeight/2)}[bottom]; ` +
+                    `[top][bottom]vstack=inputs=2[splitscreen]" ` +
+                `-map "[splitscreen]" -t ${duration} -r 30 -c:v libx264 -preset medium -crf 23 ` +
+                `"${outputPath}"`;
+                
+        } else {
+            // New logic: Position videos without cropping
+            // Top video: positioned at 25% from top (measured from center of splitscreensource video)
+            // Bottom video: positioned at 75% from top (measured from center of splitscreensource video)
+            
+            const finalWidth = Math.max(topWidth, bottomWidth);
+            const finalHeight = referenceHeight;
+            const halfHeight = Math.floor(finalHeight / 2);
+            
+            // Calculate positioning for top placement (25% from top)
+            const topCenterY = Math.floor(finalHeight * 0.25);
+            const topVideoY = topCenterY - Math.floor(bottomHeight / 2);
+            
+            // Calculate positioning for bottom placement (75% from top) 
+            const bottomCenterY = Math.floor(finalHeight * 0.75);
+            const bottomVideoY = bottomCenterY - Math.floor(bottomHeight / 2);
+            
+            console.log(`   📍 Final canvas: ${finalWidth}x${finalHeight}`);
+            console.log(`   📍 Top positioning: center at ${topCenterY}px (video at y=${topVideoY})`);
+            console.log(`   📍 Bottom positioning: center at ${bottomCenterY}px (video at y=${bottomVideoY})`);
+            
+            ffmpegCommand = `ffmpeg -y ` +
+                `-stream_loop -1 -i "${splitscreenTopFile}" ` +
+                `-stream_loop -1 -i "${splitscreenBottomFile}" ` +
+                `-filter_complex "` +
+                    // Create background canvas
+                    `color=black:${finalWidth}x${finalHeight}[bg]; ` +
+                    // Scale and position top video (splitscreen template) for top half
+                    `[0:v]scale=${finalWidth}:${halfHeight}[top_scaled]; ` +
+                    // Scale bottom video (splitscreensource) to fit width while maintaining aspect ratio
+                    `[1:v]scale=${finalWidth}:-1[bottom_scaled]; ` +
+                    // Create top half: overlay scaled splitscreen template
+                    `[bg][top_scaled]overlay=0:0[with_top]; ` +
+                    // Create bottom half: overlay positioned splitscreensource
+                    `[with_top][bottom_scaled]overlay=0:${halfHeight + topVideoY}[splitscreen]" ` +
+                `-map "[splitscreen]" -t ${duration} -r 30 -c:v libx264 -preset medium -crf 23 ` +
+                `"${outputPath}"`;
+        }
+        
+        console.log(`🔄 Running FFmpeg for split-screen generation...`);
+        await execAsync(ffmpegCommand);
+        
+        console.log(`✅ Split-screen video generated: ${path.basename(outputPath)}`);
+        return outputPath;
+        
+    } catch (error) {
+        console.error('❌ Error generating split-screen video:', error.message);
+        throw error;
+    }
+}
+
+/**
+ * Combine split-screen video with normal video structure
+ */
+async function generateSplitScreenEditlyConfig(combinedAudioFile, splitscreenDuration, splitscreenVideoPath, normalVideoPath, outputPath, debugOverlay = false) {
+    try {
+        console.log('⚙️ Generating split-screen + normal video configuration...');
+        
+        // Get durations
+        const combinedAudioDuration = await getMediaDuration(combinedAudioFile);
+        const normalVideoDuration = await getMediaDuration(normalVideoPath);
+        const totalVideoDuration = splitscreenDuration + normalVideoDuration;
+        
+        console.log(`   📊 Split-screen: ${splitscreenDuration}s, Normal video: ${normalVideoDuration}s, Combined audio: ${combinedAudioDuration}s`);
+        
+        // Get dimensions from normal video
+        const dimensions = await getVideoDimensions(normalVideoPath);
+        
+        const clips = [];
+        
+        // Add split-screen clip first (audio will be handled globally)
+        const splitscreenLayers = [{
+            type: 'video',
+            path: splitscreenVideoPath
+        }];
+        
+        if (debugOverlay) {
+            const debugText = generateDebugText('splitscreen', 1, splitscreenDuration, splitscreenDuration, 'none');
+            splitscreenLayers.push({
+                type: 'title',
+                text: debugText,
+                fontsize: 16,
+                textColor: '#ffffff',
+                position: { x: 0.02, y: 0.02, originX: 'left', originY: 'top' },
+                box: 1,
+                boxcolor: '#000000@0.7',
+                boxborderw: 2
+            });
+        }
+        
+        clips.push({
+            duration: splitscreenDuration,
+            layers: splitscreenLayers
+        });
+        
+        // Add normal video after split-screen (audio will be handled globally)
+        const normalLayers = [{
+            type: 'video',
+            path: normalVideoPath
+        }];
+        
+        if (debugOverlay) {
+            const debugText = generateDebugText('normal', 1, normalVideoDuration, normalVideoDuration, 'none');
+            normalLayers.push({
+                type: 'title',
+                text: debugText,
+                fontsize: 16,
+                textColor: '#ffffff',
+                position: { x: 0.02, y: 0.02, originX: 'left', originY: 'top' },
+                box: 1,
+                boxcolor: '#000000@0.7',
+                boxborderw: 2
+            });
+        }
+        
+        clips.push({
+            duration: normalVideoDuration,
+            layers: normalLayers
+        });
+        
+        console.log(`   🔊 Using combined audio track: ${path.basename(combinedAudioFile)}`);
+        
+        const config = {
+            outPath: outputPath,
+            width: dimensions.width,
+            height: dimensions.height,
+            fps: 30,
+            outDuration: totalVideoDuration,
+            // Use the combined audio file globally
+            audioFilePath: combinedAudioFile,
+            keepSourceAudio: false,
+            defaults: {
+                transition: { name: 'dummy', duration: 0 }
+            },
+            clips
+        };
+        
+        return config;
+        
+    } catch (error) {
+        console.error('❌ Error generating split-screen config:', error.message);
+        throw error;
+    }
 }
 
 module.exports = {
@@ -519,5 +960,7 @@ module.exports = {
     getMediaDuration,
     getVideoDimensions,
     calculateVideoStructure,
-    generateEditlyConfig
+    generateEditlyConfig,
+    generateSplitScreenClip,
+    generateSplitScreenEditlyConfig
 };
