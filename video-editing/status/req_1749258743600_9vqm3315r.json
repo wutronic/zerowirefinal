@@ -1,0 +1,13 @@
+{
+  "requestId": "req_1749258743600_9vqm3315r",
+  "audioFile": "audiooutput/done/test_api.wav",
+  "status": "video_complete",
+  "splitScreenEnabled": false,
+  "splitScreenPath": null,
+  "debugMode": false,
+  "videoFile": "video-editing/generated-videos/test_api_2025-06-07.mp4",
+  "timestamp": "2025-06-07T01:12:54.004Z",
+  "text": "test api",
+  "videoStartTime": "2025-06-07T01:12:54.521Z",
+  "videoCompleteTime": "2025-06-07T01:12:59.953Z"
+}

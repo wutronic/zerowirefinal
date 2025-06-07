@@ -1,0 +1,14 @@
+{
+  "requestId": "req_1749273335293_1ngnl39d7",
+  "audioFile": "audiooutput/done/makefile_test_split.wav",
+  "status": "video_complete",
+  "splitScreenEnabled": true,
+  "splitScreenPath": null,
+  "debugMode": false,
+  "videoFile": "makefile_test_split_splitscreen_2025-06-07T05-16-02.mp4",
+  "timestamp": "2025-06-07T05:16:02.022Z",
+  "text": "makefile test split screen",
+  "videoStartTime": "2025-06-07T05:16:02.539Z",
+  "videoCompleteTime": "2025-06-07T05:16:14.534Z",
+  "coordinationMethod": "file_watcher"
+}

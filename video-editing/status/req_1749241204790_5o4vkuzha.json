@@ -1,0 +1,12 @@
+{
+  "requestId": "req_1749241204790_5o4vkuzha",
+  "audioFile": "audiooutput/done/this_is_a.wav",
+  "status": "video_complete",
+  "splitScreenEnabled": false,
+  "splitScreenPath": null,
+  "videoFile": "video-editing/generated-videos/this_is_a_2025-06-06.mp4",
+  "timestamp": "2025-06-06T20:20:26.069Z",
+  "text": "this is a test.",
+  "videoStartTime": "2025-06-06T20:20:26.583Z",
+  "videoCompleteTime": "2025-06-06T20:20:30.615Z"
+}

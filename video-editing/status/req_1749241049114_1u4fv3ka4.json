@@ -1,0 +1,12 @@
+{
+  "requestId": "req_1749241049114_1u4fv3ka4",
+  "audioFile": "audiooutput/done/coordination_test.wav",
+  "status": "video_complete",
+  "splitScreenEnabled": false,
+  "splitScreenPath": null,
+  "videoFile": "video-editing/generated-videos/coordination_test_2025-06-06.mp4",
+  "timestamp": "2025-06-06T20:17:51.758Z",
+  "text": "coordination test",
+  "videoStartTime": "2025-06-06T20:17:52.273Z",
+  "videoCompleteTime": "2025-06-06T20:17:57.437Z"
+}

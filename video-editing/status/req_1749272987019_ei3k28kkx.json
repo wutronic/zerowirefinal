@@ -1,0 +1,14 @@
+{
+  "requestId": "req_1749272987019_ei3k28kkx",
+  "audioFile": "audiooutput/done/fixed_split_screen.wav",
+  "status": "error",
+  "splitScreenEnabled": true,
+  "splitScreenPath": null,
+  "debugMode": false,
+  "videoFile": null,
+  "timestamp": "2025-06-07T05:10:13.376Z",
+  "text": "fixed split screen layout test",
+  "videoStartTime": "2025-06-07T05:10:13.892Z",
+  "error": "Split screen video generation failed",
+  "errorTime": "2025-06-07T05:10:14.290Z"
+}

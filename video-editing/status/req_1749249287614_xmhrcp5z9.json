@@ -1,0 +1,13 @@
+{
+  "requestId": "req_1749249287614_xmhrcp5z9",
+  "audioFile": "audiooutput/done/split_screen_spinner.wav",
+  "status": "video_complete",
+  "splitScreenEnabled": true,
+  "splitScreenPath": null,
+  "debugMode": false,
+  "videoFile": "video-editing/generated-videos/split_screen_spinner_2025-06-06.mp4",
+  "timestamp": "2025-06-06T22:35:11.773Z",
+  "text": "split screen spinner test",
+  "videoStartTime": "2025-06-06T22:35:12.287Z",
+  "videoCompleteTime": "2025-06-06T22:35:19.294Z"
+}

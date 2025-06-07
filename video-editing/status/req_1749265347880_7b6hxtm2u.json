@@ -1,0 +1,13 @@
+{
+  "requestId": "req_1749265347880_7b6hxtm2u",
+  "audioFile": "audiooutput/done/test_video_layout.wav",
+  "status": "video_complete",
+  "splitScreenEnabled": true,
+  "splitScreenPath": "/Users/lukaszwieczorek/Documents/zerowirefinal/splitscreensource/Original audio(750).MP4",
+  "debugMode": false,
+  "videoFile": "video-editing/generated-videos/test_video_layout_splitscreen_2025-06-07.mp4",
+  "timestamp": "2025-06-07T03:02:54.569Z",
+  "text": "test video layout verification",
+  "videoStartTime": "2025-06-07T03:02:55.083Z",
+  "videoCompleteTime": "2025-06-07T03:02:59.816Z"
+}

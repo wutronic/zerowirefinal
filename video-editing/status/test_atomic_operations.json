@@ -1,0 +1,11 @@
+{
+  "requestId": "test_atomic_operations",
+  "audioFile": "audiooutput/done/atomic_test_fix.wav",
+  "status": "video_complete",
+  "splitScreenEnabled": false,
+  "debugMode": false,
+  "timestamp": "2025-06-06T23:33:08.000Z",
+  "videoStartTime": "2025-06-06T23:33:09.332Z",
+  "videoFile": "video-editing/generated-videos/atomic_test_fix_2025-06-06.mp4",
+  "videoCompleteTime": "2025-06-06T23:33:13.733Z"
+}

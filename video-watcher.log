@@ -1,0 +1,229 @@
+👀 Watching for new audio files in: /Users/lukaszwieczorek/Documents/zerowirefinal/zero-wire/Spark-TTS/audiooutput/done
+📁 Video templates: /Users/lukaszwieczorek/Documents/zerowirefinal/VideoTemplates/style 1
+🔄 Status coordination: /Users/lukaszwieczorek/Documents/zerowirefinal/video-editing/status
+📤 Output folder: /Users/lukaszwieczorek/Documents/zerowirefinal/video-editing/generated-videos
+🎯 Supported audio formats: .wav, .mp3, .m4a, .aac
+
+✅ Auto Video Generator is running!
+💡 Watching audiooutput/done folder for processed audio files
+💡 Watching status folder for API coordination
+💡 Generate audio with chunk_clone.py to trigger video creation
+🛑 Press Ctrl+C to stop
+
+
+📋 New status file detected: req_1749280195684_23pxv91by.json
+🔄 Processing status file: req_1749280195684_23pxv91by.json
+
+🔍 DEBUG: Status file analysis:
+   - Request ID: req_1749280195684_23pxv91by
+   - Split Screen Enabled: false
+   - Split Screen Path: null
+   - Audio File: audiooutput/done/Not_everyone_with.wav
+   - Debug Mode: false
+🔒 Atomic write completed: req_1749280195684_23pxv91by.json
+📋 Status updated: video_processing
+
+🎬 Normal video mode (no split screen)
+🎵 Processing audio file: Not_everyone_with.wav
+
+🎵 Processing new audio file: Not_everyone_with.wav
+⏱️ Audio duration: 79.60 seconds
+🎬 Calculating video structure...
+📊 Video durations: Intro=18.083333s, End=17.583333s
+🔄 Available loop files: 2 files with durations: 32.541667s, 5.458333s
+📊 Structure: 1 intro (18.083333s) + 2 loops (38s total) + 1 end (17.583333s) = 73.66666599999999s (audio: 79.6s)
+⚙️ Generating video configuration...
+💾 Config saved: generated-videos/Not_everyone_with_config.json5
+🎥 Generating video...
+🎬 Generating video with command: ./node_modules/.bin/editly "generated-videos/Not_everyone_with_config.json5"
+✅ Video generation complete!
+📁 Output: generated-videos/Not_everyone_with_2025-06-07T07-20-46.mp4
+📊 Final video: 73.67s
+✨ Audio processing pipeline complete!
+📦 Audio file remains in done folder: Not_everyone_with.wav
+✅ Normal video generated successfully!
+📁 Output: Not_everyone_with_2025-06-07T07-20-46.mp4
+🔒 Atomic write completed: req_1749280195684_23pxv91by.json
+🎉 Normal video processing complete: Not_everyone_with_2025-06-07T07-20-46.mp4
+
+🆕 New audio file detected: test_race_condition.wav
+
+🎵 Processing new audio file: test_race_condition.wav
+⏱️ Audio duration: 2.30 seconds
+🎬 Calculating video structure...
+📊 Video durations: Intro=18.083333s, End=17.583333s
+🔄 Available loop files: 2 files with durations: 32.541667s, 5.458333s
+🎬 Short audio detected: Using only intro video cropped to 2.3s
+⚙️ Generating video configuration...
+💾 Config saved: generated-videos/test_race_condition_config.json5
+🎥 Generating video...
+🎬 Generating video with command: ./node_modules/.bin/editly "generated-videos/test_race_condition_config.json5"
+✅ Video generation complete!
+📁 Output: generated-videos/test_race_condition_2025-06-07T07-26-26.mp4
+📊 Final video: 2.30s
+✨ Audio processing pipeline complete!
+📦 Audio file remains in done folder: test_race_condition.wav
+
+📋 New status file detected: req_1749316547475_oq4hrh01d.json
+🔄 Processing status file: req_1749316547475_oq4hrh01d.json
+
+🔍 DEBUG: Status file analysis:
+   - Request ID: req_1749316547475_oq4hrh01d
+   - Split Screen Enabled: true
+   - Split Screen Path: /Users/lukaszwieczorek/Documents/zerowirefinal/video-editing/temp/splitscreen_req_1749316547475_oq4hrh01d_Original audio(750).MP4
+   - Audio File: audiooutput/done/Not_everyone_with.wav
+   - Debug Mode: false
+🔒 Atomic write completed: req_1749316547475_oq4hrh01d.json
+📋 Status updated: video_processing
+
+🔀 SPLIT SCREEN MODE DETECTED!
+📁 Using uploaded split screen file: /Users/lukaszwieczorek/Documents/zerowirefinal/video-editing/temp/splitscreen_req_1749316547475_oq4hrh01d_Original audio(750).MP4
+📊 File size: 3.20 MB
+⏱️ Duration: 56.58s, Dimensions: 720x1280
+
+🎬 === NEW SPLIT SCREEN VIDEO GENERATION ===
+📁 Using uploaded video: splitscreen_req_1749316547475_oq4hrh01d_Original audio(750).MP4
+⏱️ Video duration: 56.58 seconds
+📐 Video dimensions: 720x1280
+🔧 Generating NEW split screen configuration...
+
+🔧 === NEW SPLIT SCREEN CONFIG GENERATION ===
+📁 Uploaded video: splitscreen_req_1749316547475_oq4hrh01d_Original audio(750).MP4
+📤 Output path: Not_everyone_with_splitscreen_2025-06-07T17-18-27.mp4
+📹 Template video: splitscreen2.mp4
+⏱️ Duration: 56.58s (from uploaded video)
+📐 Canvas: 720x1280 (from uploaded video)
+📐 Template: 720x1280
+
+🎯 === NEW SPLIT SCREEN LAYER DETAILS ===
+📹 TOP LAYER (Template - top 50% of screen):
+   - File: splitscreen2.mp4
+   - Canvas Position: left=0, top=0 (top half)
+   - Canvas Size: width=1, height=0.5 (50% height)
+   - Duration: 0s to 56.584172s
+   - Resize Mode: cover
+📹 BOTTOM LAYER (Uploaded - bottom 50% of screen):
+   - File: splitscreen_req_1749316547475_oq4hrh01d_Original audio(750).MP4
+   - Canvas Position: left=0, top=0.5 (bottom half)
+   - Canvas Size: width=1, height=0.5 (50% height)
+   - Duration: 0s to 56.584172s
+   - Resize Mode: cover
+🔊 Audio source: splitscreen_req_1749316547475_oq4hrh01d_Original audio(750).MP4 (uploaded video audio - keepSourceAudio: true)
+
+📊 === NEW SPLIT SCREEN SUMMARY ===
+🎬 Total clips: 1
+⏱️ Duration: 56.58s
+📐 Resolution: 720x1280
+🎞️ Frame rate: 30fps
+🎵 Audio: From uploaded video
+📤 Output: Not_everyone_with_splitscreen_2025-06-07T17-18-27.mp4
+===============================================
+
+💾 Config saved: Not_everyone_with_splitscreen_config.json5
+🎬 Executing split screen video generation...
+✅ NEW Split screen video generated successfully
+📁 Split screen output: Not_everyone_with_splitscreen_2025-06-07T17-18-27.mp4
+⏱️ Split screen duration: 56.60 seconds
+
+🎬 === GENERATING NORMAL VIDEO FOR FUSION ===
+📊 Video durations: Intro=18.083333s, End=9.041667s
+🔄 Available loop files: 2 files with durations: 32.541667s, 5.458333s
+🎬 Short audio detected: Using only intro video cropped to 14.2s
+🎵 TTS audio duration: 14.20 seconds
+📁 Normal video output: Not_everyone_with_normal_2025-06-07T17-18-27.mp4
+🔧 Generating normal video configuration...
+💾 Normal config saved: Not_everyone_with_normal_config.json5
+🎬 Generating normal video with command: ./node_modules/.bin/editly "generated-videos/Not_everyone_with_normal_config.json5"
+✅ Normal video generated successfully
+📁 Normal video: Not_everyone_with_normal_2025-06-07T17-18-27.mp4
+⏱️ Normal video duration: 14.20 seconds
+
+🔗 === FUSING SPLIT SCREEN + NORMAL VIDEO ===
+📋 Concat list created: Not_everyone_with_concat_list.txt
+🎬 Part 1: Split screen video (56.60s)
+🎬 Part 2: Normal video (14.20s)
+📁 Final output: Not_everyone_with_fused_splitscreen_2025-06-07T17-18-27.mp4
+🔗 Fusing videos with command: ffmpeg -f concat -safe 0 -i "Not_everyone_with_concat_list.txt" -c copy "Not_everyone_with_fused_splitscreen_2025-06-07T17-18-27.mp4"
+✅ FUSED VIDEO GENERATED SUCCESSFULLY!
+📁 Final output: Not_everyone_with_fused_splitscreen_2025-06-07T17-18-27.mp4
+⏱️ Total duration: 70.82s (expected: 70.80s)
+🗑️ Cleaning up intermediate files...
+   - Deleted: Not_everyone_with_concat_list.txt
+   - Deleted: Not_everyone_with_splitscreen_2025-06-07T17-18-27.mp4 (split screen only)
+   - Deleted: Not_everyone_with_normal_2025-06-07T17-18-27.mp4 (normal video only)
+🎉 FINAL FUSED SPLIT SCREEN VIDEO COMPLETE!
+✅ Split screen video generated successfully!
+📁 Output: Not_everyone_with_fused_splitscreen_2025-06-07T17-18-27.mp4
+🔒 Atomic write completed: req_1749316547475_oq4hrh01d.json
+🎉 Split screen processing complete: Not_everyone_with_fused_splitscreen_2025-06-07T17-18-27.mp4
+
+🆕 New audio file detected: testing_duration_fix.wav
+
+📋 New status file detected: req_1749316793848_y9vh74bmh.json
+🔄 Processing status file: req_1749316793848_y9vh74bmh.json
+
+🔍 DEBUG: Status file analysis:
+   - Request ID: req_1749316793848_y9vh74bmh
+   - Split Screen Enabled: false
+   - Split Screen Path: null
+   - Audio File: audiooutput/done/testing_duration_fix.wav
+   - Debug Mode: false
+🔒 Atomic write completed: req_1749316793848_y9vh74bmh.json
+📋 Status updated: video_processing
+
+🎬 Normal video mode (no split screen)
+🎵 Processing audio file: testing_duration_fix.wav
+
+🎵 Processing new audio file: testing_duration_fix.wav
+🔒 File already being processed in normal mode: testing_duration_fix.wav
+⏱️ Audio duration: 1.96 seconds
+🎬 Calculating video structure...
+📊 Video durations: Intro=18.083333s, End=17.583333s
+🔄 Available loop files: 2 files with durations: 32.541667s, 5.458333s
+🎬 Short audio detected: Using only intro video cropped to 1.96s
+⚙️ Generating video configuration...
+💾 Config saved: generated-videos/testing_duration_fix_config.json5
+🎥 Generating video...
+🎬 Generating video with command: ./node_modules/.bin/editly "generated-videos/testing_duration_fix_config.json5"
+✅ Video generation complete!
+📁 Output: generated-videos/testing_duration_fix_2025-06-07T17-20-15.mp4
+📊 Final video: 1.96s
+✨ Audio processing pipeline complete!
+📦 Audio file remains in done folder: testing_duration_fix.wav
+✅ Normal video generated successfully!
+📁 Output: testing_duration_fix_2025-06-07T17-20-15.mp4
+🔒 Atomic write completed: req_1749316793848_y9vh74bmh.json
+🎉 Normal video processing complete: testing_duration_fix_2025-06-07T17-20-15.mp4
+⏰ Timeout waiting for parallel normal process
+
+📋 New status file detected: req_1749316829802_q1813ct50.json
+🔄 Processing status file: req_1749316829802_q1813ct50.json
+
+🔍 DEBUG: Status file analysis:
+   - Request ID: req_1749316829802_q1813ct50
+   - Split Screen Enabled: false
+   - Split Screen Path: null
+   - Audio File: audiooutput/done/this_is_a_much_longe.wav
+   - Debug Mode: false
+🔒 Atomic write completed: req_1749316829802_q1813ct50.json
+📋 Status updated: video_processing
+
+🎬 Normal video mode (no split screen)
+❌ Status file processing failed: Audio file not found: /Users/lukaszwieczorek/Documents/zerowirefinal/zero-wire/Spark-TTS/audiooutput/done/this_is_a_much_longe.wav
+🔒 Atomic write completed: req_1749316829802_q1813ct50.json
+
+📋 New status file detected: req_1749316929211_q1hg52uk7.json
+🔄 Processing status file: req_1749316929211_q1hg52uk7.json
+
+🔍 DEBUG: Status file analysis:
+   - Request ID: req_1749316929211_q1hg52uk7
+   - Split Screen Enabled: false
+   - Split Screen Path: null
+   - Audio File: audiooutput/done/this_is_a_longer_tes.wav
+   - Debug Mode: false
+🔒 Atomic write completed: req_1749316929211_q1hg52uk7.json
+📋 Status updated: video_processing
+
+🎬 Normal video mode (no split screen)
+❌ Status file processing failed: Audio file not found: /Users/lukaszwieczorek/Documents/zerowirefinal/zero-wire/Spark-TTS/audiooutput/done/this_is_a_longer_tes.wav
+🔒 Atomic write completed: req_1749316929211_q1hg52uk7.json

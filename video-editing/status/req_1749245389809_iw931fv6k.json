@@ -1,0 +1,13 @@
+{
+  "requestId": "req_1749245389809_iw931fv6k",
+  "audioFile": "audiooutput/done/test_pipeline_fix.wav",
+  "status": "video_complete",
+  "splitScreenEnabled": false,
+  "splitScreenPath": null,
+  "debugMode": false,
+  "videoFile": "video-editing/generated-videos/test_pipeline_fix_2025-06-06.mp4",
+  "timestamp": "2025-06-06T21:30:11.569Z",
+  "text": "test pipeline fix",
+  "videoStartTime": "2025-06-06T21:30:12.087Z",
+  "videoCompleteTime": "2025-06-06T21:30:17.400Z"
+}

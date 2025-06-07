@@ -1,0 +1,14 @@
+{
+  "requestId": "req_1749274439794_uy3tdi191",
+  "audioFile": "audiooutput/done/audio_test_split.wav",
+  "status": "video_complete",
+  "splitScreenEnabled": false,
+  "splitScreenPath": null,
+  "debugMode": false,
+  "videoFile": "audio_test_split_2025-06-07T05-34-24.mp4",
+  "timestamp": "2025-06-07T05:34:24.145Z",
+  "text": "audio test split screen",
+  "videoStartTime": "2025-06-07T05:34:24.662Z",
+  "videoCompleteTime": "2025-06-07T05:34:30.265Z",
+  "coordinationMethod": "file_watcher"
+}

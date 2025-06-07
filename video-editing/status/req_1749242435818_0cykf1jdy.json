@@ -1,0 +1,14 @@
+{
+  "requestId": "req_1749242435818_0cykf1jdy",
+  "audioFile": "audiooutput/done/this_is_a.wav",
+  "status": "error",
+  "splitScreenEnabled": false,
+  "splitScreenPath": null,
+  "debugMode": false,
+  "videoFile": null,
+  "timestamp": "2025-06-06T20:40:58.023Z",
+  "text": "this is a test.",
+  "videoStartTime": "2025-06-06T20:40:58.537Z",
+  "error": "Video generation failed - no output generated",
+  "errorTime": "2025-06-06T20:40:58.919Z"
+}

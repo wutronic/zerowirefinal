@@ -1,0 +1,13 @@
+{
+  "requestId": "req_1749248667101_lhcsfk957",
+  "audioFile": "audiooutput/done/split_screen_audio.wav",
+  "status": "video_complete",
+  "splitScreenEnabled": true,
+  "splitScreenPath": null,
+  "debugMode": true,
+  "videoFile": "FinalOutput/split_screen_audio_splitscreen_2025-06-06.mp4",
+  "timestamp": "2025-06-06T22:24:59.341Z",
+  "text": "split screen audio fix test final",
+  "videoStartTime": "2025-06-06T22:24:59.857Z",
+  "videoCompleteTime": "2025-06-06T22:27:02.185Z"
+}

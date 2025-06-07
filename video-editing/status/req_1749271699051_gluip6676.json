@@ -1,0 +1,14 @@
+{
+  "requestId": "req_1749271699051_gluip6676",
+  "audioFile": "audiooutput/done/test_new_split.wav",
+  "status": "video_complete",
+  "splitScreenEnabled": false,
+  "splitScreenPath": null,
+  "debugMode": false,
+  "videoFile": "test_new_split_2025-06-07T04-48-47.mp4",
+  "timestamp": "2025-06-07T04:48:46.770Z",
+  "text": "test new split screen layout",
+  "videoStartTime": "2025-06-07T04:48:47.287Z",
+  "videoCompleteTime": "2025-06-07T04:48:53.932Z",
+  "coordinationMethod": "file_watcher"
+}

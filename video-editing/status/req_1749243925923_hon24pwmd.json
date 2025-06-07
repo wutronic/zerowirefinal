@@ -1,0 +1,13 @@
+{
+  "requestId": "req_1749243925923_hon24pwmd",
+  "audioFile": "audiooutput/done/this_is_a.wav",
+  "status": "video_complete",
+  "splitScreenEnabled": false,
+  "splitScreenPath": null,
+  "debugMode": false,
+  "videoFile": "video-editing/generated-videos/this_is_a_2025-06-06.mp4",
+  "timestamp": "2025-06-06T21:05:46.390Z",
+  "text": "this is a test.",
+  "videoStartTime": "2025-06-06T21:05:46.905Z",
+  "videoCompleteTime": "2025-06-06T21:05:47.361Z"
+}

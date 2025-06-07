@@ -1,0 +1,13 @@
+{
+  "requestId": "req_1749264653032_1lxs5809r",
+  "audioFile": "audiooutput/done/normal_video_test.wav",
+  "status": "video_complete",
+  "splitScreenEnabled": false,
+  "splitScreenPath": null,
+  "debugMode": false,
+  "videoFile": "video-editing/generated-videos/normal_video_test_2025-06-07.mp4",
+  "timestamp": "2025-06-07T02:51:16.574Z",
+  "text": "normal video test",
+  "videoStartTime": "2025-06-07T02:51:17.090Z",
+  "videoCompleteTime": "2025-06-07T02:51:22.730Z"
+}

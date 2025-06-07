@@ -1,0 +1,13 @@
+{
+  "requestId": "req_1749244257841_j98tjwq13",
+  "audioFile": "audiooutput/done/final_debug_test.wav",
+  "status": "video_complete",
+  "splitScreenEnabled": false,
+  "splitScreenPath": null,
+  "debugMode": false,
+  "videoFile": "video-editing/generated-videos/final_debug_test_2025-06-06.mp4",
+  "timestamp": "2025-06-06T21:11:18.027Z",
+  "text": "final debug test",
+  "videoStartTime": "2025-06-06T21:11:18.540Z",
+  "videoCompleteTime": "2025-06-06T21:11:22.819Z"
+}

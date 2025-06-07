@@ -1,0 +1,13 @@
+{
+  "requestId": "req_1749243872679_a9sgwvsd6",
+  "audioFile": "audiooutput/done/quick_preview_test.wav",
+  "status": "video_complete",
+  "splitScreenEnabled": false,
+  "splitScreenPath": null,
+  "debugMode": true,
+  "videoFile": "video-editing/generated-videos/quick_preview_test_2025-06-06.mp4",
+  "timestamp": "2025-06-06T21:04:52.462Z",
+  "text": "quick preview test",
+  "videoStartTime": "2025-06-06T21:04:52.977Z",
+  "videoCompleteTime": "2025-06-06T21:04:57.728Z"
+}

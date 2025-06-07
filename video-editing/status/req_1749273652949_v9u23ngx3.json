@@ -1,0 +1,14 @@
+{
+  "requestId": "req_1749273652949_v9u23ngx3",
+  "audioFile": "audiooutput/done/test_links_verification.wav",
+  "status": "video_complete",
+  "splitScreenEnabled": true,
+  "splitScreenPath": null,
+  "debugMode": false,
+  "videoFile": "test_links_verification_splitscreen_2025-06-07T05-21-18.mp4",
+  "timestamp": "2025-06-07T05:21:17.822Z",
+  "text": "test links verification",
+  "videoStartTime": "2025-06-07T05:21:18.341Z",
+  "videoCompleteTime": "2025-06-07T05:21:34.551Z",
+  "coordinationMethod": "file_watcher"
+}

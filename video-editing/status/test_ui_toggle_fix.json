@@ -1,0 +1,12 @@
+{
+  "requestId": "test_ui_toggle_fix",
+  "audioFile": "audiooutput/done/testing_ui_toggle.wav",
+  "status": "video_complete",
+  "splitScreenEnabled": true,
+  "debugMode": false,
+  "videoFile": "video-editing/generated-videos/testing_ui_toggle_2025-06-07.mp4",
+  "timestamp": "2025-06-07T01:21:55.000Z",
+  "text": "testing ui toggle without upload",
+  "videoStartTime": "2025-06-07T01:21:55.735Z",
+  "videoCompleteTime": "2025-06-07T01:21:56.049Z"
+}

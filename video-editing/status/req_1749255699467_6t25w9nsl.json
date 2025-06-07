@@ -1,0 +1,11 @@
+{
+  "requestId": "req_1749255699467_6t25w9nsl",
+  "audioFile": "audiooutput/done/this_is_a.wav",
+  "status": "audio_ready",
+  "splitScreenEnabled": true,
+  "splitScreenPath": "/Users/lukaszwieczorek/Documents/zerowirefinal/video-editing/temp/splitscreen_req_1749255699467_6t25w9nsl_Original audio(750).MP4",
+  "debugMode": false,
+  "videoFile": null,
+  "timestamp": "2025-06-07T00:22:11.561Z",
+  "text": "this is a test."
+}

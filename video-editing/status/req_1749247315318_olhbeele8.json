@@ -1,0 +1,13 @@
+{
+  "requestId": "req_1749247315318_olhbeele8",
+  "audioFile": "audiooutput/done/split_screen_audio.wav",
+  "status": "video_complete",
+  "splitScreenEnabled": true,
+  "splitScreenPath": null,
+  "debugMode": true,
+  "videoFile": "video-editing/generated-videos/split_screen_audio_2025-06-06.mp4",
+  "timestamp": "2025-06-06T22:02:23.785Z",
+  "text": "split screen audio fix test",
+  "videoStartTime": "2025-06-06T22:02:24.299Z",
+  "videoCompleteTime": "2025-06-06T22:02:30.305Z"
+}

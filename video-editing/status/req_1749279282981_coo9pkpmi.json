@@ -1,0 +1,14 @@
+{
+  "requestId": "req_1749279282981_coo9pkpmi",
+  "audioFile": "audiooutput/done/Not_everyone_with.wav",
+  "status": "error",
+  "splitScreenEnabled": false,
+  "splitScreenPath": null,
+  "debugMode": false,
+  "videoFile": null,
+  "timestamp": "2025-06-07T07:01:39.721Z",
+  "text": "Not everyone with a foreign passport is a spy, and...",
+  "videoStartTime": "2025-06-07T07:01:40.236Z",
+  "error": "Normal video generation failed",
+  "errorTime": "2025-06-07T07:02:40.356Z"
+}

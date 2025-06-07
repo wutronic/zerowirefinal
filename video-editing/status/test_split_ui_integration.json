@@ -1,0 +1,13 @@
+{
+  "requestId": "test_split_ui_integration",
+  "audioFile": "audiooutput/done/testing_split_screen.wav",
+  "status": "video_complete",
+  "splitScreenEnabled": true,
+  "splitScreenPath": "/Users/lukaszwieczorek/Documents/zerowirefinal/splitscreensource/Original audio(750).MP4",
+  "debugMode": false,
+  "videoFile": "video-editing/generated-videos/testing_split_screen_splitscreen_2025-06-07.mp4",
+  "timestamp": "2025-06-07T01:20:09.000Z",
+  "text": "testing split screen ui integration",
+  "videoStartTime": "2025-06-07T01:20:10.166Z",
+  "videoCompleteTime": "2025-06-07T01:20:13.964Z"
+}

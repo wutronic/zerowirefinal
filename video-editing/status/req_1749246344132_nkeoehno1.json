@@ -1,0 +1,13 @@
+{
+  "requestId": "req_1749246344132_nkeoehno1",
+  "audioFile": "audiooutput/done/test_split_screen.wav",
+  "status": "video_complete",
+  "splitScreenEnabled": true,
+  "splitScreenPath": null,
+  "debugMode": true,
+  "videoFile": "FinalOutput/test_split_screen_splitscreen_2025-06-06.mp4",
+  "timestamp": "2025-06-06T21:46:09.403Z",
+  "text": "test split screen frontend",
+  "videoStartTime": "2025-06-06T21:46:09.916Z",
+  "videoCompleteTime": "2025-06-06T21:48:10.633Z"
+}

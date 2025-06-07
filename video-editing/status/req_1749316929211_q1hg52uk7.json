@@ -1,0 +1,14 @@
+{
+  "requestId": "req_1749316929211_q1hg52uk7",
+  "audioFile": "audiooutput/done/this_is_a_longer_tes.wav",
+  "status": "error",
+  "splitScreenEnabled": false,
+  "splitScreenPath": null,
+  "debugMode": false,
+  "videoFile": null,
+  "timestamp": "2025-06-07T17:22:45.762Z",
+  "text": "this is a longer test to verify the intro loop and...",
+  "videoStartTime": "2025-06-07T17:22:46.279Z",
+  "error": "Audio file not found: /Users/lukaszwieczorek/Documents/zerowirefinal/zero-wire/Spark-TTS/audiooutput/done/this_is_a_longer_tes.wav",
+  "errorTime": "2025-06-07T17:22:46.281Z"
+}

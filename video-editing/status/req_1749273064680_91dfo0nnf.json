@@ -1,0 +1,14 @@
+{
+  "requestId": "req_1749273064680_91dfo0nnf",
+  "audioFile": "audiooutput/done/corrected_split_layout.wav",
+  "status": "video_complete",
+  "splitScreenEnabled": true,
+  "splitScreenPath": null,
+  "debugMode": false,
+  "videoFile": "corrected_split_layout_splitscreen_2025-06-07T05-11-29.mp4",
+  "timestamp": "2025-06-07T05:11:28.537Z",
+  "text": "corrected split layout test",
+  "videoStartTime": "2025-06-07T05:11:29.055Z",
+  "videoCompleteTime": "2025-06-07T05:11:40.796Z",
+  "coordinationMethod": "file_watcher"
+}

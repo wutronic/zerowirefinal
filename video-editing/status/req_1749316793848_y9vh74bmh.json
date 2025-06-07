@@ -1,0 +1,14 @@
+{
+  "requestId": "req_1749316793848_y9vh74bmh",
+  "audioFile": "audiooutput/done/testing_duration_fix.wav",
+  "status": "video_complete",
+  "splitScreenEnabled": false,
+  "splitScreenPath": null,
+  "debugMode": false,
+  "videoFile": "testing_duration_fix_2025-06-07T17-20-15.mp4",
+  "timestamp": "2025-06-07T17:20:15.313Z",
+  "text": "testing duration fix",
+  "videoStartTime": "2025-06-07T17:20:15.830Z",
+  "videoCompleteTime": "2025-06-07T17:20:21.055Z",
+  "coordinationMethod": "file_watcher"
+}

@@ -1,0 +1,14 @@
+{
+  "requestId": "req_1749280066481_fn3fwnt8q",
+  "audioFile": "audiooutput/done/test.wav",
+  "status": "video_complete",
+  "splitScreenEnabled": false,
+  "splitScreenPath": null,
+  "debugMode": false,
+  "videoFile": "test_2025-06-07T07-08-06.mp4",
+  "timestamp": "2025-06-07T07:08:06.308Z",
+  "text": "test",
+  "videoStartTime": "2025-06-07T07:08:06.823Z",
+  "videoCompleteTime": "2025-06-07T07:08:11.110Z",
+  "coordinationMethod": "file_watcher"
+}

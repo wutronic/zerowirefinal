@@ -1,0 +1,14 @@
+{
+  "requestId": "req_1749274663294_wf1f1w1v6",
+  "audioFile": "audiooutput/done/fixed_fusion_test.wav",
+  "status": "video_complete",
+  "splitScreenEnabled": true,
+  "splitScreenPath": null,
+  "debugMode": false,
+  "videoFile": "fixed_fusion_test_fused_splitscreen_2025-06-07T05-38-06.mp4",
+  "timestamp": "2025-06-07T05:38:05.817Z",
+  "text": "fixed fusion test",
+  "videoStartTime": "2025-06-07T05:38:06.336Z",
+  "videoCompleteTime": "2025-06-07T05:38:27.148Z",
+  "coordinationMethod": "file_watcher"
+}

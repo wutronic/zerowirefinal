@@ -1,0 +1,14 @@
+{
+  "requestId": "req_1749244195174_bdk5jr25z",
+  "audioFile": "audiooutput/done/console_debug_test.wav",
+  "status": "error",
+  "splitScreenEnabled": false,
+  "splitScreenPath": null,
+  "debugMode": false,
+  "videoFile": null,
+  "timestamp": "2025-06-06T21:10:17.084Z",
+  "text": "console debug test",
+  "videoStartTime": "2025-06-06T21:10:17.598Z",
+  "error": "Video generation failed - no output generated",
+  "errorTime": "2025-06-06T21:10:17.598Z"
+}

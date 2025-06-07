@@ -1,0 +1,13 @@
+{
+  "requestId": "req_1749241475808_dwkrnar2f",
+  "audioFile": "audiooutput/done/testing_all_parameters.wav",
+  "status": "video_complete",
+  "splitScreenEnabled": false,
+  "splitScreenPath": null,
+  "debugMode": true,
+  "videoFile": "video-editing/generated-videos/testing_all_parameters_2025-06-06.mp4",
+  "timestamp": "2025-06-06T20:24:58.720Z",
+  "text": "testing all parameters",
+  "videoStartTime": "2025-06-06T20:24:59.235Z",
+  "videoCompleteTime": "2025-06-06T20:25:04.731Z"
+}

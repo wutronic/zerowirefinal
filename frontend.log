@@ -1,0 +1,687 @@
+
+> frontend@0.1.0 dev
+> next dev
+
+   ▲ Next.js 15.3.3
+   - Local:        http://localhost:8080
+   - Network:      http://192.168.68.66:8080
+
+ ✓ Starting...
+ ✓ Ready in 1070ms
+ ○ Compiling /api/test ...
+ ✓ Compiled /api/test in 902ms (363 modules)
+ GET /api/test 200 in 984ms
+ ○ Compiling / ...
+ ✓ Compiled / in 2.6s (1628 modules)
+ GET / 200 in 2733ms
+ ✓ Compiled /_not-found in 207ms (1582 modules)
+ GET /.well-known/appspecific/com.chrome.devtools.json 404 in 297ms
+ ✓ Compiled /api/generate-video in 286ms (1602 modules)
+Step 1: Generating audio...
+Audio generation timeout set to: 20 minutes for 1128 characters
+ ✓ Compiled /api/progress in 130ms (1605 modules)
+ GET /api/progress 200 in 152ms
+ GET /api/progress 200 in 3ms
+⚠️ TTS Warning: /Users/lukaszwieczorek/.pyenv/versions/3.10.13/lib/python3.10/site-packages/torch/nn/utils/weight_norm.py:143: FutureWarning: `torch.nn.utils.weight_norm` is deprecated in favor of `torch.nn.utils.parametrizations.weight_norm`.
+  WeightNorm.apply(module, name, dim)
+ GET /api/progress 200 in 3ms
+ GET /api/progress 200 in 17ms
+ GET /api/progress 200 in 15ms
+ GET /api/progress 200 in 9ms
+⚠️ TTS Warning: Setting `pad_token_id` to `eos_token_id`:151645 for open-end generation.
+ GET /api/progress 200 in 3ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 6ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 3ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 3ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 6ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 7ms
+ GET /api/progress 200 in 6ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 6ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 5ms
+⚠️ TTS Warning: Setting `pad_token_id` to `eos_token_id`:151645 for open-end generation.
+ GET /api/progress 200 in 3ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 2ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 3ms
+ GET /api/progress 200 in 3ms
+ GET /api/progress 200 in 7ms
+ GET /api/progress 200 in 6ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 3ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 6ms
+ GET /api/progress 200 in 6ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 7ms
+ GET /api/progress 200 in 26ms
+ GET /api/progress 200 in 9ms
+ GET /api/progress 200 in 9ms
+ GET /api/progress 200 in 4ms
+⚠️ TTS Warning: Setting `pad_token_id` to `eos_token_id`:151645 for open-end generation.
+ GET /api/progress 200 in 20ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 6ms
+ GET /api/progress 200 in 3ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 6ms
+ GET /api/progress 200 in 6ms
+ GET /api/progress 200 in 3ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 6ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 3ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 3ms
+ GET /api/progress 200 in 8ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 6ms
+ GET /api/progress 200 in 6ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 2ms
+⚠️ TTS Warning: Setting `pad_token_id` to `eos_token_id`:151645 for open-end generation.
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 6ms
+ GET /api/progress 200 in 6ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 11ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 3ms
+ GET /api/progress 200 in 3ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 13ms
+ GET /api/progress 200 in 46ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 45ms
+ GET /api/progress 200 in 39ms
+ GET /api/progress 200 in 5ms
+⚠️ TTS Warning: Setting `pad_token_id` to `eos_token_id`:151645 for open-end generation.
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 6ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 6ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 3ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 7ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 3ms
+ GET /api/progress 200 in 6ms
+ GET /api/progress 200 in 6ms
+ GET /api/progress 200 in 6ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 6ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 6ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 10ms
+ GET /api/progress 200 in 8ms
+ GET /api/progress 200 in 6ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 8ms
+ GET /api/progress 200 in 7ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 15ms
+⚠️ TTS Warning: Setting `pad_token_id` to `eos_token_id`:151645 for open-end generation.
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 6ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 6ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 16ms
+ GET /api/progress 200 in 6ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 6ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 6ms
+ GET /api/progress 200 in 3ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 6ms
+ GET /api/progress 200 in 6ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 12ms
+ GET /api/progress 200 in 6ms
+ GET /api/progress 200 in 9ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 6ms
+ GET /api/progress 200 in 3ms
+ GET /api/progress 200 in 6ms
+ GET /api/progress 200 in 6ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 7ms
+ GET /api/progress 200 in 7ms
+ GET /api/progress 200 in 25ms
+ GET /api/progress 200 in 9ms
+⚠️ TTS Warning: Setting `pad_token_id` to `eos_token_id`:151645 for open-end generation.
+ GET /api/progress 200 in 11ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 6ms
+ GET /api/progress 200 in 6ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 8ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 6ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 8ms
+ GET /api/progress 200 in 8ms
+ GET /api/progress 200 in 7ms
+ GET /api/progress 200 in 6ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 6ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 7ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 6ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 6ms
+ GET /api/progress 200 in 6ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 6ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 17ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 8ms
+ GET /api/progress 200 in 6ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 3ms
+ GET /api/progress 200 in 6ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 6ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 6ms
+ GET /api/progress 200 in 7ms
+ GET /api/progress 200 in 6ms
+ GET /api/progress 200 in 6ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 12ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 6ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 7ms
+ GET /api/progress 200 in 6ms
+ GET /api/progress 200 in 6ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 6ms
+ GET /api/progress 200 in 6ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 3ms
+ GET /api/progress 200 in 6ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 7ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 8ms
+ GET /api/progress 200 in 13ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 7ms
+ GET /api/progress 200 in 6ms
+ GET /api/progress 200 in 6ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 6ms
+ GET /api/progress 200 in 6ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 6ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 6ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 6ms
+ GET /api/progress 200 in 6ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 6ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 6ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 7ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 7ms
+ GET /api/progress 200 in 7ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 3ms
+ GET /api/progress 200 in 8ms
+ GET /api/progress 200 in 6ms
+ GET /api/progress 200 in 6ms
+ GET /api/progress 200 in 6ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 6ms
+ GET /api/progress 200 in 10ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 6ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 5ms
+📤 TTS Progress: 📝 Input text: "Not everyone with a foreign passport is a spy, and not every scientist is innocent. The FBI says China poses the biggest espionage threat to the U.S., and they’ve backed it up with real cases—like researchers caught transferring sensitive tech or hiding ties to Chinese institutions. The China Initiative, launched in 2018, documented dozens of incidents that seem to support the idea of strategic infiltration to boost China’s position in AI, biotech, and defense. But it's complicated, many of those prosecutions collapsed—dismissed, acquitted, or settled—without proving actual espionage. MIT and other major institutions reviewed the initiative and concluded that it stoked fear more than it delivered security, casting suspicion over innocent academics and cooling international collaboration. This isn’t new; we’ve been here before—just swap out “China” for “Communism” and remember how McCarthyism hurt more than it helped. The deep truth? The threat is real, but blanket suspicion makes us weaker, not stronger—because real security protects both secrets and the freedom that makes us worth spying on in the first place."
+📤 TTS Progress: 📏 Text length: 1128 characters
+📤 TTS Progress: 📝 Text split into 7 chunks:
+📤 TTS Progress: 🔄 Processing chunk 1 of 7...
+📤 TTS Progress: ✅ Generated: /Users/lukaszwieczorek/Documents/zerowirefinal/zero-wire/Spark-TTS/audiooutput/chunk_001.wav
+📤 TTS Progress: 🔄 Processing chunk 2 of 7...
+📤 TTS Progress: ✅ Generated: /Users/lukaszwieczorek/Documents/zerowirefinal/zero-wire/Spark-TTS/audiooutput/chunk_002.wav
+📤 TTS Progress: 🔄 Processing chunk 3 of 7...
+📤 TTS Progress: ✅ Generated: /Users/lukaszwieczorek/Documents/zerowirefinal/zero-wire/Spark-TTS/audiooutput/chunk_003.wav
+📤 TTS Progress: 🔄 Processing chunk 4 of 7...
+📤 TTS Progress: ✅ Generated: /Users/lukaszwieczorek/Documents/zerowirefinal/zero-wire/Spark-TTS/audiooutput/chunk_004.wav
+📤 TTS Progress: 🔄 Processing chunk 5 of 7...
+📤 TTS Progress: ✅ Generated: /Users/lukaszwieczorek/Documents/zerowirefinal/zero-wire/Spark-TTS/audiooutput/chunk_005.wav
+📤 TTS Progress: 🔄 Processing chunk 6 of 7...
+📤 TTS Progress: ✅ Generated: /Users/lukaszwieczorek/Documents/zerowirefinal/zero-wire/Spark-TTS/audiooutput/chunk_006.wav
+📤 TTS Progress: 🔄 Processing chunk 7 of 7...
+📤 TTS Progress: ✅ Generated: /Users/lukaszwieczorek/Documents/zerowirefinal/zero-wire/Spark-TTS/audiooutput/chunk_007.wav
+📤 TTS Progress: 🎯 Processing Complete!
+📤 TTS Progress: 📊 Summary:
+📤 TTS Progress: 🔗 Merging audio chunks...
+📤 TTS Progress: ✨ Audio merging completed!
+Parsed audio file path: audiooutput/done/Not_everyone_with.wav
+Step 2: Creating coordination status file...
+🔒 API: Atomic write completed: req_1749280195684_23pxv91by.json
+Status file created: /Users/lukaszwieczorek/Documents/zerowirefinal/video-editing/status/req_1749280195684_23pxv91by.json
+Step 3: Waiting for video generation...
+ GET /api/progress 200 in 11ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 3ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 3ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 6ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 3ms
+ GET /api/progress 200 in 3ms
+ GET /api/progress 200 in 3ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 3ms
+ GET /api/progress 200 in 3ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 3ms
+ GET /api/progress 200 in 3ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 3ms
+ GET /api/progress 200 in 3ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 3ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 3ms
+ GET /api/progress 200 in 3ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 3ms
+ GET /api/progress 200 in 3ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 3ms
+ GET /api/progress 200 in 3ms
+ GET /api/progress 200 in 3ms
+ GET /api/progress 200 in 3ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 3ms
+ GET /api/progress 200 in 3ms
+ GET /api/progress 200 in 3ms
+ GET /api/progress 200 in 3ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 3ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 3ms
+ GET /api/progress 200 in 3ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 3ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 3ms
+ GET /api/progress 200 in 12ms
+ POST /api/generate-video 200 in 778866ms
+ ✓ Compiled /api/progress/clear in 345ms (1599 modules)
+ POST /api/progress/clear 200 in 369ms
+ ✓ Compiled /api/videos/[...path] in 119ms (1602 modules)
+ GET /api/videos/Not_everyone_with_2025-06-07T07-20-46.mp4 200 in 499ms
+ ✓ Compiled /favicon.ico in 151ms (837 modules)
+ GET /favicon.ico 200 in 181ms
+ ✓ Compiled /api/videos/[...path] in 55ms (842 modules)
+ GET /api/videos/Not_everyone_with_2025-06-07T07-20-46.mp4 200 in 16916ms
+ GET /api/videos/Not_everyone_with_2025-06-07T07-20-46.mp4 200 in 44ms
+ GET /api/videos/Not_everyone_with_2025-06-07T07-20-46.mp4 200 in 18184ms
+ ✓ Compiled /api/generate-video in 200ms (841 modules)
+(node:64334) ExperimentalWarning: buffer.File is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+Step 1: Generating audio...
+Audio generation timeout set to: 8 minutes for 284 characters
+ ✓ Compiled /api/progress in 60ms (844 modules)
+ GET /api/progress 200 in 79ms
+ GET /api/progress 200 in 14ms
+ GET /api/progress 200 in 10ms
+ GET /api/progress 200 in 5ms
+⚠️ TTS Warning: /Users/lukaszwieczorek/.pyenv/versions/3.10.13/lib/python3.10/site-packages/torch/nn/utils/weight_norm.py:143: FutureWarning: `torch.nn.utils.weight_norm` is deprecated in favor of `torch.nn.utils.parametrizations.weight_norm`.
+  WeightNorm.apply(module, name, dim)
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 3ms
+ GET /api/progress 200 in 7ms
+ GET /api/progress 200 in 3ms
+⚠️ TTS Warning: Setting `pad_token_id` to `eos_token_id`:151645 for open-end generation.
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 3ms
+ GET /api/progress 200 in 2ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 2ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 2ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 6ms
+ GET /api/progress 200 in 3ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 3ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 6ms
+ GET /api/progress 200 in 6ms
+ GET /api/progress 200 in 6ms
+ GET /api/progress 200 in 6ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 6ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 7ms
+ GET /api/progress 200 in 3ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 6ms
+ GET /api/progress 200 in 16ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 13ms
+⚠️ TTS Warning: Setting `pad_token_id` to `eos_token_id`:151645 for open-end generation.
+ GET /api/progress 200 in 6ms
+ GET /api/progress 200 in 6ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 6ms
+ GET /api/progress 200 in 6ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 6ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 6ms
+ GET /api/progress 200 in 10ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 6ms
+ GET /api/progress 200 in 6ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 6ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 6ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 6ms
+ GET /api/progress 200 in 6ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 6ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 3ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 5ms
+📤 TTS Progress: 📝 Input text: "Not everyone with a foreign passport is a spy, and not every scientist is innocent. The FBI says China poses the biggest espionage threat to the U.S., and they’ve backed it up with real cases—like researchers caught transferring sensitive tech or hiding ties to Chinese institutions. "
+📤 TTS Progress: 📏 Text length: 284 characters
+📤 TTS Progress: 📝 Text split into 2 chunks:
+📤 TTS Progress: 🔄 Processing chunk 1 of 2...
+📤 TTS Progress: ✅ Generated: /Users/lukaszwieczorek/Documents/zerowirefinal/zero-wire/Spark-TTS/audiooutput/working_1749316555343_4282/chunk_001.wav
+📤 TTS Progress: 🔄 Processing chunk 2 of 2...
+📤 TTS Progress: ✅ Generated: /Users/lukaszwieczorek/Documents/zerowirefinal/zero-wire/Spark-TTS/audiooutput/working_1749316555343_4282/chunk_002.wav
+📤 TTS Progress: 🎯 Processing Complete!
+📤 TTS Progress: 📊 Summary:
+📤 TTS Progress: 🔗 Merging audio chunks...
+📤 TTS Progress: ✨ Audio merging completed!
+Parsed audio file path: audiooutput/done/Not_everyone_with.wav
+Step 2: Creating coordination status file...
+🔒 API: Atomic write completed: req_1749316547475_oq4hrh01d.json
+Status file created: /Users/lukaszwieczorek/Documents/zerowirefinal/video-editing/status/req_1749316547475_oq4hrh01d.json
+Step 3: Waiting for video generation...
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 3ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 3ms
+ GET /api/progress 200 in 5ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 3ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 3ms
+ GET /api/progress 200 in 3ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 3ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 3ms
+ GET /api/progress 200 in 3ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 3ms
+ GET /api/progress 200 in 3ms
+ GET /api/progress 200 in 3ms
+ GET /api/progress 200 in 3ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 3ms
+ GET /api/progress 200 in 3ms
+ GET /api/progress 200 in 3ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 3ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 3ms
+ GET /api/progress 200 in 3ms
+ GET /api/progress 200 in 4ms
+ GET /api/progress 200 in 3ms
+ GET /api/progress 200 in 3ms
+ POST /api/generate-video 200 in 233457ms
+ ✓ Compiled /api/progress/clear in 177ms (842 modules)
+ POST /api/progress/clear 200 in 193ms
+ ✓ Compiled /api/videos/[...path] in 65ms (845 modules)
+ GET /api/videos/Not_everyone_with_fused_splitscreen_2025-06-07T17-18-27.mp4 200 in 87ms
+ GET /api/videos/Not_everyone_with_fused_splitscreen_2025-06-07T17-18-27.mp4 200 in 35ms
+ ✓ Compiled /api/generate-video in 72ms (848 modules)
+Step 1: Generating audio...
+Audio generation timeout set to: 5 minutes for 20 characters
+⚠️ TTS Warning: /Users/lukaszwieczorek/.pyenv/versions/3.10.13/lib/python3.10/site-packages/torch/nn/utils/weight_norm.py:143: FutureWarning: `torch.nn.utils.weight_norm` is deprecated in favor of `torch.nn.utils.parametrizations.weight_norm`.
+  WeightNorm.apply(module, name, dim)
+⚠️ TTS Warning: Setting `pad_token_id` to `eos_token_id`:151645 for open-end generation.
+📤 TTS Progress: 📝 Input text: "testing duration fix"
+📤 TTS Progress: 📏 Text length: 20 characters
+📤 TTS Progress: 📝 Text split into 1 chunks:
+📤 TTS Progress: 🔄 Processing chunk 1 of 1...
+📤 TTS Progress: ✅ Generated: /Users/lukaszwieczorek/Documents/zerowirefinal/zero-wire/Spark-TTS/audiooutput/working_1749316797568_7351/chunk_001.wav
+📤 TTS Progress: 🎯 Processing Complete!
+📤 TTS Progress: 📊 Summary:
+📤 TTS Progress: 🔗 Merging audio chunks...
+📤 TTS Progress: ✨ Audio merging completed!
+Using fallback audio file path: audiooutput/done/testing_duration_fix.wav
+Step 2: Creating coordination status file...
+🔒 API: Atomic write completed: req_1749316793848_y9vh74bmh.json
+Status file created: /Users/lukaszwieczorek/Documents/zerowirefinal/video-editing/status/req_1749316793848_y9vh74bmh.json
+Step 3: Waiting for video generation...
+ POST /api/generate-video 200 in 27564ms
+Step 1: Generating audio...
+Audio generation timeout set to: 7 minutes for 203 characters
+⚠️ TTS Warning: /Users/lukaszwieczorek/.pyenv/versions/3.10.13/lib/python3.10/site-packages/torch/nn/utils/weight_norm.py:143: FutureWarning: `torch.nn.utils.weight_norm` is deprecated in favor of `torch.nn.utils.parametrizations.weight_norm`.
+  WeightNorm.apply(module, name, dim)
+⚠️ TTS Warning: Setting `pad_token_id` to `eos_token_id`:151645 for open-end generation.
+⚠️ TTS Warning: Setting `pad_token_id` to `eos_token_id`:151645 for open-end generation.
+📤 TTS Progress: 📝 Input text: "this is a much longer test to ensure that the video duration calculation works correctly for intro loop and end segments with the proper timing that matches the generated spark tts audio duration exactly"
+📤 TTS Progress: 📏 Text length: 203 characters
+📤 TTS Progress: 📝 Text split into 2 chunks:
+📤 TTS Progress: 🔄 Processing chunk 1 of 2...
+📤 TTS Progress: ✅ Generated: /Users/lukaszwieczorek/Documents/zerowirefinal/zero-wire/Spark-TTS/audiooutput/working_1749316833565_5965/chunk_001.wav
+📤 TTS Progress: 🔄 Processing chunk 2 of 2...
+📤 TTS Progress: ✅ Generated: /Users/lukaszwieczorek/Documents/zerowirefinal/zero-wire/Spark-TTS/audiooutput/working_1749316833565_5965/chunk_002.wav
+📤 TTS Progress: 🎯 Processing Complete!
+📤 TTS Progress: 📊 Summary:
+📤 TTS Progress: 🔗 Merging audio chunks...
+📤 TTS Progress: ✨ Audio merging completed!
+Using fallback audio file path: audiooutput/done/this_is_a_much_longe.wav
+Step 2: Creating coordination status file...
+🔒 API: Atomic write completed: req_1749316829802_q1813ct50.json
+Status file created: /Users/lukaszwieczorek/Documents/zerowirefinal/video-editing/status/req_1749316829802_q1813ct50.json
+Step 3: Waiting for video generation...
+Video generation API Error: Error: Audio file not found: /Users/lukaszwieczorek/Documents/zerowirefinal/zero-wire/Spark-TTS/audiooutput/done/this_is_a_much_longe.wav
+    at POST (src/app/api/generate-video/route.ts:308:16)
+  306 |           break;
+  307 |         } else if (currentStatus.status === 'error') {
+> 308 |           throw new Error(currentStatus.error || 'Video generation failed');
+      |                ^
+  309 |         }
+  310 |         
+  311 |         // Wait before next poll
+ POST /api/generate-video 500 in 80048ms
+Step 1: Generating audio...
+Audio generation timeout set to: 5 minutes for 97 characters
+⚠️ TTS Warning: /Users/lukaszwieczorek/.pyenv/versions/3.10.13/lib/python3.10/site-packages/torch/nn/utils/weight_norm.py:143: FutureWarning: `torch.nn.utils.weight_norm` is deprecated in favor of `torch.nn.utils.parametrizations.weight_norm`.
+  WeightNorm.apply(module, name, dim)
+⚠️ TTS Warning: Setting `pad_token_id` to `eos_token_id`:151645 for open-end generation.
+📤 TTS Progress: 📝 Input text: "this is a longer test to verify the intro loop and end video duration calculation works perfectly"
+📤 TTS Progress: 📏 Text length: 97 characters
+📤 TTS Progress: 📝 Text split into 1 chunks:
+📤 TTS Progress: 🔄 Processing chunk 1 of 1...
+📤 TTS Progress: ✅ Generated: /Users/lukaszwieczorek/Documents/zerowirefinal/zero-wire/Spark-TTS/audiooutput/working_1749316932745_4479/chunk_001.wav
+📤 TTS Progress: 🎯 Processing Complete!
+📤 TTS Progress: 📊 Summary:
+📤 TTS Progress: 🔗 Merging audio chunks...
+📤 TTS Progress: ✨ Audio merging completed!
+Using fallback audio file path: audiooutput/done/this_is_a_longer_tes.wav
+Step 2: Creating coordination status file...
+🔒 API: Atomic write completed: req_1749316929211_q1hg52uk7.json
+Status file created: /Users/lukaszwieczorek/Documents/zerowirefinal/video-editing/status/req_1749316929211_q1hg52uk7.json
+Step 3: Waiting for video generation...
+Video generation API Error: Error: Audio file not found: /Users/lukaszwieczorek/Documents/zerowirefinal/zero-wire/Spark-TTS/audiooutput/done/this_is_a_longer_tes.wav
+    at POST (src/app/api/generate-video/route.ts:308:16)
+  306 |           break;
+  307 |         } else if (currentStatus.status === 'error') {
+> 308 |           throw new Error(currentStatus.error || 'Video generation failed');
+      |                ^
+  309 |         }
+  310 |         
+  311 |         // Wait before next poll
+ POST /api/generate-video 500 in 38618ms

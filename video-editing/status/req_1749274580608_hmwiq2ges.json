@@ -1,0 +1,14 @@
+{
+  "requestId": "req_1749274580608_hmwiq2ges",
+  "audioFile": "audiooutput/done/test_fused_split.wav",
+  "status": "error",
+  "splitScreenEnabled": true,
+  "splitScreenPath": null,
+  "debugMode": false,
+  "videoFile": null,
+  "timestamp": "2025-06-07T05:36:45.620Z",
+  "text": "test fused split screen video",
+  "videoStartTime": "2025-06-07T05:36:46.137Z",
+  "error": "Split screen video generation failed",
+  "errorTime": "2025-06-07T05:37:07.977Z"
+}

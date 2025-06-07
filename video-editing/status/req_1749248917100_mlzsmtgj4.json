@@ -1,0 +1,13 @@
+{
+  "requestId": "req_1749248917100_mlzsmtgj4",
+  "audioFile": "audiooutput/done/this_is_a.wav",
+  "status": "video_complete",
+  "splitScreenEnabled": true,
+  "splitScreenPath": "/Users/lukaszwieczorek/Documents/zerowirefinal/video-editing/temp/splitscreen_req_1749248917100_mlzsmtgj4_Original audio(750).MP4",
+  "debugMode": false,
+  "videoFile": "FinalOutput/this_is_a_splitscreen_2025-06-06.mp4",
+  "timestamp": "2025-06-06T22:29:07.217Z",
+  "text": "this is a test of how the video will produce split...",
+  "videoStartTime": "2025-06-06T22:29:07.732Z",
+  "videoCompleteTime": "2025-06-06T22:31:00.463Z"
+}
