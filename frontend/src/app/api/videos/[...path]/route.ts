@@ -9,7 +9,7 @@ export async function GET(
   try {
     const resolvedParams = await params;
     const filePath = resolvedParams.path.join('/');
-    const videoFilePath = path.join(process.cwd(), '..', 'video-editing', 'generated-videos', filePath);
+    const videoFilePath = path.join(process.cwd(), '..', 'generated-videos', filePath);
     
     // Read the video file
     const videoBuffer = await readFile(videoFilePath);
