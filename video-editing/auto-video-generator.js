@@ -9,16 +9,20 @@ const minimist = require('minimist');
 
 const execAsync = promisify(exec);
 
-// Configuration
+// Configuration - Use absolute paths based on this file's location
+const SCRIPT_DIR = path.dirname(__filename);  // video-editing directory
+const PROJECT_ROOT = path.dirname(SCRIPT_DIR); // zerowirefinal directory
+
 const CONFIG = {
-    audioWatchFolder: '../zero-wire/Spark-TTS/audiooutput/done',
-    videoTemplatesBase: '../VideoTemplates/style 1',
-    outputFolder: './generated-videos',
-    finalOutputFolder: '../FinalOutput',  // New: Final output for split-screen videos
-    splitscreenFolder: '../VideoTemplates/style 1/splitscreen',
-    splitscreenSourceFolder: '../splitscreensource',
+    audioWatchFolder: path.join(PROJECT_ROOT, 'zero-wire/Spark-TTS/audiooutput/done'),
+    videoTemplatesBase: path.join(PROJECT_ROOT, 'VideoTemplates/style 1'),
+    outputFolder: path.join(PROJECT_ROOT, 'generated-videos'),
+    finalOutputFolder: path.join(PROJECT_ROOT, 'FinalOutput'),  // New: Final output for split-screen videos
+    splitscreenFolder: path.join(PROJECT_ROOT, 'VideoTemplates/style 1/splitscreen'),
+    splitscreenSourceFolder: path.join(PROJECT_ROOT, 'splitscreensource'),
     supportedAudioFormats: ['.wav', '.mp3', '.m4a', '.aac'],
-    supportedVideoFormats: ['.mp4', '.mov', '.avi']
+    supportedVideoFormats: ['.mp4', '.mov', '.avi'],
+    videoPaddingDuration: 1.0  // Add 1 second of video padding after audio ends
 };
 
 // Split screen configuration for overlay positioning
@@ -158,22 +162,71 @@ async function getVideoDimensions(filePath) {
  * Get random file from directory with supported extensions
  */
 function getRandomVideoFile(directory, extensions = CONFIG.supportedVideoFormats) {
+    console.log(`\n🔍 === ROBUST DIRECTORY DEBUGGING ===`);
+    console.log(`🎯 Looking for directory: ${directory}`);
+    console.log(`📂 Current working directory: ${process.cwd()}`);
+    console.log(`📂 Absolute path: ${path.resolve(directory)}`);
+    
+    // Check if directory exists
     if (!fs.existsSync(directory)) {
-        console.error(`Directory not found: ${directory}`);
+        console.error(`❌ Directory not found: ${directory}`);
+        console.log(`🔍 Let's check what exists around this path...`);
+        
+        // Check parent directory
+        const parentDir = path.dirname(directory);
+        console.log(`📁 Parent directory: ${parentDir}`);
+        if (fs.existsSync(parentDir)) {
+            console.log(`✅ Parent exists. Contents:`);
+            try {
+                const parentContents = fs.readdirSync(parentDir);
+                parentContents.forEach(item => {
+                    const itemPath = path.join(parentDir, item);
+                    const stats = fs.statSync(itemPath);
+                    console.log(`   ${stats.isDirectory() ? '📁' : '📄'} ${item}`);
+                });
+            } catch (error) {
+                console.error(`❌ Error reading parent: ${error.message}`);
+            }
+        } else {
+            console.log(`❌ Parent directory also doesn't exist`);
+            
+            // Let's check VideoTemplates base
+            console.log(`🔍 Checking VideoTemplates base...`);
+            if (fs.existsSync('VideoTemplates')) {
+                console.log(`✅ VideoTemplates found. Contents:`);
+                const contents = fs.readdirSync('VideoTemplates');
+                contents.forEach(item => {
+                    const itemPath = path.join('VideoTemplates', item);
+                    const stats = fs.statSync(itemPath);
+                    console.log(`   ${stats.isDirectory() ? '📁' : '📄'} ${item}`);
+                });
+            } else {
+                console.log(`❌ VideoTemplates directory not found`);
+            }
+        }
         return null;
     }
+    
+    console.log(`✅ Directory found: ${directory}`);
     
     const files = fs.readdirSync(directory)
         .filter(file => extensions.some(ext => file.toLowerCase().endsWith(ext)))
         .filter(file => !file.startsWith('.'));
     
+    console.log(`📄 Found ${files.length} video files:`, files);
+    
     if (files.length === 0) {
-        console.error(`No video files found in: ${directory}`);
+        console.error(`❌ No video files found in: ${directory}`);
         return null;
     }
     
     const randomFile = files[Math.floor(Math.random() * files.length)];
-    return path.join(directory, randomFile);
+    const fullPath = path.join(directory, randomFile);
+    console.log(`🎯 Selected: ${randomFile}`);
+    console.log(`📍 Full path: ${fullPath}`);
+    console.log(`===============================\n`);
+    
+    return fullPath;
 }
 
 /**
@@ -182,6 +235,47 @@ function getRandomVideoFile(directory, extensions = CONFIG.supportedVideoFormats
 async function processStatusFile(statusFilePath, debugOverlay = false, splitScreenMode = false) {
     try {
         console.log(`🔄 Processing status file: ${path.basename(statusFilePath)}`);
+        
+        // 🚨 CRITICAL WORKING DIRECTORY DEBUGGING
+        console.log(`\n🔍 === CRITICAL WORKING DIRECTORY DEBUG ===`);
+        console.log(`📂 Current working directory: ${process.cwd()}`);
+        console.log(`📍 Status file path: ${statusFilePath}`);
+        console.log(`📍 Status file absolute: ${path.resolve(statusFilePath)}`);
+        console.log(`📋 CONFIG.videoTemplatesBase: "${CONFIG.videoTemplatesBase}"`);
+        console.log(`📋 CONFIG.videoTemplatesBase absolute: "${path.resolve(CONFIG.videoTemplatesBase)}"`);
+        
+        // Test if our VideoTemplates directory exists from this working directory
+        const testPaths = [
+            'VideoTemplates',
+            './VideoTemplates', 
+            'VideoTemplates/style 1',
+            './VideoTemplates/style 1',
+            'VideoTemplates/style 1/Intro',
+            './VideoTemplates/style 1/Intro'
+        ];
+        
+        console.log(`\n🧪 Testing paths from current working directory:`);
+        testPaths.forEach(testPath => {
+            const exists = fs.existsSync(testPath);
+            const resolved = path.resolve(testPath);
+            console.log(`   ${exists ? '✅' : '❌'} ${testPath} -> ${resolved}`);
+        });
+        
+        // Check what actually exists in current directory
+        console.log(`\n📁 Current directory contents:`);
+        try {
+            const contents = fs.readdirSync('.');
+            contents.slice(0, 10).forEach(item => { // Show first 10 items
+                const stats = fs.statSync(item);
+                console.log(`   ${stats.isDirectory() ? '📁' : '📄'} ${item}`);
+            });
+            if (contents.length > 10) {
+                console.log(`   ... and ${contents.length - 10} more items`);
+            }
+        } catch (error) {
+            console.error(`   ❌ Error reading current directory: ${error.message}`);
+        }
+        console.log(`===========================================\n`);
         
         // Read and parse status file safely
         const statusContent = fs.readFileSync(statusFilePath, 'utf-8');
@@ -258,7 +352,7 @@ async function processStatusFile(statusFilePath, debugOverlay = false, splitScre
             console.log(`\n🎬 Normal video mode (no split screen)`);
             
             // Extract audio file path and resolve it properly
-            const audioFile = path.resolve('../zero-wire/Spark-TTS', statusData.audioFile);
+            const audioFile = path.join(PROJECT_ROOT, 'zero-wire/Spark-TTS', statusData.audioFile);
             
             if (!fs.existsSync(audioFile)) {
                 throw new Error(`Audio file not found: ${audioFile}`);
@@ -308,118 +402,161 @@ async function processStatusFile(statusFilePath, debugOverlay = false, splitScre
     }
 }
 
-/**
- * Calculate required loop videos to fill the audio duration
- */
-async function calculateVideoStructure(audioDuration) {
+// ===== OLD COMPLEX VIDEO STRUCTURE LOGIC (COMMENTED OUT) =====
+// OLD COMPLEX calculateVideoStructure function with tons of debugging and edge cases
+// This caused audio cropping issues with complex duration calculations
+/*
+async function calculateVideoStructure_OLD_COMPLEX(audioDuration) {
     const introFolder = path.join(CONFIG.videoTemplatesBase, 'Intro');
     const loopFolder = path.join(CONFIG.videoTemplatesBase, 'Loop');
     const endFolder = path.join(CONFIG.videoTemplatesBase, 'End');
     
-    // Get random intro and end files
+    // ... [old complex logic commented out] ...
+    // This had tons of debugging, iteration tracking, duration validation
+    // edge cases, safety bounds, etc. that were causing audio cropping
+}
+*/
+
+/**
+ * NEW SIMPLIFIED VIDEO STRUCTURE CALCULATION
+ * Follow EXACT process:
+ * 1. Get length of audio
+ * 2. Insert one random @/Intro clip  
+ * 3. Fill rest with random @/Loop clips until room for one more clip (leave space even if 0.0001 sec)
+ * 4. Insert one random @/End clip
+ * 5. Pad with 1 second of video at the end
+ */
+async function calculateVideoStructure(audioDuration) {
+    console.log(`\n🎯 === NEW SIMPLIFIED VIDEO STRUCTURE ===`);
+    console.log(`🎵 Audio duration: ${audioDuration.toFixed(3)}s`);
+    
+    const introFolder = path.join(CONFIG.videoTemplatesBase, 'Intro');
+    const loopFolder = path.join(CONFIG.videoTemplatesBase, 'Loop');
+    const endFolder = path.join(CONFIG.videoTemplatesBase, 'End');
+    
+    // STEP 1: Get one random intro clip
     const introFile = getRandomVideoFile(introFolder);
-    const endFile = getRandomVideoFile(endFolder);
-    
-    if (!introFile || !endFile) {
-        throw new Error('Could not find required intro or end video template files');
+    if (!introFile) {
+        throw new Error('Could not find intro video file');
     }
+    const introDuration = await getMediaDuration(introFile);
+    console.log(`🎬 Selected intro: ${path.basename(introFile)} (${introDuration.toFixed(3)}s)`);
     
-    // Get all available loop files
+    // STEP 2: Get all loop files and their durations
     const loopFiles = [];
     if (fs.existsSync(loopFolder)) {
-        const files = fs.readdirSync(loopFolder);
+        const files = fs.readdirSync(loopFolder)
+            .filter(file => CONFIG.supportedVideoFormats.some(ext => file.toLowerCase().endsWith(ext)))
+            .filter(file => !file.startsWith('.'));
+        
         for (const file of files) {
             const filePath = path.join(loopFolder, file);
-            const ext = path.extname(file).toLowerCase();
-            if (CONFIG.supportedVideoFormats.includes(ext) && fs.statSync(filePath).isFile()) {
-                loopFiles.push(filePath);
-            }
+            const duration = await getMediaDuration(filePath);
+            loopFiles.push({ file: filePath, duration });
+            console.log(`🔄 Available loop: ${path.basename(filePath)} (${duration.toFixed(3)}s)`);
         }
     }
     
     if (loopFiles.length === 0) {
-        throw new Error('Could not find any loop video template files');
+        throw new Error('Could not find any loop video files');
     }
     
-    // Get durations
-    const introDuration = await getMediaDuration(introFile);
-    const endDuration = await getMediaDuration(endFile);
+    // STEP 3: Calculate target video duration (audio + padding)
+    const targetVideoDuration = audioDuration + CONFIG.videoPaddingDuration;
+    console.log(`🎯 Target video duration: ${targetVideoDuration.toFixed(3)}s (audio + ${CONFIG.videoPaddingDuration}s padding)`);
     
-    // Get durations for all loop files
-    const loopDurations = [];
-    for (const loopFile of loopFiles) {
-        const duration = await getMediaDuration(loopFile);
-        loopDurations.push({ file: loopFile, duration });
-    }
+    // Calculate minimum time needed for loops
+    const currentContentTime = introDuration;
+    const timeNeededForLoops = targetVideoDuration - currentContentTime;
+    console.log(`⏱️ Current intro: ${currentContentTime.toFixed(3)}s`);
+    console.log(`⏱️ Time needed for loops: ${timeNeededForLoops.toFixed(3)}s`);
     
-    console.log(`📊 Video durations: Intro=${introDuration}s, End=${endDuration}s`);
-    console.log(`🔄 Available loop files: ${loopFiles.length} files with durations: ${loopDurations.map(l => l.duration + 's').join(', ')}`);
-    
-    // CASE 1: Audio is shorter than or equal to intro video
-    if (audioDuration <= introDuration) {
-        console.log(`🎬 Short audio detected: Using only intro video cropped to ${audioDuration}s`);
-        return {
-            intro: { file: introFile, duration: audioDuration, fullDuration: false },
-            loops: [],
-            end: null,
-            totalVideoDuration: audioDuration
-        };
-    }
-    
-    // CASE 2: Audio is longer than intro, check if we need end video
-    const timeAfterIntro = audioDuration - introDuration;
-    
-    // If remaining time is very short (less than 2 seconds), just extend the intro slightly
-    if (timeAfterIntro < 2) {
-        console.log(`🎬 Using intro only, extended to match audio duration: ${audioDuration}s`);
-        return {
-            intro: { file: introFile, duration: audioDuration, fullDuration: false },
-            loops: [],
-            end: null,
-            totalVideoDuration: audioDuration
-        };
-    }
-    
-    // CASE 3: Normal case - intro + loops + end
+    // STEP 5: Fill with random loop clips to reach target duration
     const loops = [];
-    let currentTime = 0;
-    let loopIndex = 0;
+    let totalLoopTime = 0;
+    let loopCount = 0;
     
-    // Fill with full loop videos until we need to add the end video
-    while (currentTime < timeAfterIntro - endDuration) {
-        const currentLoop = loopDurations[loopIndex % loopDurations.length];
+    console.log(`\n🔄 === FILLING WITH LOOP CLIPS TO REACH TARGET ===`);
+    while (totalLoopTime < timeNeededForLoops) {
+        // Get random loop file
+        const randomLoop = loopFiles[Math.floor(Math.random() * loopFiles.length)];
+        const remainingTimeNeeded = timeNeededForLoops - totalLoopTime;
         
-        // Only add if the full loop fits before we need to place the end video
-        if (currentTime + currentLoop.duration <= timeAfterIntro - endDuration) {
+        console.log(`📊 Loop ${loopCount + 1}:`);
+        console.log(`   - Time still needed: ${remainingTimeNeeded.toFixed(3)}s`);
+        console.log(`   - Random loop: ${path.basename(randomLoop.file)} (${randomLoop.duration.toFixed(3)}s)`);
+        
+        // Check if this loop will overfill the target
+        if (randomLoop.duration <= remainingTimeNeeded) {
+            // Loop fits completely - add full duration
             loops.push({
-                file: currentLoop.file,
-                duration: currentLoop.duration,
+                file: randomLoop.file,
+                duration: randomLoop.duration,
                 fullDuration: true
             });
-            currentTime += currentLoop.duration;
-            loopIndex++;
+            totalLoopTime += randomLoop.duration;
+            console.log(`   ✅ Added full loop - total loop time now: ${totalLoopTime.toFixed(3)}s`);
         } else {
+            // Loop would overfill - trim it to fit exactly
+            loops.push({
+                file: randomLoop.file,
+                duration: remainingTimeNeeded,
+                fullDuration: false
+            });
+            totalLoopTime += remainingTimeNeeded;
+            console.log(`   ✂️ Added trimmed loop (${remainingTimeNeeded.toFixed(3)}s of ${randomLoop.duration.toFixed(3)}s) - total loop time now: ${totalLoopTime.toFixed(3)}s`);
+            
+            // We've hit the exact target, break
+            console.log(`   🎯 Exact target reached! Total loop time: ${totalLoopTime.toFixed(3)}s = needed: ${timeNeededForLoops.toFixed(3)}s`);
             break;
         }
+        
+        loopCount++;
     }
     
-    // Calculate how much time remains for the end video
-    const remainingTimeForEnd = audioDuration - introDuration - currentTime;
+    console.log(`\n📊 === FINAL STRUCTURE ===`);
+    console.log(`🎬 Intro: ${path.basename(introFile)} (${introDuration.toFixed(3)}s)`);
+    console.log(`🔄 Loops: ${loops.length} clips (${totalLoopTime.toFixed(3)}s total)`);
+    loops.forEach((loop, i) => {
+        console.log(`   ${i+1}. ${path.basename(loop.file)} (${loop.duration.toFixed(3)}s)`);
+    });
     
-    // FIXED: Ensure end video duration matches exactly what's needed to reach audio duration
-    // If there's remaining time, use all of it for the end video (may extend beyond original end duration)
-    const endVideoDuration = remainingTimeForEnd;
+    const totalContentTime = introDuration + totalLoopTime;
     
-    // FIXED: Total video duration MUST exactly match audio duration
-    const totalCalculatedDuration = audioDuration;
+    console.log(`⏱️ Total content time: ${totalContentTime.toFixed(3)}s`);
+    console.log(`🎯 Target was: ${targetVideoDuration.toFixed(3)}s`);
+    console.log(`🎵 Audio time: ${audioDuration.toFixed(3)}s`);
+    console.log(`📊 Video exceeds audio by: ${(totalContentTime - audioDuration).toFixed(3)}s`);
     
-    console.log(`📊 Structure: 1 intro (${introDuration}s) + ${loops.length} loops (${currentTime}s total) + 1 end (${endVideoDuration}s${endVideoDuration < endDuration ? ' cropped' : endVideoDuration > endDuration ? ' extended' : ''}) = ${totalCalculatedDuration}s (audio: ${audioDuration}s)`);
+    // Verify we meet the minimum requirement
+    if (totalContentTime < audioDuration) {
+        console.warn(`🚨 WARNING: Video (${totalContentTime.toFixed(3)}s) is shorter than audio (${audioDuration.toFixed(3)}s)!`);
+        console.warn(`🚨 This will cause audio cropping!`);
+    } else {
+        console.log(`✅ Video is longer than audio - no audio cropping will occur`);
+    }
     
-    return {
-        intro: { file: introFile, duration: introDuration, fullDuration: true },
-        loops: loops,
-        end: { file: endFile, duration: endVideoDuration, fullDuration: endVideoDuration >= endDuration },
-        totalVideoDuration: totalCalculatedDuration
+    // ADD: Video structure debug summary before return
+    console.log(`\n🔍 === VIDEO STRUCTURE DEBUG SUMMARY ===`);
+    console.log(`📊 Structure breakdown:`);
+    console.log(`   - Intro: ${introDuration.toFixed(3)}s`);
+    console.log(`   - Loops total: ${totalLoopTime.toFixed(3)}s (${loops.length} clips)`);
+    console.log(`   - Content total: ${totalContentTime.toFixed(3)}s`);
+    console.log(`🎵 Audio duration: ${audioDuration.toFixed(3)}s`);
+    console.log(`⚖️ Structure calculated total: ${totalContentTime.toFixed(3)}s`);
+    console.log(`🔍 Video vs audio diff: ${(totalContentTime - audioDuration).toFixed(3)}s`);
+    if (totalContentTime >= audioDuration) {
+        console.log(`✅ SAFE: Video ≥ Audio (no cropping)`);
+    } else {
+        console.log(`❌ DANGER: Video < Audio (will crop!)`);
+    }
+    console.log(`✅ Structure calculation complete`);
+    console.log(`=======================================\n`);
+            
+            return {
+                intro: { file: introFile, duration: introDuration, fullDuration: true },
+                loops: loops,
+        totalVideoDuration: totalContentTime // Return actual content time, not target
     };
 }
 
@@ -427,7 +564,7 @@ async function calculateVideoStructure(audioDuration) {
  * Generate editly configuration for the video
  */
 async function generateEditlyConfig(audioFile, videoStructure, outputPath, debugOverlay = false) {
-    const { intro, loops, end } = videoStructure;
+    const { intro, loops } = videoStructure;
     
     // Get dimensions from intro video (all should match)
     const dimensions = await getVideoDimensions(intro.file);
@@ -472,7 +609,9 @@ async function generateEditlyConfig(audioFile, videoStructure, outputPath, debug
         
         const loopLayers = [{
             type: 'video', 
-            path: loop.file
+            path: loop.file,
+            // If loop is trimmed, specify the cutTo
+            ...(loop.fullDuration ? {} : { cutFrom: 0, cutTo: loop.duration })
         }];
         
         // Add debug overlay for loop if enabled
@@ -497,44 +636,16 @@ async function generateEditlyConfig(audioFile, videoStructure, outputPath, debug
         });
     }
     
-    // Add end clip only if it exists (may be cropped to fit audio)
-    if (end) {
-        const endLayers = [{
-            type: 'video',
-            path: end.file,
-            // If end video is cropped, specify the cutFrom
-            ...(end.fullDuration ? {} : { cutFrom: 0, cutTo: end.duration })
-        }];
-        
-        // Add debug overlay for end if enabled
-        if (debugOverlay) {
-            const debugText = generateDebugText('end', 1, await getMediaDuration(end.file), end.duration, 'none');
-            endLayers.push({
-                type: 'title',
-                text: debugText,
-                fontsize: 16,
-                textColor: '#ffffff',
-                position: { x: 0.02, y: 0.02, originX: 'left', originY: 'top' },
-                box: 1,
-                boxcolor: '#000000@0.7',
-                boxborderw: 2
-            });
-        }
-        
-        clips.push({
-            duration: end.duration,
-            layers: endLayers
-            // NO transitions - completely removed
-        });
-    }
+    // CRITICAL FIX: Calculate actual total clip duration instead of forcing audio + padding
+    const totalClipDuration = clips.reduce((sum, clip) => sum + clip.duration, 0);
     
     const config = {
         outPath: outputPath,
         width: dimensions.width,
         height: dimensions.height,
         fps: 30,
-        // Set exact output duration to match audio
-        outDuration: audioDuration,
+        // FIXED: Use actual clip duration instead of forcing audio duration
+        outDuration: totalClipDuration,
         audioFilePath: audioFile,
         keepSourceAudio: false, // Replace video audio with our audio
         // Use dummy transition with zero duration for seamless hard cuts
@@ -543,226 +654,168 @@ async function generateEditlyConfig(audioFile, videoStructure, outputPath, debug
         },
         clips
     };
-    
-    return config;
-}
 
-/**
- * Generate split screen video using the simplified flow
- */
-// ========================================================================================
-// OLD SPLIT SCREEN CODE - COMMENTED OUT FOR FRESH START
-// ========================================================================================
+    // ENHANCED: Duration validation with comprehensive debugging  
+    const expectedDuration = audioDuration + CONFIG.videoPaddingDuration;
+    const configDurationDiff = Math.abs(totalClipDuration - expectedDuration);
 
-/* 
-async function generateSplitScreenVideo_OLD(statusData, statusFilePath) {
-    try {
-        console.log(`🎬 Starting split screen video generation`);
-        
-        // Extract required data from status
-        const audioFile = path.resolve('../zero-wire/Spark-TTS', statusData.audioFile);
-        const splitScreenVideoPath = statusData.splitScreenPath;
-        
-        // Validate inputs
-        if (!fs.existsSync(audioFile)) {
-            throw new Error(`Audio file not found: ${audioFile}`);
-        }
-        
-        if (!fs.existsSync(splitScreenVideoPath)) {
-            throw new Error(`Split screen video not found: ${splitScreenVideoPath}`);
-        }
-        
-        // Get TTS audio duration for timing structure
-        const ttsAudioDuration = await getMediaDuration(audioFile);
-        console.log(`⏱️ TTS audio duration: ${ttsAudioDuration.toFixed(2)} seconds`);
-        
-        // Generate output path
-        const audioBasename = path.basename(audioFile, path.extname(audioFile));
-        const timestamp = new Date().toISOString().split('T')[0];
-        const outputPath = path.join(CONFIG.outputFolder, `${audioBasename}_splitscreen_${timestamp}.mp4`);
-        
-        // Generate split screen editly config
-        console.log(`🔧 Generating split screen configuration...`);
-        const splitScreenConfig = await generateSimpleSplitScreenEditlyConfig_OLD(splitScreenVideoPath, ttsAudioDuration, outputPath, audioFile);
-        
-        // Save config file
-        const configPath = path.join(CONFIG.outputFolder, `${audioBasename}_splitscreen_config.json5`);
-        fs.writeFileSync(configPath, JSON.stringify(splitScreenConfig, null, 2));
-        
-        console.log(`💾 Config saved: ${path.basename(configPath)}`);
-        console.log(`🎬 Executing split screen video generation...`);
-        
-        // Execute editly
-        const editlyCommand = `./node_modules/.bin/editly "${configPath}"`;
-        await execAsync(editlyCommand);
-        
-        // Clean up config file
-        if (fs.existsSync(configPath)) {
-            fs.unlinkSync(configPath);
-        }
-        
-        // Verify output exists
-        if (fs.existsSync(outputPath)) {
-            const outputDuration = await getMediaDuration(outputPath);
-            console.log(`✅ Split screen video generated successfully`);
-            console.log(`📁 Output: ${path.basename(outputPath)}`);
-            console.log(`⏱️ Duration: ${outputDuration.toFixed(2)} seconds`);
-            
-            return outputPath;
-        } else {
-            throw new Error('Split screen video generation failed - no output file created');
-        }
-        
-    } catch (error) {
-        console.error(`❌ Split screen video generation failed:`, error.message);
-        return null;
-    }
-}
-*/
-
-/*
-async function generateSimpleSplitScreenEditlyConfig_OLD(splitScreenVideoPath, ttsAudioDuration, outputPath, ttsAudioFile) {
-    console.log(`\n🔧 === SPLIT SCREEN CONFIG GENERATION ===`);
-    console.log(`📁 Split screen video: ${path.basename(splitScreenVideoPath)}`);
-    console.log(`🎵 TTS audio file: ${path.basename(ttsAudioFile)}`);
-    console.log(`⏱️ TTS audio duration: ${ttsAudioDuration.toFixed(2)}s`);
-    console.log(`📤 Output path: ${path.basename(outputPath)}`);
-    
-    // Get video dimensions from template
-    const splitscreenFolder = CONFIG.splitscreenFolder;
-    const templateFile = getRandomVideoFile(splitscreenFolder);
-    if (!templateFile) {
-        throw new Error('No template video found in splitscreen folder');
-    }
-    
-    const dimensions = await getVideoDimensions(templateFile);
-    console.log(`📐 Canvas dimensions: ${dimensions.width}x${dimensions.height} (from template: ${path.basename(templateFile)})`);
-    
-    // Get uploaded video audio duration for split screen segment
-    const uploadedAudioDuration = await getMediaDuration(splitScreenVideoPath);
-    const uploadedDimensions = await getVideoDimensions(splitScreenVideoPath);
-    console.log(`⏱️ Uploaded video duration: ${uploadedAudioDuration.toFixed(2)}s`);
-    console.log(`📐 Uploaded video dimensions: ${uploadedDimensions.width}x${uploadedDimensions.height}`);
-    
-    const clips = [];
-    
-    // Phase 1: Split screen segment using uploaded video's audio
-    const splitScreenSegmentDuration = uploadedAudioDuration;
-    console.log(`🎬 Split screen segment duration: ${splitScreenSegmentDuration.toFixed(2)}s (full uploaded video duration)`);
-    
-    const splitScreenLayers = [
-        // Template video: Top half of screen 
-        {
-            type: 'video',
-            path: templateFile,
-            resizeMode: 'crop',
-            position: {
-                x: 0,
-                y: 0,
-                originX: 'left',
-                originY: 'top'
-            },
-            width: 1.0,
-            height: 0.5,
-            // Crop the source video to use only center portion for better composition
-            cropX: 0,           // No horizontal cropping
-            cropY: 0.25,        // Crop 25% from top to center the subject
-            cropWidth: 1.0,     // Full width
-            cropHeight: 0.5     // Use middle 50% of source video
-        },
-        // User uploaded video: Bottom half of screen with proper cropping  
-        {
-            type: 'video',
-            path: splitScreenVideoPath,
-            resizeMode: 'crop',
-            position: {
-                x: 0,
-                y: 0.5,
-                originX: 'left',
-                originY: 'top'
-            },
-            width: 1.0,
-            height: 0.5,
-            // Use full frame for user video in bottom half
-            cropX: 0,           // No horizontal cropping  
-            cropY: 0,           // No vertical cropping
-            cropWidth: 1.0,     // Full width
-            cropHeight: 1.0     // Full height
-        }
-    ];
-
-    console.log(`\n🎯 === SPLIT SCREEN LAYER CONFIGURATION ===`);
-    console.log(`📹 Layer 1 (Template - TOP HALF):`);
-    console.log(`   - File: ${path.basename(templateFile)}`);
-    console.log(`   - Position: x=${splitScreenLayers[0].position.x}, y=${splitScreenLayers[0].position.y}`);
-    console.log(`   - Size: width=${splitScreenLayers[0].width}, height=${splitScreenLayers[0].height}`);
-    console.log(`   - Crop: x=${splitScreenLayers[0].cropX}, y=${splitScreenLayers[0].cropY}, w=${splitScreenLayers[0].cropWidth}, h=${splitScreenLayers[0].cropHeight}`);
-    console.log(`   - Mode: ${splitScreenLayers[0].resizeMode}`);
-    
-    console.log(`📹 Layer 2 (User Video - BOTTOM HALF):`);
-    console.log(`   - File: ${path.basename(splitScreenVideoPath)}`);
-    console.log(`   - Position: x=${splitScreenLayers[1].position.x}, y=${splitScreenLayers[1].position.y}`);
-    console.log(`   - Size: width=${splitScreenLayers[1].width}, height=${splitScreenLayers[1].height}`);
-    console.log(`   - Crop: x=${splitScreenLayers[1].cropX}, y=${splitScreenLayers[1].cropY}, w=${splitScreenLayers[1].cropWidth}, h=${splitScreenLayers[1].cropHeight}`);
-    console.log(`   - Mode: ${splitScreenLayers[1].resizeMode}`);
-    
-    clips.push({
-        duration: splitScreenSegmentDuration,
-        layers: splitScreenLayers
+    console.log(`\n🔍 === EDITLY CONFIG DURATION VALIDATION ===`);
+    console.log(`🎵 Audio duration: ${audioDuration.toFixed(3)}s`);
+    console.log(`📏 Padding: ${CONFIG.videoPaddingDuration.toFixed(1)}s`);
+    console.log(`🎯 Expected total (audio + padding): ${expectedDuration.toFixed(3)}s`);
+    console.log(`📊 Clip breakdown:`);
+    clips.forEach((clip, index) => {
+        console.log(`   - Clip ${index + 1}: ${clip.duration.toFixed(3)}s`);
     });
-    
-    // No additional segments - split screen is standalone using uploaded video duration only
-    console.log(`\n⏭️ Split screen is standalone - no TTS segments added`);
-    
-    console.log(`\n🔊 === AUDIO CONFIGURATION ===`);
-    console.log(`🎵 Split screen audio: ${path.basename(splitScreenVideoPath)} (uploaded video audio only)`);
-    
-    const config = {
-        outPath: outputPath,
-        width: dimensions.width,
-        height: dimensions.height,
-        fps: 30,                              // Fixed 30fps
-        outDuration: uploadedAudioDuration,
-        // No global audio - split screen uses only uploaded video audio
-        keepSourceAudio: false,
-        defaults: {
-            transition: { name: 'dummy', duration: 0 }
-        },
-        clips
-    };
-    
-    // Set audio for split screen clip to use source audio
-    if (clips.length > 0) {
-        clips[0].audioFilePath = splitScreenVideoPath;
-        console.log(`🔄 Audio applied: Split screen uses uploaded video audio only`);
+    console.log(`🧮 Total clip duration: ${totalClipDuration.toFixed(3)}s`);
+    console.log(`⚖️ Difference: ${configDurationDiff.toFixed(3)}s`);
+
+    console.log(`\n🔧 === DURATION STRATEGY ===`);
+    if (configDurationDiff > 0.01) {
+        console.log(`⚠️ MISMATCH DETECTED: Clips (${totalClipDuration.toFixed(3)}s) vs Expected (${expectedDuration.toFixed(3)}s)`);
+        console.log(`🎯 SOLUTION: Using actual clip duration (${totalClipDuration.toFixed(3)}s) as outDuration`);
+        console.log(`📝 Audio (${audioDuration.toFixed(3)}s) will naturally extend beyond video end`);
+        console.log(`✅ This prevents video stretching and maintains quality`);
+    } else {
+        console.log(`✅ Duration validation passed - clips match expected duration`);
     }
-    
-    console.log(`\n📊 === FINAL CONFIGURATION SUMMARY ===`);
-    console.log(`🎬 Total clips: ${clips.length}`);
-    console.log(`⏱️ Split screen duration: ${splitScreenSegmentDuration.toFixed(2)}s`);
-    console.log(`⏱️ Total duration: ${uploadedAudioDuration.toFixed(2)}s`);
-    console.log(`📐 Output resolution: ${dimensions.width}x${dimensions.height}`);
-    console.log(`🎞️ Frame rate: 30fps`);
-    console.log(`📤 Output file: ${path.basename(outputPath)}`);
-    console.log(`===========================================\n`);
+    console.log(`📤 Final outDuration: ${config.outDuration.toFixed(3)}s (matches total clips)`);
+    console.log(`============================================\n`);
     
     return config;
 }
-*/
-
-// ========================================================================================
-// NEW SPLIT SCREEN IMPLEMENTATION - FRESH START
-// ========================================================================================
 
 /**
- * NEW Split Screen Video Generation
- * Requirements:
- * - Top video: Random from splitscreen folder, center at 25% from top (crop 25% top/bottom)
- * - Bottom video: Uploaded video, center at 75% from top (crop 25% top/bottom) 
- * - Duration: Full length of uploaded video
- * - Audio: From uploaded video only
+ * Post-process video: trim to audio + 1s, then append random End video
+ * @param {string} inputVideoPath - Path to generated intro+loops video
+ * @param {string} audioFilePath - Path to audio file for duration reference
+ * @param {string} outputPath - Final output path
+ * @param {boolean} debugMode - Enable debug logging
+ * @returns {string} Path to final processed video
  */
-async function generateSplitScreenVideo(statusData, statusFilePath) {
+async function postProcessVideoWithEnd(inputVideoPath, audioFilePath, outputPath, debugMode = false) {
+    console.log(`\n🔧 === POST-PROCESSING: TRIM + APPEND END ===`);
+    
+    // Get audio duration for exact trimming
+    const audioDuration = await getMediaDuration(audioFilePath);
+    const targetTrimDuration = audioDuration + CONFIG.videoPaddingDuration;
+    
+    console.log(`🎵 Audio duration: ${audioDuration.toFixed(3)}s`);
+    console.log(`⏰ Target trim duration (audio + padding): ${targetTrimDuration.toFixed(3)}s`);
+    
+    // Get random End video
+    const endFolder = path.join(CONFIG.videoTemplatesBase, 'End');
+    const endVideoPath = getRandomVideoFile(endFolder);
+    if (!endVideoPath) {
+        throw new Error('No End video files found for appending');
+    }
+    const endDuration = await getMediaDuration(endVideoPath);
+    console.log(`🎯 Selected end video: ${path.basename(endVideoPath)} (${endDuration.toFixed(3)}s)`);
+    
+    // Create intermediate trimmed video path
+    const trimmedVideoPath = outputPath.replace('.mp4', '_trimmed.mp4');
+    
+    // Step 1: Trim input video to exact audio + 1s duration
+    console.log(`\n✂️ Step 1: Trimming video to ${targetTrimDuration.toFixed(3)}s`);
+    const trimCommand = `ffmpeg -i "${inputVideoPath}" -t ${targetTrimDuration.toFixed(3)} -c copy "${trimmedVideoPath}"`;
+    
+    if (debugMode) {
+        console.log(`🔍 Trim command: ${trimCommand}`);
+    }
+    
+    try {
+        await execAsync(trimCommand, { cwd: CONFIG.outputFolder });
+        
+        // Verify trimmed video
+        if (!fs.existsSync(trimmedVideoPath)) {
+            throw new Error('Video trimming failed - no trimmed output created');
+        }
+        
+        const actualTrimDuration = await getMediaDuration(trimmedVideoPath);
+        console.log(`✅ Video trimmed successfully: ${actualTrimDuration.toFixed(3)}s`);
+        
+        if (Math.abs(actualTrimDuration - targetTrimDuration) > 0.1) {
+            console.warn(`⚠️ Trim duration mismatch: expected ${targetTrimDuration.toFixed(3)}s, got ${actualTrimDuration.toFixed(3)}s`);
+        }
+        
+    } catch (trimError) {
+        console.error(`❌ Video trimming failed:`, trimError.message);
+        throw new Error(`Video trimming failed: ${trimError.message}`);
+    }
+    
+    // Step 2: Create concatenation list for FFmpeg
+    console.log(`\n🔗 Step 2: Appending end video`);
+    const concatListPath = path.join(CONFIG.outputFolder, `${path.basename(outputPath, '.mp4')}_concat_list.txt`);
+    const concatContent = `file '${path.basename(trimmedVideoPath)}'\nfile '${path.relative(CONFIG.outputFolder, endVideoPath)}'`;
+    fs.writeFileSync(concatListPath, concatContent);
+    
+    if (debugMode) {
+        console.log(`📋 Concat list content:\n${concatContent}`);
+    }
+    
+    // Step 3: Concatenate trimmed video + end video
+    const concatCommand = `ffmpeg -f concat -safe 0 -i "${path.basename(concatListPath)}" -c copy "${path.basename(outputPath)}"`;
+    
+    if (debugMode) {
+        console.log(`🔍 Concat command: ${concatCommand}`);
+    }
+    
+    try {
+        await execAsync(concatCommand, { cwd: CONFIG.outputFolder });
+        
+        // Verify final video
+        if (!fs.existsSync(outputPath)) {
+            throw new Error('Video concatenation failed - no final output created');
+        }
+        
+        const finalDuration = await getMediaDuration(outputPath);
+        const expectedFinalDuration = targetTrimDuration + endDuration;
+        
+        console.log(`✅ Final video created successfully`);
+        console.log(`📁 Output: ${path.basename(outputPath)}`);
+        console.log(`⏱️ Final duration: ${finalDuration.toFixed(3)}s`);
+        console.log(`🎯 Expected duration: ${expectedFinalDuration.toFixed(3)}s (${targetTrimDuration.toFixed(3)}s + ${endDuration.toFixed(3)}s)`);
+        
+        const finalDurationDiff = Math.abs(finalDuration - expectedFinalDuration);
+        if (finalDurationDiff > 0.1) {
+            console.warn(`⚠️ Final duration mismatch: ${finalDurationDiff.toFixed(3)}s difference`);
+        } else {
+            console.log(`✅ Duration validation passed`);
+        }
+        
+        // Cleanup intermediate files
+        console.log(`\n🗑️ Cleaning up intermediate files`);
+        if (fs.existsSync(trimmedVideoPath)) {
+            fs.unlinkSync(trimmedVideoPath);
+            console.log(`   - Deleted: ${path.basename(trimmedVideoPath)}`);
+        }
+        if (fs.existsSync(concatListPath)) {
+            fs.unlinkSync(concatListPath);
+            console.log(`   - Deleted: ${path.basename(concatListPath)}`);
+        }
+        
+        console.log(`🎉 Post-processing complete!`);
+        console.log(`📊 Structure: Intro+Loops(${targetTrimDuration.toFixed(3)}s) + End(${endDuration.toFixed(3)}s) = Total(${finalDuration.toFixed(3)}s)`);
+        console.log(`===============================================\n`);
+        
+        return outputPath;
+        
+    } catch (concatError) {
+        console.error(`❌ Video concatenation failed:`, concatError.message);
+        
+        // Cleanup on error
+        if (fs.existsSync(trimmedVideoPath)) {
+            fs.unlinkSync(trimmedVideoPath);
+        }
+        if (fs.existsSync(concatListPath)) {
+            fs.unlinkSync(concatListPath);
+        }
+        
+        throw new Error(`Video concatenation failed: ${concatError.message}`);
+    }
+}
+
+async function generateSplitScreenVideo(statusData, statusFilePath, debugDuration = true) {
     try {
         console.log(`\n🎬 === NEW SPLIT SCREEN VIDEO GENERATION ===`);
         
@@ -806,7 +859,7 @@ async function generateSplitScreenVideo(statusData, statusFilePath) {
         console.log(`🎬 Executing split screen video generation...`);
         
         // Execute editly
-        const editlyCommand = `./node_modules/.bin/editly "${configPath}"`;
+        const editlyCommand = `${path.join(PROJECT_ROOT, 'node_modules/.bin/editly')} "${configPath}"`;
         await execAsync(editlyCommand);
         
         // Clean up config file
@@ -832,6 +885,13 @@ async function generateSplitScreenVideo(statusData, statusFilePath) {
             const normalVideoPath = path.join(CONFIG.outputFolder, `${audioBasename}_normal_${timestamp}.mp4`);
             
             console.log(`🎵 TTS audio duration: ${audioDuration.toFixed(2)} seconds`);
+            // ADD: Enhanced TTS audio debugging
+            console.log(`\n🔍 === TTS AUDIO ANALYSIS ===`);
+            console.log(`📁 Audio file: ${path.basename(audioFile)}`);
+            console.log(`⏱️ Raw audio duration: ${audioDuration.toFixed(3)} seconds`);
+            console.log(`🎯 Target video duration: ${(audioDuration + CONFIG.videoPaddingDuration).toFixed(3)} seconds`);
+            console.log(`📏 Padding: ${CONFIG.videoPaddingDuration.toFixed(1)} seconds`);
+            console.log(`===============================\n`);
             console.log(`📁 Normal video output: ${path.basename(normalVideoPath)}`);
             
             // Generate normal video editly config
@@ -845,7 +905,7 @@ async function generateSplitScreenVideo(statusData, statusFilePath) {
             console.log(`💾 Normal config saved: ${path.basename(normalConfigPath)}`);
             
             // Execute editly for normal video
-            const normalEditlyCommand = `./node_modules/.bin/editly "${normalConfigPath}"`;
+            const normalEditlyCommand = `${path.join(PROJECT_ROOT, 'node_modules/.bin/editly')} "${normalConfigPath}"`;
             console.log(`🎬 Generating normal video with command: ${normalEditlyCommand}`);
             await execAsync(normalEditlyCommand);
             
@@ -863,6 +923,20 @@ async function generateSplitScreenVideo(statusData, statusFilePath) {
             console.log(`✅ Normal video generated successfully`);
             console.log(`📁 Normal video: ${path.basename(normalVideoPath)}`);
             console.log(`⏱️ Normal video duration: ${normalVideoDuration.toFixed(2)} seconds`);
+            
+            // ADD: Normal video output verification
+            console.log(`\n🔍 === NORMAL VIDEO OUTPUT VERIFICATION ===`);
+            console.log(`🎵 Expected duration (audio + padding): ${(audioDuration + CONFIG.videoPaddingDuration).toFixed(3)}s`);
+            console.log(`📹 Actual output duration: ${normalVideoDuration.toFixed(3)}s`);
+            const normalDurationDiff = Math.abs(normalVideoDuration - (audioDuration + CONFIG.videoPaddingDuration));
+            console.log(`⚖️ Duration difference: ${normalDurationDiff.toFixed(3)}s`);
+            if (normalDurationDiff > 0.1) {
+                console.warn(`🚨 NORMAL VIDEO DURATION MISMATCH! Expected ${(audioDuration + CONFIG.videoPaddingDuration).toFixed(3)}s, got ${normalVideoDuration.toFixed(3)}s`);
+                console.warn(`⚠️ This may indicate audio cropping in the normal video generation!`);
+            } else {
+                console.log(`✅ Normal video duration matches expected`);
+            }
+            console.log(`=============================================\n`);
             
             // === STEP 3: FUSE VIDEOS TOGETHER ===
             console.log(`\n🔗 === FUSING SPLIT SCREEN + NORMAL VIDEO ===`);
@@ -895,6 +969,29 @@ async function generateSplitScreenVideo(statusData, statusFilePath) {
                     console.log(`✅ FUSED VIDEO GENERATED SUCCESSFULLY!`);
                     console.log(`📁 Final output: ${path.basename(fusedVideoPath)}`);
                     console.log(`⏱️ Total duration: ${fusedVideoDuration.toFixed(2)}s (expected: ${expectedDuration.toFixed(2)}s)`);
+                    
+                    // ADD: Final fusion verification
+                    console.log(`\n🔍 === FINAL FUSION VERIFICATION ===`);
+                    console.log(`🎬 Split screen duration: ${splitScreenDuration.toFixed(3)}s`);
+                    console.log(`📹 Normal video duration: ${normalVideoDuration.toFixed(3)}s`);
+                    console.log(`🧮 Expected fused duration: ${expectedDuration.toFixed(3)}s`);
+                    console.log(`🎥 Actual fused duration: ${fusedVideoDuration.toFixed(3)}s`);
+                    const fusionDiff = Math.abs(fusedVideoDuration - expectedDuration);
+                    console.log(`⚖️ Fusion difference: ${fusionDiff.toFixed(3)}s`);
+                    console.log(`🎵 Original audio + padding: ${(audioDuration + CONFIG.videoPaddingDuration).toFixed(3)}s`);
+                    const totalAudioDiff = Math.abs(fusedVideoDuration - (splitScreenDuration + audioDuration + CONFIG.videoPaddingDuration));
+                    console.log(`🔍 Total vs audio difference: ${totalAudioDiff.toFixed(3)}s`);
+                    if (fusionDiff > 0.1) {
+                        console.warn(`🚨 FUSION DURATION MISMATCH! Parts don't add up correctly.`);
+                    } else {
+                        console.log(`✅ Fusion duration matches expected sum of parts`);
+                    }
+                    if (totalAudioDiff > 0.1) {
+                        console.warn(`🚨 AUDIO SYNC ISSUE! Final video doesn't match expected audio timing.`);
+                    } else {
+                        console.log(`✅ Final video duration correctly synced with audio`);
+                    }
+                    console.log(`=====================================\n`);
                     
                     // Clean up intermediate files
                     console.log(`🗑️ Cleaning up intermediate files...`);
@@ -1010,7 +1107,7 @@ async function generateNewSplitScreenConfig(uploadedVideoPath, outputPath) {
     
     // Create single clip with both layers
     const clips = [{
-        duration: uploadedVideoDuration,
+        duration: uploadedVideoDuration + CONFIG.videoPaddingDuration,
         layers: splitScreenLayers
     }];
     
@@ -1020,7 +1117,7 @@ async function generateNewSplitScreenConfig(uploadedVideoPath, outputPath) {
         width: uploadedVideoDimensions.width,
         height: uploadedVideoDimensions.height,
         fps: 30,
-        outDuration: uploadedVideoDuration,
+        outDuration: uploadedVideoDuration + CONFIG.videoPaddingDuration,
         keepSourceAudio: true,  // FIXED: Keep source audio so uploaded video audio is preserved
         defaults: {
             transition: { name: 'dummy', duration: 0 }
@@ -1036,12 +1133,102 @@ async function generateNewSplitScreenConfig(uploadedVideoPath, outputPath) {
     
     console.log(`\n📊 === NEW SPLIT SCREEN SUMMARY ===`);
     console.log(`🎬 Total clips: ${clips.length}`);
-    console.log(`⏱️ Duration: ${uploadedVideoDuration.toFixed(2)}s`);
+    console.log(`⏱️ Audio duration: ${uploadedVideoDuration.toFixed(2)}s`);
+    console.log(`⏱️ Video duration (with padding): ${(uploadedVideoDuration + CONFIG.videoPaddingDuration).toFixed(2)}s`);
+    console.log(`🎯 Padding: ${CONFIG.videoPaddingDuration.toFixed(1)}s added to prevent audio cutoff`);
     console.log(`📐 Resolution: ${uploadedVideoDimensions.width}x${uploadedVideoDimensions.height}`);
     console.log(`🎞️ Frame rate: 30fps`);
     console.log(`🎵 Audio: From uploaded video`);
     console.log(`📤 Output: ${path.basename(outputPath)}`);
     console.log(`===============================================\n`);
+    
+    return config;
+}
+
+/**
+ * Generate editly configuration for split-screen + normal video combination
+ */
+async function generateSplitScreenEditlyConfig(audioFilePath, splitscreenDuration, splitscreenVideoPath, normalVideoPath, outputPath, debugOverlay = false, splitscreenSourcePath = null) {
+    console.log(`\n🔧 === SPLIT-SCREEN + NORMAL VIDEO CONFIG GENERATION ===`);
+    
+    // Get audio duration for padding calculation
+    const audioDuration = await getMediaDuration(audioFilePath);
+    const normalVideoDuration = await getMediaDuration(normalVideoPath);
+    
+    // Get dimensions from normal video
+    const dimensions = await getVideoDimensions(normalVideoPath);
+    
+    const clips = [];
+    
+    // Clip 1: Split-screen segment (uses source audio from splitscreen video)
+    const splitscreenLayers = [{
+        type: 'video',
+        path: splitscreenVideoPath
+    }];
+    
+    if (debugOverlay) {
+        splitscreenLayers.push({
+            type: 'title',
+            text: `SPLITSCREEN | Duration: ${splitscreenDuration.toFixed(2)}s | Source Audio`,
+            fontsize: 16,
+            textColor: '#ffffff',
+            position: { x: 0.02, y: 0.02, originX: 'left', originY: 'top' },
+            box: 1,
+            boxcolor: '#000000@0.7',
+            boxborderw: 2
+        });
+    }
+    
+    clips.push({
+        duration: splitscreenDuration,
+        layers: splitscreenLayers,
+        audioFilePath: splitscreenSourcePath || splitscreenVideoPath  // Use source audio
+    });
+    
+    // Clip 2: Normal video segment (uses TTS audio) - includes padding
+    const normalLayers = [{
+        type: 'video',
+        path: normalVideoPath
+    }];
+    
+    if (debugOverlay) {
+        normalLayers.push({
+            type: 'title',
+            text: `NORMAL VIDEO | Duration: ${normalVideoDuration.toFixed(2)}s | TTS Audio + ${CONFIG.videoPaddingDuration.toFixed(1)}s Padding`,
+            fontsize: 16,
+            textColor: '#ffffff',
+            position: { x: 0.02, y: 0.02, originX: 'left', originY: 'top' },
+            box: 1,
+            boxcolor: '#000000@0.7',
+            boxborderw: 2
+        });
+    }
+    
+    clips.push({
+        duration: normalVideoDuration,  // This already includes padding from generateEditlyConfig
+        layers: normalLayers,
+        audioFilePath: audioFilePath  // Use TTS audio
+    });
+    
+    const totalDuration = splitscreenDuration + normalVideoDuration;
+    
+    const config = {
+        outPath: outputPath,
+        width: dimensions.width,
+        height: dimensions.height,
+        fps: 30,
+        outDuration: totalDuration,  // Total includes padding in normal video segment
+        keepSourceAudio: false,  // We're managing audio per clip
+        defaults: {
+            transition: { name: 'dummy', duration: 0 }
+        },
+        clips
+    };
+    
+    console.log(`📊 Split-screen config summary:`);
+    console.log(`   🔀 Split-screen segment: ${splitscreenDuration.toFixed(2)}s (with source audio)`);
+    console.log(`   🎬 Normal video segment: ${normalVideoDuration.toFixed(2)}s (with TTS audio + ${CONFIG.videoPaddingDuration.toFixed(1)}s padding)`);
+    console.log(`   📺 Total duration: ${totalDuration.toFixed(2)}s`);
     
     return config;
 }
@@ -1141,7 +1328,7 @@ async function processAudioFile(audioFilePath, debugOverlay = false, splitScreen
             fs.writeFileSync(normalConfigPath, JSON.stringify(normalEditlyConfig, null, 2));
             
             console.log('🎥 Generating normal video...');
-            const editlyCommand = `./node_modules/.bin/editly "${normalConfigPath}"`;
+            const editlyCommand = `${path.join(PROJECT_ROOT, 'node_modules/.bin/editly')} "${normalConfigPath}"`;
             
             console.log(`🎬 Generating normal video with command: ${editlyCommand}`);
             await execAsync(editlyCommand);
@@ -1155,28 +1342,27 @@ async function processAudioFile(audioFilePath, debugOverlay = false, splitScreen
             
             // Add duration validation and logging
             const actualNormalVideoDuration = await getMediaDuration(tempOutputPath);
-            console.log(`🔍 Duration validation - Spark TTS audio: ${audioDuration.toFixed(2)}s, Normal video: ${actualNormalVideoDuration.toFixed(2)}s`);
+            console.log(`🔍 Duration validation - Audio: ${audioDuration.toFixed(2)}s, Expected video (with padding): ${(audioDuration + CONFIG.videoPaddingDuration).toFixed(2)}s, Actual video: ${actualNormalVideoDuration.toFixed(2)}s`);
             
             // Check for duration mismatch and regenerate if needed
-            const durationDifference = Math.abs(actualNormalVideoDuration - audioDuration);
+            const expectedVideoDuration = audioDuration + CONFIG.videoPaddingDuration;
+            const durationDifference = Math.abs(actualNormalVideoDuration - expectedVideoDuration);
             if (durationDifference > 0.1) {
                 console.warn(`⚠️ Duration mismatch detected! Regenerating normal video with forced duration...`);
                 console.log(`   📊 Difference: ${durationDifference.toFixed(2)}s (tolerance: 0.1s)`);
                 
                 // Force video structure to match exact audio duration
                 const forcedVideoStructure = await calculateVideoStructure(audioDuration);
-                forcedVideoStructure.totalVideoDuration = audioDuration;
                 
                 // Regenerate editly config with forced duration
                 const forcedEditlyConfig = await generateEditlyConfig(audioFilePath, forcedVideoStructure, tempOutputPath, debugOverlay);
-                forcedEditlyConfig.outDuration = audioDuration;
                 
                 // Save and execute forced config
                 const forcedConfigPath = path.join(CONFIG.outputFolder, `temp_forced_${audioBasename}_config.json5`);
                 fs.writeFileSync(forcedConfigPath, JSON.stringify(forcedEditlyConfig, null, 2));
                 
                 console.log('🔄 Regenerating normal video with exact audio duration...');
-                const forcedEditlyCommand = `./node_modules/.bin/editly "${forcedConfigPath}"`;
+                const forcedEditlyCommand = `${path.join(PROJECT_ROOT, 'node_modules/.bin/editly')} "${forcedConfigPath}"`;
                 await execAsync(forcedEditlyCommand);
                 
                 // Clean up forced config
@@ -1261,7 +1447,8 @@ async function processAudioFile(audioFilePath, debugOverlay = false, splitScreen
             console.log(`📊 Final duration summary:`);
             console.log(`   🔀 Split-screen duration: ${splitscreenDuration.toFixed(2)}s (with source audio)`);
             console.log(`   🎵 Spark TTS audio duration: ${audioDuration.toFixed(2)}s`);
-            console.log(`   🎬 Normal video duration: ${finalNormalVideoDuration.toFixed(2)}s`);
+            console.log(`   🎬 Normal video duration: ${finalNormalVideoDuration.toFixed(2)}s (includes ${CONFIG.videoPaddingDuration.toFixed(1)}s padding)`);
+            console.log(`   🎯 Padding ensures audio completion before video ends`);
             console.log(`   📺 Total video will be: ${(splitscreenDuration + finalNormalVideoDuration).toFixed(2)}s`);
             console.log(`   🔊 Audio sync: Split-screen plays source audio, then Spark TTS starts with normal video (${splitscreenDuration.toFixed(2)}s offset)`);
             
@@ -1291,7 +1478,7 @@ async function processAudioFile(audioFilePath, debugOverlay = false, splitScreen
             fs.writeFileSync(splitscreenConfigPath, JSON.stringify(splitscreenConfig, null, 2));
             
             console.log('🎥 Generating final split-screen video with synchronized audio...');
-            const finalEditlyCommand = `./node_modules/.bin/editly "${splitscreenConfigPath}"`;
+            const finalEditlyCommand = `${path.join(PROJECT_ROOT, 'node_modules/.bin/editly')} "${splitscreenConfigPath}"`;
             
             console.log(`🎬 Generating final video with command: ${finalEditlyCommand}`);
             await execAsync(finalEditlyCommand);
@@ -1306,8 +1493,8 @@ async function processAudioFile(audioFilePath, debugOverlay = false, splitScreen
             
             console.log('✅ Split-screen video generation complete!');
             console.log(`📁 Final output: ${finalOutputPath}`);
-            console.log(`📦 Split-screen intro (${splitscreenDuration.toFixed(2)}s with source audio) + Normal video (${finalNormalVideoDuration.toFixed(2)}s with Spark TTS audio)`);
-            console.log(`🔊 Total video duration: ${(splitscreenDuration + finalNormalVideoDuration).toFixed(2)}s with properly synchronized audio`);
+            console.log(`📦 Split-screen intro (${splitscreenDuration.toFixed(2)}s with source audio) + Normal video (${finalNormalVideoDuration.toFixed(2)}s with Spark TTS audio + ${CONFIG.videoPaddingDuration.toFixed(1)}s padding)`);
+            console.log(`🔊 Total video duration: ${(splitscreenDuration + finalNormalVideoDuration).toFixed(2)}s with properly synchronized audio and padding to prevent cutoff`);
             
             // Clean up lock file
             if (fs.existsSync(lockFile)) {
@@ -1368,9 +1555,34 @@ async function processAudioFile(audioFilePath, debugOverlay = false, splitScreen
             console.warn('⚠️ Editly warnings:', stderr);
         }
         
+        // 🔍 CRITICAL FIX: Verify file was actually created before claiming success
+        if (!fs.existsSync(outputPath)) {
+            throw new Error(`Video generation failed: Output file not created at ${outputPath}. Editly command appeared to succeed but no file was generated.`);
+        }
+        
+        // POST-PROCESSING: Trim video and append End
+        console.log('\n🔧 Starting post-processing: trim + append end...');
+        const tempOutputPath = outputPath.replace('.mp4', '_temp.mp4');
+        
+        // Rename current output to temp
+        fs.renameSync(outputPath, tempOutputPath);
+        
+        // Post-process: trim + append end
+        const finalOutputPath = await postProcessVideoWithEnd(tempOutputPath, audioFilePath, outputPath, debugOverlay);
+        
+        // Clean up temp file
+        if (fs.existsSync(tempOutputPath)) {
+            fs.unlinkSync(tempOutputPath);
+            console.log(`🗑️ Cleaned up temp file: ${path.basename(tempOutputPath)}`);
+        }
+        
+        // Update video structure reference for logging
+        const finalDuration = await getMediaDuration(finalOutputPath);
+        console.log(`✅ Post-processing complete! Final duration: ${finalDuration.toFixed(2)}s`);
+        
         console.log('✅ Video generation complete!');
         console.log(`📁 Output: ${outputPath}`);
-        console.log(`📊 Final video: ${videoStructure.totalVideoDuration.toFixed(2)}s`);
+        console.log(`📊 Final video: ${finalDuration.toFixed(2)}s`);
         
         // Clean up config file
         if (fs.existsSync(configPath)) {
