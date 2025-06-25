@@ -1,0 +1,15 @@
+{
+  "requestId": "req_1750712109019_pwg90hvwm",
+  "audioFile": "audiooutput/done/this_is_a.wav",
+  "status": "video_complete",
+  "splitScreenEnabled": false,
+  "splitScreenPath": null,
+  "debugMode": false,
+  "style": "style 2",
+  "videoFile": "this_is_a_2025-06-23T20-55-32.mp4",
+  "timestamp": "2025-06-23T20:55:32.084Z",
+  "text": "this is a test",
+  "videoStartTime": "2025-06-23T20:55:32.605Z",
+  "videoCompleteTime": "2025-06-23T20:56:04.209Z",
+  "coordinationMethod": "file_watcher"
+}

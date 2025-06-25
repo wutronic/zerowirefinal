@@ -26,6 +26,7 @@ import {
   Download,
   ExternalLink
 } from "lucide-react";
+import ClaudeGenerator from './ClaudeGenerator';
 
 // Custom Slider for Audio Player
 const CustomSlider = ({
@@ -346,21 +347,12 @@ const FileDropArea: React.FC<FileDropAreaProps> = ({
   );
 };
 
-// Audio History Item Interface
-interface AudioHistoryItem {
-  id: string;
-  text: string;
-  audioUrl: string;
-  timestamp: Date;
-}
-
 // Main Video Settings Component
 const VideoSettingsApp: React.FC = () => {
   // UI State
   const [splitScreenEnabled, setSplitScreenEnabled] = useState(false);
   const [debugMode, setDebugMode] = useState(false);
   const [selectedClip, setSelectedClip] = useState<File | null>(null);
-  const [audioHistory, setAudioHistory] = useState<AudioHistoryItem[]>([]);
   const [isProcessing, setIsProcessing] = useState(false);
   const [isGeneratingVideo, setIsGeneratingVideo] = useState(false);
   const [currentAudioUrl, setCurrentAudioUrl] = useState<string | null>(null);
@@ -381,23 +373,6 @@ const VideoSettingsApp: React.FC = () => {
   const [voiceFile, setVoiceFile] = useState(""); // Training voice by default
   const [processingQuality, setProcessingQuality] = useState("Standard");
   const [outputFormat, setOutputFormat] = useState("MP4");
-
-  // Load audio history from localStorage on component mount
-  useEffect(() => {
-    const savedHistory = localStorage.getItem('audioHistory');
-    if (savedHistory) {
-      try {
-        setAudioHistory(JSON.parse(savedHistory));
-      } catch {
-        console.error('Failed to parse audio history from localStorage');
-      }
-    }
-  }, []);
-
-  // Save audio history to localStorage when it changes
-  useEffect(() => {
-    localStorage.setItem('audioHistory', JSON.stringify(audioHistory));
-  }, [audioHistory]);
 
   const handleClipSelect = (file: File) => {
     setSelectedClip(file);
@@ -435,15 +410,7 @@ const VideoSettingsApp: React.FC = () => {
         throw new Error(result.error || 'Audio generation failed');
       }
 
-      const newAudioItem: AudioHistoryItem = {
-        id: Date.now().toString(),
-        text: initialAudioText,
-        audioUrl: `/audio/${result.audioFilePath}`, // Serve from public/audio directory
-        timestamp: new Date()
-      };
-      
-      setAudioHistory(prev => [newAudioItem, ...prev]);
-      setCurrentAudioUrl(newAudioItem.audioUrl);
+      setCurrentAudioUrl(`/audio/${result.audioFilePath}`);
       
       console.log('Audio generation successful:', result);
       setStatusMessage('Audio generated successfully!');
@@ -568,19 +535,6 @@ const VideoSettingsApp: React.FC = () => {
       
       setStatusMessage(`Video generated successfully! Processing time: ${processingTime}, Method: ${coordinationMethod}`);
       
-      // Add to audio history if not already there
-      const newAudioItem: AudioHistoryItem = {
-        id: result.requestId || Date.now().toString(),
-        text: initialAudioText,
-        audioUrl: `/audio/${result.audioFilePath}`,
-        timestamp: new Date()
-      };
-      
-      const exists = audioHistory.some(item => item.text === initialAudioText);
-      if (!exists) {
-        setAudioHistory(prev => [newAudioItem, ...prev]);
-      }
-      
     } catch (error) {
       console.error('Video generation failed:', error);
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
@@ -593,15 +547,6 @@ const VideoSettingsApp: React.FC = () => {
         setProgressMessages([]);
       }, 8000); // Clear status and progress after 8 seconds
     }
-  };
-
-  const handleDeleteHistoryItem = (id: string) => {
-    setAudioHistory(prev => prev.filter(item => item.id !== id));
-  };
-
-  const handleSelectHistoryItem = (item: AudioHistoryItem) => {
-    setInitialAudioText(item.text);
-    setCurrentAudioUrl(item.audioUrl);
   };
 
   // Generate command preview
@@ -1005,63 +950,9 @@ const VideoSettingsApp: React.FC = () => {
             </div>
           </div>
         </div>
-        
-        <div className="lg:col-span-1">
-          <Card className="h-full">
-            <CardHeader>
-              <CardTitle className="flex items-center justify-between">
-                <span>Audio History</span>
-                <Button variant="ghost" size="icon">
-                  <List className="h-4 w-4" />
-                </Button>
-              </CardTitle>
-              <CardDescription>Previously generated audio clips</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <ScrollArea className="h-[500px] pr-4">
-                {audioHistory.length === 0 ? (
-                  <div className="flex flex-col items-center justify-center h-40 text-center">
-                    <FileAudio className="h-10 w-10 text-muted-foreground mb-2" />
-                    <p className="text-sm text-muted-foreground">No audio history yet</p>
-                    <p className="text-xs text-muted-foreground mt-1">
-                      Generated audio will appear here
-                    </p>
-                  </div>
-                ) : (
-                  <div className="space-y-4">
-                    {audioHistory.map((item) => (
-                      <div 
-                        key={item.id} 
-                        className="p-3 rounded-lg border bg-card hover:bg-accent/50 cursor-pointer transition-colors"
-                        onClick={() => handleSelectHistoryItem(item)}
-                      >
-                        <div className="flex justify-between items-start mb-2">
-                          <div className="font-medium text-sm truncate max-w-[80%]">
-                            {item.text.substring(0, 50)}{item.text.length > 50 ? '...' : ''}
-                          </div>
-                          <Button 
-                            variant="ghost" 
-                            size="icon" 
-                            className="h-6 w-6"
-                                                         onClick={(event) => {
-                               event.stopPropagation();
-                               handleDeleteHistoryItem(item.id);
-                             }}
-                          >
-                            <Trash2 className="h-3 w-3" />
-                          </Button>
-                        </div>
-                        <div className="text-xs text-muted-foreground">
-                          {new Date(item.timestamp).toLocaleString()}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </ScrollArea>
-            </CardContent>
-          </Card>
-        </div>
+      </div>
+      <div className="mt-8">
+        <ClaudeGenerator />
       </div>
     </div>
   );

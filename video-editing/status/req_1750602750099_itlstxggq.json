@@ -1,0 +1,14 @@
+{
+  "requestId": "req_1750602750099_itlstxggq",
+  "audioFile": "audiooutput/done/Finlands_name_for.wav",
+  "status": "error",
+  "splitScreenEnabled": false,
+  "splitScreenPath": null,
+  "debugMode": false,
+  "videoFile": null,
+  "timestamp": "2025-06-22T14:38:44.499Z",
+  "text": "Finland's name for Russia, 'Venäjä,' isn't just a ...",
+  "videoStartTime": "2025-06-22T14:38:45.015Z",
+  "error": "Normal video generation failed",
+  "errorTime": "2025-06-22T14:39:45.079Z"
+}

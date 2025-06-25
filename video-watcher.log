@@ -1,7 +1,7 @@
 👀 Watching for new audio files in: /Users/lukaszwieczorek/Documents/zerowirefinal/zero-wire/Spark-TTS/audiooutput/done
 📁 Video templates: /Users/lukaszwieczorek/Documents/zerowirefinal/VideoTemplates/style 1
 🔄 Status coordination: /Users/lukaszwieczorek/Documents/zerowirefinal/video-editing/status
-📤 Output folder: /Users/lukaszwieczorek/Documents/zerowirefinal/video-editing/generated-videos
+📤 Output folder: /Users/lukaszwieczorek/Documents/zerowirefinal/generated-videos
 🎯 Supported audio formats: .wav, .mp3, .m4a, .aac
 
 ✅ Auto Video Generator is running!
@@ -11,219 +11,722 @@
 🛑 Press Ctrl+C to stop
 
 
-📋 New status file detected: req_1749280195684_23pxv91by.json
-🔄 Processing status file: req_1749280195684_23pxv91by.json
+📋 New status file detected: req_1750772242767_asbr6t2ej.json
+🔄 Processing status file: req_1750772242767_asbr6t2ej.json
+🎨 Style set to: "style 1"
+
+🔍 === CRITICAL WORKING DIRECTORY DEBUG ===
+📂 Current working directory: /Users/lukaszwieczorek/Documents/zerowirefinal/video-editing
+📍 Status file path: /Users/lukaszwieczorek/Documents/zerowirefinal/video-editing/status/req_1750772242767_asbr6t2ej.json
+📍 Status file absolute: /Users/lukaszwieczorek/Documents/zerowirefinal/video-editing/status/req_1750772242767_asbr6t2ej.json
+📋 CONFIG.videoTemplatesBase: "/Users/lukaszwieczorek/Documents/zerowirefinal/VideoTemplates/style 1"
+📋 CONFIG.videoTemplatesBase absolute: "/Users/lukaszwieczorek/Documents/zerowirefinal/VideoTemplates/style 1"
+
+🧪 Testing paths from current working directory:
+   ❌ VideoTemplates -> /Users/lukaszwieczorek/Documents/zerowirefinal/video-editing/VideoTemplates
+   ❌ ./VideoTemplates -> /Users/lukaszwieczorek/Documents/zerowirefinal/video-editing/VideoTemplates
+   ❌ VideoTemplates/style 1 -> /Users/lukaszwieczorek/Documents/zerowirefinal/video-editing/VideoTemplates/style 1
+   ❌ ./VideoTemplates/style 1 -> /Users/lukaszwieczorek/Documents/zerowirefinal/video-editing/VideoTemplates/style 1
+   ❌ VideoTemplates/style 1/Intro -> /Users/lukaszwieczorek/Documents/zerowirefinal/video-editing/VideoTemplates/style 1/Intro
+   ❌ ./VideoTemplates/style 1/Intro -> /Users/lukaszwieczorek/Documents/zerowirefinal/video-editing/VideoTemplates/style 1/Intro
+
+📁 Current directory contents:
+   📄 .DS_Store
+   📄 README.md
+   📄 VideoSettingsApp.tsx
+   📄 auto-video-generator.js
+   📄 auto-video-generator.js.backup
+   📄 cache-template-durations.js
+   📄 debug_config.js
+   📄 debug_config_output.json5
+   📁 generated-videos
+   📁 node_modules
+   ... and 9 more items
+===========================================
+
 
 🔍 DEBUG: Status file analysis:
-   - Request ID: req_1749280195684_23pxv91by
+   - Request ID: req_1750772242767_asbr6t2ej
    - Split Screen Enabled: false
    - Split Screen Path: null
-   - Audio File: audiooutput/done/Not_everyone_with.wav
+   - Audio File: audiooutput/done/this_is_a.wav
    - Debug Mode: false
-🔒 Atomic write completed: req_1749280195684_23pxv91by.json
+🔒 Atomic write completed: req_1750772242767_asbr6t2ej.json
 📋 Status updated: video_processing
 
 🎬 Normal video mode (no split screen)
-🎵 Processing audio file: Not_everyone_with.wav
+🎵 Processing audio file: this_is_a.wav
 
-🎵 Processing new audio file: Not_everyone_with.wav
-⏱️ Audio duration: 79.60 seconds
+🎵 Processing new audio file: this_is_a.wav
+⏱️ Audio duration: 1.22 seconds
 🎬 Calculating video structure...
-📊 Video durations: Intro=18.083333s, End=17.583333s
-🔄 Available loop files: 2 files with durations: 32.541667s, 5.458333s
-📊 Structure: 1 intro (18.083333s) + 2 loops (38s total) + 1 end (17.583333s) = 73.66666599999999s (audio: 79.6s)
+
+🎯 === NEW SIMPLIFIED VIDEO STRUCTURE ===
+🎵 Audio duration: 1.220s
+
+🔍 === ROBUST DIRECTORY DEBUGGING ===
+🎯 Looking for directory: /Users/lukaszwieczorek/Documents/zerowirefinal/VideoTemplates/style 1/Intro
+📂 Current working directory: /Users/lukaszwieczorek/Documents/zerowirefinal/video-editing
+📂 Absolute path: /Users/lukaszwieczorek/Documents/zerowirefinal/VideoTemplates/style 1/Intro
+✅ Directory found: /Users/lukaszwieczorek/Documents/zerowirefinal/VideoTemplates/style 1/Intro
+📄 Found 2 video files: [ 'intro.mp4', 'intro2.mp4' ]
+🎯 Selected: intro2.mp4
+📍 Full path: /Users/lukaszwieczorek/Documents/zerowirefinal/VideoTemplates/style 1/Intro/intro2.mp4
+===============================
+
+🎬 Selected intro: intro2.mp4 (18.083s)
+🔄 Available loop: loop.mp4 (32.542s)
+🔄 Available loop: loop2.mp4 (5.458s)
+🎯 Target video duration: 2.220s (audio + 1s padding)
+⏱️ Current intro: 18.083s
+⏱️ Time needed for loops: -15.863s
+
+🔄 === FILLING WITH LOOP CLIPS TO REACH TARGET ===
+
+📊 === FINAL STRUCTURE ===
+🎬 Intro: intro2.mp4 (18.083s)
+🔄 Loops: 0 clips (0.000s total)
+⏱️ Total content time: 18.083s
+🎯 Target was: 2.220s
+🎵 Audio time: 1.220s
+📊 Video exceeds audio by: 16.863s
+✅ Video is longer than audio - no audio cropping will occur
+
+🔍 === VIDEO STRUCTURE DEBUG SUMMARY ===
+📊 Structure breakdown:
+   - Intro: 18.083s
+   - Loops total: 0.000s (0 clips)
+   - Content total: 18.083s
+🎵 Audio duration: 1.220s
+⚖️ Structure calculated total: 18.083s
+🔍 Video vs audio diff: 16.863s
+✅ SAFE: Video ≥ Audio (no cropping)
+✅ Structure calculation complete
+=======================================
+
 ⚙️ Generating video configuration...
-💾 Config saved: generated-videos/Not_everyone_with_config.json5
+
+🔍 === EDITLY CONFIG DURATION VALIDATION ===
+🎵 Audio duration: 1.220s
+📏 Padding: 1.0s
+🎯 Expected total (audio + padding): 2.220s
+📊 Clip breakdown:
+   - Clip 1: 18.083s
+🧮 Total clip duration: 18.083s
+⚖️ Difference: 15.863s
+
+🔧 === DURATION STRATEGY ===
+⚠️ MISMATCH DETECTED: Clips (18.083s) vs Expected (2.220s)
+🎯 SOLUTION: Using actual clip duration (18.083s) as outDuration
+📝 Audio (1.220s) will naturally extend beyond video end
+✅ This prevents video stretching and maintains quality
+📤 Final outDuration: 18.083s (matches total clips)
+============================================
+
+💾 Config saved: /Users/lukaszwieczorek/Documents/zerowirefinal/generated-videos/this_is_a_config.json5
 🎥 Generating video...
-🎬 Generating video with command: ./node_modules/.bin/editly "generated-videos/Not_everyone_with_config.json5"
-✅ Video generation complete!
-📁 Output: generated-videos/Not_everyone_with_2025-06-07T07-20-46.mp4
-📊 Final video: 73.67s
-✨ Audio processing pipeline complete!
-📦 Audio file remains in done folder: Not_everyone_with.wav
-✅ Normal video generated successfully!
-📁 Output: Not_everyone_with_2025-06-07T07-20-46.mp4
-🔒 Atomic write completed: req_1749280195684_23pxv91by.json
-🎉 Normal video processing complete: Not_everyone_with_2025-06-07T07-20-46.mp4
+🎬 Generating video with command: ./node_modules/.bin/editly "/Users/lukaszwieczorek/Documents/zerowirefinal/generated-videos/this_is_a_config.json5"
 
-🆕 New audio file detected: test_race_condition.wav
+🔧 Starting post-processing: trim + append end...
 
-🎵 Processing new audio file: test_race_condition.wav
-⏱️ Audio duration: 2.30 seconds
-🎬 Calculating video structure...
-📊 Video durations: Intro=18.083333s, End=17.583333s
-🔄 Available loop files: 2 files with durations: 32.541667s, 5.458333s
-🎬 Short audio detected: Using only intro video cropped to 2.3s
-⚙️ Generating video configuration...
-💾 Config saved: generated-videos/test_race_condition_config.json5
-🎥 Generating video...
-🎬 Generating video with command: ./node_modules/.bin/editly "generated-videos/test_race_condition_config.json5"
-✅ Video generation complete!
-📁 Output: generated-videos/test_race_condition_2025-06-07T07-26-26.mp4
-📊 Final video: 2.30s
-✨ Audio processing pipeline complete!
-📦 Audio file remains in done folder: test_race_condition.wav
+🔧 === POST-PROCESSING: TRIM + APPEND END ===
+🎵 Audio duration: 1.220s
+⏰ Target trim duration (audio + padding): 2.220s
 
-📋 New status file detected: req_1749316547475_oq4hrh01d.json
-🔄 Processing status file: req_1749316547475_oq4hrh01d.json
+🔍 === ROBUST DIRECTORY DEBUGGING ===
+🎯 Looking for directory: /Users/lukaszwieczorek/Documents/zerowirefinal/VideoTemplates/style 1/End
+📂 Current working directory: /Users/lukaszwieczorek/Documents/zerowirefinal/video-editing
+📂 Absolute path: /Users/lukaszwieczorek/Documents/zerowirefinal/VideoTemplates/style 1/End
+✅ Directory found: /Users/lukaszwieczorek/Documents/zerowirefinal/VideoTemplates/style 1/End
+📄 Found 4 video files: [ 'ending.mp4', 'ending2.mp4', 'ending3.mp4', 'ending4.mp4' ]
+🎯 Selected: ending2.mp4
+📍 Full path: /Users/lukaszwieczorek/Documents/zerowirefinal/VideoTemplates/style 1/End/ending2.mp4
+===============================
 
-🔍 DEBUG: Status file analysis:
-   - Request ID: req_1749316547475_oq4hrh01d
-   - Split Screen Enabled: true
-   - Split Screen Path: /Users/lukaszwieczorek/Documents/zerowirefinal/video-editing/temp/splitscreen_req_1749316547475_oq4hrh01d_Original audio(750).MP4
-   - Audio File: audiooutput/done/Not_everyone_with.wav
-   - Debug Mode: false
-🔒 Atomic write completed: req_1749316547475_oq4hrh01d.json
-📋 Status updated: video_processing
+🎯 Selected end video: ending2.mp4 (17.583s)
 
-🔀 SPLIT SCREEN MODE DETECTED!
-📁 Using uploaded split screen file: /Users/lukaszwieczorek/Documents/zerowirefinal/video-editing/temp/splitscreen_req_1749316547475_oq4hrh01d_Original audio(750).MP4
-📊 File size: 3.20 MB
-⏱️ Duration: 56.58s, Dimensions: 720x1280
+✂️ Step 1: Trimming video to 2.220s
+✅ Video trimmed successfully: 2.300s
 
-🎬 === NEW SPLIT SCREEN VIDEO GENERATION ===
-📁 Using uploaded video: splitscreen_req_1749316547475_oq4hrh01d_Original audio(750).MP4
-⏱️ Video duration: 56.58 seconds
-📐 Video dimensions: 720x1280
-🔧 Generating NEW split screen configuration...
+🔗 Step 2: Appending end video
+✅ Final video created successfully
+📁 Output: this_is_a_2025-06-24T13-37-44.mp4
+⏱️ Final duration: 31.025s
+🎯 Expected duration: 19.803s (2.220s + 17.583s)
+⚠️ Final duration mismatch: 11.222s difference
 
-🔧 === NEW SPLIT SCREEN CONFIG GENERATION ===
-📁 Uploaded video: splitscreen_req_1749316547475_oq4hrh01d_Original audio(750).MP4
-📤 Output path: Not_everyone_with_splitscreen_2025-06-07T17-18-27.mp4
-📹 Template video: splitscreen2.mp4
-⏱️ Duration: 56.58s (from uploaded video)
-📐 Canvas: 720x1280 (from uploaded video)
-📐 Template: 720x1280
-
-🎯 === NEW SPLIT SCREEN LAYER DETAILS ===
-📹 TOP LAYER (Template - top 50% of screen):
-   - File: splitscreen2.mp4
-   - Canvas Position: left=0, top=0 (top half)
-   - Canvas Size: width=1, height=0.5 (50% height)
-   - Duration: 0s to 56.584172s
-   - Resize Mode: cover
-📹 BOTTOM LAYER (Uploaded - bottom 50% of screen):
-   - File: splitscreen_req_1749316547475_oq4hrh01d_Original audio(750).MP4
-   - Canvas Position: left=0, top=0.5 (bottom half)
-   - Canvas Size: width=1, height=0.5 (50% height)
-   - Duration: 0s to 56.584172s
-   - Resize Mode: cover
-🔊 Audio source: splitscreen_req_1749316547475_oq4hrh01d_Original audio(750).MP4 (uploaded video audio - keepSourceAudio: true)
-
-📊 === NEW SPLIT SCREEN SUMMARY ===
-🎬 Total clips: 1
-⏱️ Duration: 56.58s
-📐 Resolution: 720x1280
-🎞️ Frame rate: 30fps
-🎵 Audio: From uploaded video
-📤 Output: Not_everyone_with_splitscreen_2025-06-07T17-18-27.mp4
+🗑️ Cleaning up intermediate files
+   - Deleted: this_is_a_2025-06-24T13-37-44_trimmed.mp4
+   - Deleted: this_is_a_2025-06-24T13-37-44_concat_list.txt
+🎉 Post-processing complete!
+📊 Structure: Intro+Loops(2.220s) + End(17.583s) = Total(31.025s)
 ===============================================
 
-💾 Config saved: Not_everyone_with_splitscreen_config.json5
-🎬 Executing split screen video generation...
-✅ NEW Split screen video generated successfully
-📁 Split screen output: Not_everyone_with_splitscreen_2025-06-07T17-18-27.mp4
-⏱️ Split screen duration: 56.60 seconds
+🗑️ Cleaned up temp file: this_is_a_2025-06-24T13-37-44_temp.mp4
+✅ Post-processing complete! Final duration: 31.03s
+✅ Video generation complete!
+📁 Output: /Users/lukaszwieczorek/Documents/zerowirefinal/generated-videos/this_is_a_2025-06-24T13-37-44.mp4
+📊 Final video: 31.03s
+✨ Audio processing pipeline complete!
+📦 Audio file remains in done folder: this_is_a.wav
+✅ Normal video generated successfully!
+📁 Output: this_is_a_2025-06-24T13-37-44.mp4
+🔒 Atomic write completed: req_1750772242767_asbr6t2ej.json
+🎉 Normal video processing complete: this_is_a_2025-06-24T13-37-44.mp4
 
-🎬 === GENERATING NORMAL VIDEO FOR FUSION ===
-📊 Video durations: Intro=18.083333s, End=9.041667s
-🔄 Available loop files: 2 files with durations: 32.541667s, 5.458333s
-🎬 Short audio detected: Using only intro video cropped to 14.2s
-🎵 TTS audio duration: 14.20 seconds
-📁 Normal video output: Not_everyone_with_normal_2025-06-07T17-18-27.mp4
-🔧 Generating normal video configuration...
-💾 Normal config saved: Not_everyone_with_normal_config.json5
-🎬 Generating normal video with command: ./node_modules/.bin/editly "generated-videos/Not_everyone_with_normal_config.json5"
-✅ Normal video generated successfully
-📁 Normal video: Not_everyone_with_normal_2025-06-07T17-18-27.mp4
-⏱️ Normal video duration: 14.20 seconds
+📋 New status file detected: req_1750773138048_01m5vrf20.json
+🔄 Processing status file: req_1750773138048_01m5vrf20.json
+🎨 Style set to: "style 2"
 
-🔗 === FUSING SPLIT SCREEN + NORMAL VIDEO ===
-📋 Concat list created: Not_everyone_with_concat_list.txt
-🎬 Part 1: Split screen video (56.60s)
-🎬 Part 2: Normal video (14.20s)
-📁 Final output: Not_everyone_with_fused_splitscreen_2025-06-07T17-18-27.mp4
-🔗 Fusing videos with command: ffmpeg -f concat -safe 0 -i "Not_everyone_with_concat_list.txt" -c copy "Not_everyone_with_fused_splitscreen_2025-06-07T17-18-27.mp4"
-✅ FUSED VIDEO GENERATED SUCCESSFULLY!
-📁 Final output: Not_everyone_with_fused_splitscreen_2025-06-07T17-18-27.mp4
-⏱️ Total duration: 70.82s (expected: 70.80s)
-🗑️ Cleaning up intermediate files...
-   - Deleted: Not_everyone_with_concat_list.txt
-   - Deleted: Not_everyone_with_splitscreen_2025-06-07T17-18-27.mp4 (split screen only)
-   - Deleted: Not_everyone_with_normal_2025-06-07T17-18-27.mp4 (normal video only)
-🎉 FINAL FUSED SPLIT SCREEN VIDEO COMPLETE!
-✅ Split screen video generated successfully!
-📁 Output: Not_everyone_with_fused_splitscreen_2025-06-07T17-18-27.mp4
-🔒 Atomic write completed: req_1749316547475_oq4hrh01d.json
-🎉 Split screen processing complete: Not_everyone_with_fused_splitscreen_2025-06-07T17-18-27.mp4
+🔍 === CRITICAL WORKING DIRECTORY DEBUG ===
+📂 Current working directory: /Users/lukaszwieczorek/Documents/zerowirefinal/video-editing
+📍 Status file path: /Users/lukaszwieczorek/Documents/zerowirefinal/video-editing/status/req_1750773138048_01m5vrf20.json
+📍 Status file absolute: /Users/lukaszwieczorek/Documents/zerowirefinal/video-editing/status/req_1750773138048_01m5vrf20.json
+📋 CONFIG.videoTemplatesBase: "/Users/lukaszwieczorek/Documents/zerowirefinal/VideoTemplates/style 2"
+📋 CONFIG.videoTemplatesBase absolute: "/Users/lukaszwieczorek/Documents/zerowirefinal/VideoTemplates/style 2"
 
-🆕 New audio file detected: testing_duration_fix.wav
+🧪 Testing paths from current working directory:
+   ❌ VideoTemplates -> /Users/lukaszwieczorek/Documents/zerowirefinal/video-editing/VideoTemplates
+   ❌ ./VideoTemplates -> /Users/lukaszwieczorek/Documents/zerowirefinal/video-editing/VideoTemplates
+   ❌ VideoTemplates/style 1 -> /Users/lukaszwieczorek/Documents/zerowirefinal/video-editing/VideoTemplates/style 1
+   ❌ ./VideoTemplates/style 1 -> /Users/lukaszwieczorek/Documents/zerowirefinal/video-editing/VideoTemplates/style 1
+   ❌ VideoTemplates/style 1/Intro -> /Users/lukaszwieczorek/Documents/zerowirefinal/video-editing/VideoTemplates/style 1/Intro
+   ❌ ./VideoTemplates/style 1/Intro -> /Users/lukaszwieczorek/Documents/zerowirefinal/video-editing/VideoTemplates/style 1/Intro
 
-📋 New status file detected: req_1749316793848_y9vh74bmh.json
-🔄 Processing status file: req_1749316793848_y9vh74bmh.json
+📁 Current directory contents:
+   📄 .DS_Store
+   📄 README.md
+   📄 VideoSettingsApp.tsx
+   📄 auto-video-generator.js
+   📄 auto-video-generator.js.backup
+   📄 cache-template-durations.js
+   📄 debug_config.js
+   📄 debug_config_output.json5
+   📁 generated-videos
+   📁 node_modules
+   ... and 9 more items
+===========================================
+
 
 🔍 DEBUG: Status file analysis:
-   - Request ID: req_1749316793848_y9vh74bmh
+   - Request ID: req_1750773138048_01m5vrf20
    - Split Screen Enabled: false
    - Split Screen Path: null
-   - Audio File: audiooutput/done/testing_duration_fix.wav
+   - Audio File: audiooutput/done/this_is_a.wav
    - Debug Mode: false
-🔒 Atomic write completed: req_1749316793848_y9vh74bmh.json
+🔒 Atomic write completed: req_1750773138048_01m5vrf20.json
 📋 Status updated: video_processing
 
 🎬 Normal video mode (no split screen)
-🎵 Processing audio file: testing_duration_fix.wav
+🎵 Processing audio file: this_is_a.wav
 
-🎵 Processing new audio file: testing_duration_fix.wav
-🔒 File already being processed in normal mode: testing_duration_fix.wav
-⏱️ Audio duration: 1.96 seconds
+🎵 Processing new audio file: this_is_a.wav
+⏱️ Audio duration: 1.52 seconds
 🎬 Calculating video structure...
-📊 Video durations: Intro=18.083333s, End=17.583333s
-🔄 Available loop files: 2 files with durations: 32.541667s, 5.458333s
-🎬 Short audio detected: Using only intro video cropped to 1.96s
+
+🎯 === NEW SIMPLIFIED VIDEO STRUCTURE ===
+🎵 Audio duration: 1.520s
+
+🔍 === ROBUST DIRECTORY DEBUGGING ===
+🎯 Looking for directory: /Users/lukaszwieczorek/Documents/zerowirefinal/VideoTemplates/style 2/Intro
+📂 Current working directory: /Users/lukaszwieczorek/Documents/zerowirefinal/video-editing
+📂 Absolute path: /Users/lukaszwieczorek/Documents/zerowirefinal/VideoTemplates/style 2/Intro
+✅ Directory found: /Users/lukaszwieczorek/Documents/zerowirefinal/VideoTemplates/style 2/Intro
+📄 Found 2 video files: [ 'intro.mp4', 'intro2.mp4' ]
+🎯 Selected: intro.mp4
+📍 Full path: /Users/lukaszwieczorek/Documents/zerowirefinal/VideoTemplates/style 2/Intro/intro.mp4
+===============================
+
+🎬 Selected intro: intro.mp4 (17.667s)
+🔄 Available loop: loop.mp4 (17.667s)
+🔄 Available loop: loop2.mp4 (5.750s)
+🔄 Available loop: loop3.mp4 (13.750s)
+🔄 Available loop: loop4.mp4 (9.833s)
+🎯 Target video duration: 2.520s (audio + 1s padding)
+⏱️ Current intro: 17.667s
+⏱️ Time needed for loops: -15.147s
+
+🔄 === FILLING WITH LOOP CLIPS TO REACH TARGET ===
+
+📊 === FINAL STRUCTURE ===
+🎬 Intro: intro.mp4 (17.667s)
+🔄 Loops: 0 clips (0.000s total)
+⏱️ Total content time: 17.667s
+🎯 Target was: 2.520s
+🎵 Audio time: 1.520s
+📊 Video exceeds audio by: 16.147s
+✅ Video is longer than audio - no audio cropping will occur
+
+🔍 === VIDEO STRUCTURE DEBUG SUMMARY ===
+📊 Structure breakdown:
+   - Intro: 17.667s
+   - Loops total: 0.000s (0 clips)
+   - Content total: 17.667s
+🎵 Audio duration: 1.520s
+⚖️ Structure calculated total: 17.667s
+🔍 Video vs audio diff: 16.147s
+✅ SAFE: Video ≥ Audio (no cropping)
+✅ Structure calculation complete
+=======================================
+
 ⚙️ Generating video configuration...
-💾 Config saved: generated-videos/testing_duration_fix_config.json5
+
+🔍 === EDITLY CONFIG DURATION VALIDATION ===
+🎵 Audio duration: 1.520s
+📏 Padding: 1.0s
+🎯 Expected total (audio + padding): 2.520s
+📊 Clip breakdown:
+   - Clip 1: 17.667s
+🧮 Total clip duration: 17.667s
+⚖️ Difference: 15.147s
+
+🔧 === DURATION STRATEGY ===
+⚠️ MISMATCH DETECTED: Clips (17.667s) vs Expected (2.520s)
+🎯 SOLUTION: Using actual clip duration (17.667s) as outDuration
+📝 Audio (1.520s) will naturally extend beyond video end
+✅ This prevents video stretching and maintains quality
+📤 Final outDuration: 17.667s (matches total clips)
+============================================
+
+💾 Config saved: /Users/lukaszwieczorek/Documents/zerowirefinal/generated-videos/this_is_a_config.json5
 🎥 Generating video...
-🎬 Generating video with command: ./node_modules/.bin/editly "generated-videos/testing_duration_fix_config.json5"
+🎬 Generating video with command: ./node_modules/.bin/editly "/Users/lukaszwieczorek/Documents/zerowirefinal/generated-videos/this_is_a_config.json5"
+
+🔧 Starting post-processing: trim + append end...
+
+🔧 === POST-PROCESSING: TRIM + APPEND END ===
+🎵 Audio duration: 1.520s
+⏰ Target trim duration (audio + padding): 2.520s
+
+🔍 === ROBUST DIRECTORY DEBUGGING ===
+🎯 Looking for directory: /Users/lukaszwieczorek/Documents/zerowirefinal/VideoTemplates/style 2/End
+📂 Current working directory: /Users/lukaszwieczorek/Documents/zerowirefinal/video-editing
+📂 Absolute path: /Users/lukaszwieczorek/Documents/zerowirefinal/VideoTemplates/style 2/End
+✅ Directory found: /Users/lukaszwieczorek/Documents/zerowirefinal/VideoTemplates/style 2/End
+📄 Found 1 video files: [ 'ending.mp4' ]
+🎯 Selected: ending.mp4
+📍 Full path: /Users/lukaszwieczorek/Documents/zerowirefinal/VideoTemplates/style 2/End/ending.mp4
+===============================
+
+🎯 Selected end video: ending.mp4 (17.667s)
+
+✂️ Step 1: Trimming video to 2.520s
+✅ Video trimmed successfully: 2.600s
+
+🔗 Step 2: Appending end video
+✅ Final video created successfully
+📁 Output: this_is_a_2025-06-24T13-52-40.mp4
+⏱️ Final duration: 63.354s
+🎯 Expected duration: 20.187s (2.520s + 17.667s)
+⚠️ Final duration mismatch: 43.168s difference
+
+🗑️ Cleaning up intermediate files
+   - Deleted: this_is_a_2025-06-24T13-52-40_trimmed.mp4
+   - Deleted: this_is_a_2025-06-24T13-52-40_concat_list.txt
+🎉 Post-processing complete!
+📊 Structure: Intro+Loops(2.520s) + End(17.667s) = Total(63.354s)
+===============================================
+
+🗑️ Cleaned up temp file: this_is_a_2025-06-24T13-52-40_temp.mp4
+✅ Post-processing complete! Final duration: 63.35s
 ✅ Video generation complete!
-📁 Output: generated-videos/testing_duration_fix_2025-06-07T17-20-15.mp4
-📊 Final video: 1.96s
+📁 Output: /Users/lukaszwieczorek/Documents/zerowirefinal/generated-videos/this_is_a_2025-06-24T13-52-40.mp4
+📊 Final video: 63.35s
 ✨ Audio processing pipeline complete!
-📦 Audio file remains in done folder: testing_duration_fix.wav
+📦 Audio file remains in done folder: this_is_a.wav
 ✅ Normal video generated successfully!
-📁 Output: testing_duration_fix_2025-06-07T17-20-15.mp4
-🔒 Atomic write completed: req_1749316793848_y9vh74bmh.json
-🎉 Normal video processing complete: testing_duration_fix_2025-06-07T17-20-15.mp4
+📁 Output: this_is_a_2025-06-24T13-52-40.mp4
+🔒 Atomic write completed: req_1750773138048_01m5vrf20.json
+🎉 Normal video processing complete: this_is_a_2025-06-24T13-52-40.mp4
+
+🆕 New audio file detected: thIn_2024_the.wav
+
+📋 New status file detected: req_1750773954324_qw445qgao.json
+🔄 Processing status file: req_1750773954324_qw445qgao.json
+🎨 Style set to: "style 2"
+
+🔍 === CRITICAL WORKING DIRECTORY DEBUG ===
+📂 Current working directory: /Users/lukaszwieczorek/Documents/zerowirefinal/video-editing
+📍 Status file path: /Users/lukaszwieczorek/Documents/zerowirefinal/video-editing/status/req_1750773954324_qw445qgao.json
+📍 Status file absolute: /Users/lukaszwieczorek/Documents/zerowirefinal/video-editing/status/req_1750773954324_qw445qgao.json
+📋 CONFIG.videoTemplatesBase: "/Users/lukaszwieczorek/Documents/zerowirefinal/VideoTemplates/style 2"
+📋 CONFIG.videoTemplatesBase absolute: "/Users/lukaszwieczorek/Documents/zerowirefinal/VideoTemplates/style 2"
+
+🧪 Testing paths from current working directory:
+   ❌ VideoTemplates -> /Users/lukaszwieczorek/Documents/zerowirefinal/video-editing/VideoTemplates
+   ❌ ./VideoTemplates -> /Users/lukaszwieczorek/Documents/zerowirefinal/video-editing/VideoTemplates
+   ❌ VideoTemplates/style 1 -> /Users/lukaszwieczorek/Documents/zerowirefinal/video-editing/VideoTemplates/style 1
+   ❌ ./VideoTemplates/style 1 -> /Users/lukaszwieczorek/Documents/zerowirefinal/video-editing/VideoTemplates/style 1
+   ❌ VideoTemplates/style 1/Intro -> /Users/lukaszwieczorek/Documents/zerowirefinal/video-editing/VideoTemplates/style 1/Intro
+   ❌ ./VideoTemplates/style 1/Intro -> /Users/lukaszwieczorek/Documents/zerowirefinal/video-editing/VideoTemplates/style 1/Intro
+
+📁 Current directory contents:
+   📄 .DS_Store
+   📄 README.md
+   📄 VideoSettingsApp.tsx
+   📄 auto-video-generator.js
+   📄 auto-video-generator.js.backup
+   📄 cache-template-durations.js
+   📄 debug_config.js
+   📄 debug_config_output.json5
+   📁 generated-videos
+   📁 node_modules
+   ... and 9 more items
+===========================================
+
+
+🔍 DEBUG: Status file analysis:
+   - Request ID: req_1750773954324_qw445qgao
+   - Split Screen Enabled: false
+   - Split Screen Path: null
+   - Audio File: audiooutput/done/thIn_2024_the.wav
+   - Debug Mode: false
+🔒 Atomic write completed: req_1750773954324_qw445qgao.json
+📋 Status updated: video_processing
+
+🎬 Normal video mode (no split screen)
+🎵 Processing audio file: thIn_2024_the.wav
+
+🎵 Processing new audio file: thIn_2024_the.wav
+🔒 File already being processed in normal mode: thIn_2024_the.wav
+⏱️ Audio duration: 77.01 seconds
+🎬 Calculating video structure...
+
+🎯 === NEW SIMPLIFIED VIDEO STRUCTURE ===
+🎵 Audio duration: 77.010s
+
+🔍 === ROBUST DIRECTORY DEBUGGING ===
+🎯 Looking for directory: /Users/lukaszwieczorek/Documents/zerowirefinal/VideoTemplates/style 2/Intro
+📂 Current working directory: /Users/lukaszwieczorek/Documents/zerowirefinal/video-editing
+📂 Absolute path: /Users/lukaszwieczorek/Documents/zerowirefinal/VideoTemplates/style 2/Intro
+✅ Directory found: /Users/lukaszwieczorek/Documents/zerowirefinal/VideoTemplates/style 2/Intro
+📄 Found 2 video files: [ 'intro.mp4', 'intro2.mp4' ]
+🎯 Selected: intro2.mp4
+📍 Full path: /Users/lukaszwieczorek/Documents/zerowirefinal/VideoTemplates/style 2/Intro/intro2.mp4
+===============================
+
+🎬 Selected intro: intro2.mp4 (7.042s)
+🔄 Available loop: loop.mp4 (17.667s)
+🔄 Available loop: loop2.mp4 (5.750s)
+🔄 Available loop: loop3.mp4 (13.750s)
+🔄 Available loop: loop4.mp4 (9.833s)
+🎯 Target video duration: 78.010s (audio + 1s padding)
+⏱️ Current intro: 7.042s
+⏱️ Time needed for loops: 70.968s
+
+🔄 === FILLING WITH LOOP CLIPS TO REACH TARGET ===
+📊 Loop 1:
+   - Time still needed: 70.968s
+   - Random loop: loop.mp4 (17.667s)
+   ✅ Added full loop - total loop time now: 17.667s
+📊 Loop 2:
+   - Time still needed: 53.302s
+   - Random loop: loop4.mp4 (9.833s)
+   ✅ Added full loop - total loop time now: 27.500s
+📊 Loop 3:
+   - Time still needed: 43.468s
+   - Random loop: loop3.mp4 (13.750s)
+   ✅ Added full loop - total loop time now: 41.250s
+📊 Loop 4:
+   - Time still needed: 29.718s
+   - Random loop: loop2.mp4 (5.750s)
+   ✅ Added full loop - total loop time now: 47.000s
+📊 Loop 5:
+   - Time still needed: 23.968s
+   - Random loop: loop2.mp4 (5.750s)
+   ✅ Added full loop - total loop time now: 52.750s
+📊 Loop 6:
+   - Time still needed: 18.218s
+   - Random loop: loop.mp4 (17.667s)
+   ✅ Added full loop - total loop time now: 70.417s
+📊 Loop 7:
+   - Time still needed: 0.552s
+   - Random loop: loop3.mp4 (13.750s)
+   ✂️ Added trimmed loop (0.552s of 13.750s) - total loop time now: 70.968s
+   🎯 Exact target reached! Total loop time: 70.968s = needed: 70.968s
+
+📊 === FINAL STRUCTURE ===
+🎬 Intro: intro2.mp4 (7.042s)
+🔄 Loops: 7 clips (70.968s total)
+   1. loop.mp4 (17.667s)
+   2. loop4.mp4 (9.833s)
+   3. loop3.mp4 (13.750s)
+   4. loop2.mp4 (5.750s)
+   5. loop2.mp4 (5.750s)
+   6. loop.mp4 (17.667s)
+   7. loop3.mp4 (0.552s)
+⏱️ Total content time: 78.010s
+🎯 Target was: 78.010s
+🎵 Audio time: 77.010s
+📊 Video exceeds audio by: 1.000s
+✅ Video is longer than audio - no audio cropping will occur
+
+🔍 === VIDEO STRUCTURE DEBUG SUMMARY ===
+📊 Structure breakdown:
+   - Intro: 7.042s
+   - Loops total: 70.968s (7 clips)
+   - Content total: 78.010s
+🎵 Audio duration: 77.010s
+⚖️ Structure calculated total: 78.010s
+🔍 Video vs audio diff: 1.000s
+✅ SAFE: Video ≥ Audio (no cropping)
+✅ Structure calculation complete
+=======================================
+
+⚙️ Generating video configuration...
+
+🔍 === EDITLY CONFIG DURATION VALIDATION ===
+🎵 Audio duration: 77.010s
+📏 Padding: 1.0s
+🎯 Expected total (audio + padding): 78.010s
+📊 Clip breakdown:
+   - Clip 1: 7.042s
+   - Clip 2: 17.667s
+   - Clip 3: 9.833s
+   - Clip 4: 13.750s
+   - Clip 5: 5.750s
+   - Clip 6: 5.750s
+   - Clip 7: 17.667s
+   - Clip 8: 0.552s
+🧮 Total clip duration: 78.010s
+⚖️ Difference: 0.000s
+
+🔧 === DURATION STRATEGY ===
+✅ Duration validation passed - clips match expected duration
+📤 Final outDuration: 78.010s (matches total clips)
+============================================
+
+💾 Config saved: /Users/lukaszwieczorek/Documents/zerowirefinal/generated-videos/thIn_2024_the_config.json5
+🎥 Generating video...
+🎬 Generating video with command: ./node_modules/.bin/editly "/Users/lukaszwieczorek/Documents/zerowirefinal/generated-videos/thIn_2024_the_config.json5"
 ⏰ Timeout waiting for parallel normal process
 
-📋 New status file detected: req_1749316829802_q1813ct50.json
-🔄 Processing status file: req_1749316829802_q1813ct50.json
+🔧 Starting post-processing: trim + append end...
+
+🔧 === POST-PROCESSING: TRIM + APPEND END ===
+🎵 Audio duration: 77.010s
+⏰ Target trim duration (audio + padding): 78.010s
+
+🔍 === ROBUST DIRECTORY DEBUGGING ===
+🎯 Looking for directory: /Users/lukaszwieczorek/Documents/zerowirefinal/VideoTemplates/style 2/End
+📂 Current working directory: /Users/lukaszwieczorek/Documents/zerowirefinal/video-editing
+📂 Absolute path: /Users/lukaszwieczorek/Documents/zerowirefinal/VideoTemplates/style 2/End
+✅ Directory found: /Users/lukaszwieczorek/Documents/zerowirefinal/VideoTemplates/style 2/End
+📄 Found 1 video files: [ 'ending.mp4' ]
+🎯 Selected: ending.mp4
+📍 Full path: /Users/lukaszwieczorek/Documents/zerowirefinal/VideoTemplates/style 2/End/ending.mp4
+===============================
+
+🎯 Selected end video: ending.mp4 (17.667s)
+
+✂️ Step 1: Trimming video to 78.010s
+✅ Video trimmed successfully: 78.067s
+
+🔗 Step 2: Appending end video
+✅ Final video created successfully
+📁 Output: thIn_2024_the_2025-06-24T14-14-04.mp4
+⏱️ Final duration: 299.188s
+🎯 Expected duration: 95.677s (78.010s + 17.667s)
+⚠️ Final duration mismatch: 203.511s difference
+
+🗑️ Cleaning up intermediate files
+   - Deleted: thIn_2024_the_2025-06-24T14-14-04_trimmed.mp4
+   - Deleted: thIn_2024_the_2025-06-24T14-14-04_concat_list.txt
+🎉 Post-processing complete!
+📊 Structure: Intro+Loops(78.010s) + End(17.667s) = Total(299.188s)
+===============================================
+
+🗑️ Cleaned up temp file: thIn_2024_the_2025-06-24T14-14-04_temp.mp4
+✅ Post-processing complete! Final duration: 299.19s
+✅ Video generation complete!
+📁 Output: /Users/lukaszwieczorek/Documents/zerowirefinal/generated-videos/thIn_2024_the_2025-06-24T14-14-04.mp4
+📊 Final video: 299.19s
+✨ Audio processing pipeline complete!
+📦 Audio file remains in done folder: thIn_2024_the.wav
+✅ Normal video generated successfully!
+📁 Output: thIn_2024_the_2025-06-24T14-14-04.mp4
+🔒 Atomic write completed: req_1750773954324_qw445qgao.json
+🎉 Normal video processing complete: thIn_2024_the_2025-06-24T14-14-04.mp4
+
+🆕 New audio file detected: Recent_findings_from.wav
+
+📋 New status file detected: req_1750809557750_qn65mg3t8.json
+🔄 Processing status file: req_1750809557750_qn65mg3t8.json
+🎨 Style set to: "style 1"
+
+🔍 === CRITICAL WORKING DIRECTORY DEBUG ===
+📂 Current working directory: /Users/lukaszwieczorek/Documents/zerowirefinal/video-editing
+📍 Status file path: /Users/lukaszwieczorek/Documents/zerowirefinal/video-editing/status/req_1750809557750_qn65mg3t8.json
+📍 Status file absolute: /Users/lukaszwieczorek/Documents/zerowirefinal/video-editing/status/req_1750809557750_qn65mg3t8.json
+📋 CONFIG.videoTemplatesBase: "/Users/lukaszwieczorek/Documents/zerowirefinal/VideoTemplates/style 1"
+📋 CONFIG.videoTemplatesBase absolute: "/Users/lukaszwieczorek/Documents/zerowirefinal/VideoTemplates/style 1"
+
+🧪 Testing paths from current working directory:
+   ❌ VideoTemplates -> /Users/lukaszwieczorek/Documents/zerowirefinal/video-editing/VideoTemplates
+   ❌ ./VideoTemplates -> /Users/lukaszwieczorek/Documents/zerowirefinal/video-editing/VideoTemplates
+   ❌ VideoTemplates/style 1 -> /Users/lukaszwieczorek/Documents/zerowirefinal/video-editing/VideoTemplates/style 1
+   ❌ ./VideoTemplates/style 1 -> /Users/lukaszwieczorek/Documents/zerowirefinal/video-editing/VideoTemplates/style 1
+   ❌ VideoTemplates/style 1/Intro -> /Users/lukaszwieczorek/Documents/zerowirefinal/video-editing/VideoTemplates/style 1/Intro
+   ❌ ./VideoTemplates/style 1/Intro -> /Users/lukaszwieczorek/Documents/zerowirefinal/video-editing/VideoTemplates/style 1/Intro
+
+📁 Current directory contents:
+   📄 .DS_Store
+   📄 README.md
+   📄 VideoSettingsApp.tsx
+   📄 auto-video-generator.js
+   📄 auto-video-generator.js.backup
+   📄 cache-template-durations.js
+   📄 debug_config.js
+   📄 debug_config_output.json5
+   📁 generated-videos
+   📁 node_modules
+   ... and 9 more items
+===========================================
+
 
 🔍 DEBUG: Status file analysis:
-   - Request ID: req_1749316829802_q1813ct50
+   - Request ID: req_1750809557750_qn65mg3t8
    - Split Screen Enabled: false
    - Split Screen Path: null
-   - Audio File: audiooutput/done/this_is_a_much_longe.wav
+   - Audio File: audiooutput/done/Recent_findings_from.wav
    - Debug Mode: false
-🔒 Atomic write completed: req_1749316829802_q1813ct50.json
+🔒 Atomic write completed: req_1750809557750_qn65mg3t8.json
 📋 Status updated: video_processing
 
 🎬 Normal video mode (no split screen)
-❌ Status file processing failed: Audio file not found: /Users/lukaszwieczorek/Documents/zerowirefinal/zero-wire/Spark-TTS/audiooutput/done/this_is_a_much_longe.wav
-🔒 Atomic write completed: req_1749316829802_q1813ct50.json
+🎵 Processing audio file: Recent_findings_from.wav
 
-📋 New status file detected: req_1749316929211_q1hg52uk7.json
-🔄 Processing status file: req_1749316929211_q1hg52uk7.json
+🎵 Processing new audio file: Recent_findings_from.wav
+🔒 File already being processed in normal mode: Recent_findings_from.wav
+⏱️ Audio duration: 92.69 seconds
+🎬 Calculating video structure...
 
-🔍 DEBUG: Status file analysis:
-   - Request ID: req_1749316929211_q1hg52uk7
-   - Split Screen Enabled: false
-   - Split Screen Path: null
-   - Audio File: audiooutput/done/this_is_a_longer_tes.wav
-   - Debug Mode: false
-🔒 Atomic write completed: req_1749316929211_q1hg52uk7.json
-📋 Status updated: video_processing
+🎯 === NEW SIMPLIFIED VIDEO STRUCTURE ===
+🎵 Audio duration: 92.695s
 
-🎬 Normal video mode (no split screen)
-❌ Status file processing failed: Audio file not found: /Users/lukaszwieczorek/Documents/zerowirefinal/zero-wire/Spark-TTS/audiooutput/done/this_is_a_longer_tes.wav
-🔒 Atomic write completed: req_1749316929211_q1hg52uk7.json
+🔍 === ROBUST DIRECTORY DEBUGGING ===
+🎯 Looking for directory: /Users/lukaszwieczorek/Documents/zerowirefinal/VideoTemplates/style 1/Intro
+📂 Current working directory: /Users/lukaszwieczorek/Documents/zerowirefinal/video-editing
+📂 Absolute path: /Users/lukaszwieczorek/Documents/zerowirefinal/VideoTemplates/style 1/Intro
+✅ Directory found: /Users/lukaszwieczorek/Documents/zerowirefinal/VideoTemplates/style 1/Intro
+📄 Found 2 video files: [ 'intro.mp4', 'intro2.mp4' ]
+🎯 Selected: intro2.mp4
+📍 Full path: /Users/lukaszwieczorek/Documents/zerowirefinal/VideoTemplates/style 1/Intro/intro2.mp4
+===============================
+
+🎬 Selected intro: intro2.mp4 (18.083s)
+🔄 Available loop: loop.mp4 (32.542s)
+🔄 Available loop: loop2.mp4 (5.458s)
+🎯 Target video duration: 93.695s (audio + 1s padding)
+⏱️ Current intro: 18.083s
+⏱️ Time needed for loops: 75.612s
+
+🔄 === FILLING WITH LOOP CLIPS TO REACH TARGET ===
+📊 Loop 1:
+   - Time still needed: 75.612s
+   - Random loop: loop.mp4 (32.542s)
+   ✅ Added full loop - total loop time now: 32.542s
+📊 Loop 2:
+   - Time still needed: 43.070s
+   - Random loop: loop.mp4 (32.542s)
+   ✅ Added full loop - total loop time now: 65.083s
+📊 Loop 3:
+   - Time still needed: 10.528s
+   - Random loop: loop.mp4 (32.542s)
+   ✂️ Added trimmed loop (10.528s of 32.542s) - total loop time now: 75.612s
+   🎯 Exact target reached! Total loop time: 75.612s = needed: 75.612s
+
+📊 === FINAL STRUCTURE ===
+🎬 Intro: intro2.mp4 (18.083s)
+🔄 Loops: 3 clips (75.612s total)
+   1. loop.mp4 (32.542s)
+   2. loop.mp4 (32.542s)
+   3. loop.mp4 (10.528s)
+⏱️ Total content time: 93.695s
+🎯 Target was: 93.695s
+🎵 Audio time: 92.695s
+📊 Video exceeds audio by: 1.000s
+✅ Video is longer than audio - no audio cropping will occur
+
+🔍 === VIDEO STRUCTURE DEBUG SUMMARY ===
+📊 Structure breakdown:
+   - Intro: 18.083s
+   - Loops total: 75.612s (3 clips)
+   - Content total: 93.695s
+🎵 Audio duration: 92.695s
+⚖️ Structure calculated total: 93.695s
+🔍 Video vs audio diff: 1.000s
+✅ SAFE: Video ≥ Audio (no cropping)
+✅ Structure calculation complete
+=======================================
+
+⚙️ Generating video configuration...
+
+🔍 === EDITLY CONFIG DURATION VALIDATION ===
+🎵 Audio duration: 92.695s
+📏 Padding: 1.0s
+🎯 Expected total (audio + padding): 93.695s
+📊 Clip breakdown:
+   - Clip 1: 18.083s
+   - Clip 2: 32.542s
+   - Clip 3: 32.542s
+   - Clip 4: 10.528s
+🧮 Total clip duration: 93.695s
+⚖️ Difference: 0.000s
+
+🔧 === DURATION STRATEGY ===
+✅ Duration validation passed - clips match expected duration
+📤 Final outDuration: 93.695s (matches total clips)
+============================================
+
+💾 Config saved: /Users/lukaszwieczorek/Documents/zerowirefinal/generated-videos/Recent_findings_from_config.json5
+🎥 Generating video...
+🎬 Generating video with command: ./node_modules/.bin/editly "/Users/lukaszwieczorek/Documents/zerowirefinal/generated-videos/Recent_findings_from_config.json5"
+⏰ Timeout waiting for parallel normal process
+
+🔧 Starting post-processing: trim + append end...
+
+🔧 === POST-PROCESSING: TRIM + APPEND END ===
+🎵 Audio duration: 92.695s
+⏰ Target trim duration (audio + padding): 93.695s
+
+🔍 === ROBUST DIRECTORY DEBUGGING ===
+🎯 Looking for directory: /Users/lukaszwieczorek/Documents/zerowirefinal/VideoTemplates/style 1/End
+📂 Current working directory: /Users/lukaszwieczorek/Documents/zerowirefinal/video-editing
+📂 Absolute path: /Users/lukaszwieczorek/Documents/zerowirefinal/VideoTemplates/style 1/End
+✅ Directory found: /Users/lukaszwieczorek/Documents/zerowirefinal/VideoTemplates/style 1/End
+📄 Found 4 video files: [ 'ending.mp4', 'ending2.mp4', 'ending3.mp4', 'ending4.mp4' ]
+🎯 Selected: ending3.mp4
+📍 Full path: /Users/lukaszwieczorek/Documents/zerowirefinal/VideoTemplates/style 1/End/ending3.mp4
+===============================
+
+🎯 Selected end video: ending3.mp4 (9.042s)
+
+✂️ Step 1: Trimming video to 93.695s
+✅ Video trimmed successfully: 93.695s
+
+🔗 Step 2: Appending end video
+✅ Final video created successfully
+📁 Output: Recent_findings_from_2025-06-25T00-06-22.mp4
+⏱️ Final duration: 93.716s
+🎯 Expected duration: 102.737s (93.695s + 9.042s)
+⚠️ Final duration mismatch: 9.020s difference
+
+🗑️ Cleaning up intermediate files
+   - Deleted: Recent_findings_from_2025-06-25T00-06-22_trimmed.mp4
+   - Deleted: Recent_findings_from_2025-06-25T00-06-22_concat_list.txt
+🎉 Post-processing complete!
+📊 Structure: Intro+Loops(93.695s) + End(9.042s) = Total(93.716s)
+===============================================
+
+🗑️ Cleaned up temp file: Recent_findings_from_2025-06-25T00-06-22_temp.mp4
+✅ Post-processing complete! Final duration: 93.72s
+✅ Video generation complete!
+📁 Output: /Users/lukaszwieczorek/Documents/zerowirefinal/generated-videos/Recent_findings_from_2025-06-25T00-06-22.mp4
+📊 Final video: 93.72s
+✨ Audio processing pipeline complete!
+📦 Audio file remains in done folder: Recent_findings_from.wav
+✅ Normal video generated successfully!
+📁 Output: Recent_findings_from_2025-06-25T00-06-22.mp4
+🔒 Atomic write completed: req_1750809557750_qn65mg3t8.json
+🎉 Normal video processing complete: Recent_findings_from_2025-06-25T00-06-22.mp4

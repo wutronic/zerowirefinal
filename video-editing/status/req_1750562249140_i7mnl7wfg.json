@@ -1,0 +1,14 @@
+{
+  "requestId": "req_1750562249140_i7mnl7wfg",
+  "audioFile": "audiooutput/done/Ancient_Amazonians_soil.wav",
+  "status": "video_complete",
+  "splitScreenEnabled": false,
+  "splitScreenPath": null,
+  "debugMode": false,
+  "videoFile": "Ancient_Amazonians_soil_2025-06-22T03-23-34.mp4",
+  "timestamp": "2025-06-22T03:23:33.466Z",
+  "text": "Ancient Amazonians: soil engineers or accidental g...",
+  "videoStartTime": "2025-06-22T03:23:33.982Z",
+  "videoCompleteTime": "2025-06-22T03:25:34.455Z",
+  "coordinationMethod": "file_watcher"
+}

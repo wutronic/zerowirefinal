@@ -1,0 +1,36 @@
+{
+  "intro": [
+    {
+      "file": "VideoTemplates/style 1/Intro/intro.mp4",
+      "duration": 18.083333
+    },
+    {
+      "file": "VideoTemplates/style 1/Intro/intro2.mp4",
+      "duration": 18.083333
+    }
+  ],
+  "loop": [
+    {
+      "file": "VideoTemplates/style 1/Loop/loop.mp4",
+      "duration": 32.541667
+    }
+  ],
+  "end": [
+    {
+      "file": "VideoTemplates/style 1/End/ending.mp4",
+      "duration": 9.041667
+    },
+    {
+      "file": "VideoTemplates/style 1/End/ending2.mp4",
+      "duration": 17.583333
+    },
+    {
+      "file": "VideoTemplates/style 1/End/ending3.mp4",
+      "duration": 9.041667
+    },
+    {
+      "file": "VideoTemplates/style 1/End/ending4.mp4",
+      "duration": 9.041667
+    }
+  ]
+}

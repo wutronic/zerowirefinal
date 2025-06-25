@@ -1,0 +1,14 @@
+{
+  "requestId": "req_1750809557750_qn65mg3t8",
+  "audioFile": "audiooutput/done/Recent_findings_from.wav",
+  "status": "video_complete",
+  "splitScreenEnabled": false,
+  "splitScreenPath": null,
+  "debugMode": false,
+  "videoFile": "Recent_findings_from_2025-06-25T00-06-22.mp4",
+  "timestamp": "2025-06-25T00:06:22.045Z",
+  "text": "Recent findings from France's INRAE have shattered...",
+  "videoStartTime": "2025-06-25T00:06:22.564Z",
+  "videoCompleteTime": "2025-06-25T00:08:54.488Z",
+  "coordinationMethod": "file_watcher"
+}

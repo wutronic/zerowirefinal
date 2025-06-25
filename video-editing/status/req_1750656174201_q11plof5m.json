@@ -1,0 +1,14 @@
+{
+  "requestId": "req_1750656174201_q11plof5m",
+  "audioFile": "audiooutput/done/Is_time_three-dimensional.wav",
+  "status": "error",
+  "splitScreenEnabled": false,
+  "splitScreenPath": null,
+  "debugMode": false,
+  "videoFile": null,
+  "timestamp": "2025-06-23T05:36:11.332Z",
+  "text": "Is time three-dimensional? Let's explore this mind...",
+  "videoStartTime": "2025-06-23T05:36:11.847Z",
+  "error": "Normal video generation failed",
+  "errorTime": "2025-06-23T05:37:11.912Z"
+}

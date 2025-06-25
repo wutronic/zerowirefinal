@@ -1,0 +1,24 @@
+{
+  "name": "deepseek-integration",
+  "version": "1.0.0",
+  "description": "Clean, modular DeepSeek API integration with command line interface",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/cli.js",
+    "test": "node examples/test-basic.js",
+    "dev": "node --watch src/cli.js"
+  },
+  "keywords": ["deepseek", "api", "cli", "ai"],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^1.6.0",
+    "commander": "^11.1.0",
+    "dotenv": "^16.3.1",
+    "chalk": "^5.3.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

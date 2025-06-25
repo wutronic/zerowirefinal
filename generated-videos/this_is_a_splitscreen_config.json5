@@ -1,0 +1,48 @@
+{
+  "outPath": "/Users/lukaszwieczorek/Documents/zerowirefinal/generated-videos/this_is_a_splitscreen_2025-06-22T19-00-54.mp4",
+  "width": 720,
+  "height": 720,
+  "fps": 30,
+  "outDuration": 125.2,
+  "keepSourceAudio": true,
+  "defaults": {
+    "transition": {
+      "name": "dummy",
+      "duration": 0
+    }
+  },
+  "clips": [
+    {
+      "duration": 125.2,
+      "layers": [
+        {
+          "type": "video",
+          "path": "/Users/lukaszwieczorek/Documents/zerowirefinal/VideoTemplates/style 1/splitscreen/splitscreen2.mp4",
+          "resizeMode": "cover",
+          "left": 0,
+          "top": 0,
+          "width": 1,
+          "height": 0.5,
+          "cutFrom": 0,
+          "cutTo": 124.2,
+          "originX": "left",
+          "originY": "top"
+        },
+        {
+          "type": "video",
+          "path": "/Users/lukaszwieczorek/Documents/zerowirefinal/video-editing/temp/splitscreen_req_1750618831794_qjfpw4pfc_76955613b0fa40cbab0af97006868acc.mp4",
+          "resizeMode": "cover",
+          "left": 0,
+          "top": 0.5,
+          "width": 1,
+          "height": 0.5,
+          "cutFrom": 0,
+          "cutTo": 124.2,
+          "originX": "left",
+          "originY": "top"
+        }
+      ],
+      "audioFilePath": "/Users/lukaszwieczorek/Documents/zerowirefinal/video-editing/temp/splitscreen_req_1750618831794_qjfpw4pfc_76955613b0fa40cbab0af97006868acc.mp4"
+    }
+  ]
+}

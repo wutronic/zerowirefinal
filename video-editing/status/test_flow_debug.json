@@ -1,0 +1,14 @@
+{
+  "requestId": "test_flow_1749749172_debug",
+  "audioFile": "audiooutput/done/In_examining_the.wav",
+  "status": "error",
+  "splitScreenEnabled": true,
+  "splitScreenPath": "/Users/lukaszwieczorek/Documents/zerowirefinal/video-editing/temp/splitscreen_req_1749748882539_ryw5fd59u_BC772DE5-C77C-44F2-8AF8-35BA5ADAF6C2.MOV",
+  "debugMode": false,
+  "videoFile": null,
+  "timestamp": "2025-06-12T17:46:12.000Z",
+  "text": "Test split screen video generation flow with our fixes",
+  "videoStartTime": "2025-06-12T17:46:34.567Z",
+  "error": "Split screen video generation failed",
+  "errorTime": "2025-06-12T17:46:49.213Z"
+}

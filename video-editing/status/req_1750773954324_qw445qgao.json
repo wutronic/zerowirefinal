@@ -1,0 +1,15 @@
+{
+  "requestId": "req_1750773954324_qw445qgao",
+  "audioFile": "audiooutput/done/thIn_2024_the.wav",
+  "status": "video_complete",
+  "splitScreenEnabled": false,
+  "splitScreenPath": null,
+  "debugMode": false,
+  "style": "style 2",
+  "videoFile": "thIn_2024_the_2025-06-24T14-14-04.mp4",
+  "timestamp": "2025-06-24T14:14:04.219Z",
+  "text": "thIn 2024, the French National Research Institute ...",
+  "videoStartTime": "2025-06-24T14:14:04.738Z",
+  "videoCompleteTime": "2025-06-24T14:16:52.077Z",
+  "coordinationMethod": "file_watcher"
+}

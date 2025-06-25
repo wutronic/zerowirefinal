@@ -1,0 +1,12 @@
+{
+  "requestId": "req_1750390852314_xbsxk47sf",
+  "audioFile": "audiooutput/done/this_is_a.wav",
+  "status": "video_processing",
+  "splitScreenEnabled": false,
+  "splitScreenPath": null,
+  "debugMode": false,
+  "videoFile": null,
+  "timestamp": "2025-06-20T03:41:16.400Z",
+  "text": "this is a test.",
+  "videoStartTime": "2025-06-20T03:41:16.921Z"
+}

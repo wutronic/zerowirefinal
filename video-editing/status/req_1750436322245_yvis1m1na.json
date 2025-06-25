@@ -1,0 +1,12 @@
+{
+  "requestId": "req_1750436322245_yvis1m1na",
+  "audioFile": "audiooutput/done/this_is_a.wav",
+  "status": "video_processing",
+  "splitScreenEnabled": false,
+  "splitScreenPath": null,
+  "debugMode": false,
+  "videoFile": null,
+  "timestamp": "2025-06-20T16:19:09.734Z",
+  "text": "this is a test.",
+  "videoStartTime": "2025-06-20T16:19:10.252Z"
+}
